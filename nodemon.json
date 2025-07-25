@@ -1,5 +1,5 @@
 {
-  "watch": ["src"],
+  "watch": ["src", "templates"],
   "ext": "ts",
   "exec": "ts-node ./src/server.ts"
 }

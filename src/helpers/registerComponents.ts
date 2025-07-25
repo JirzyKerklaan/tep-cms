@@ -3,6 +3,11 @@ import path from 'path';
 import * as exphbs from 'express-handlebars';
 import { HelperOptions } from 'handlebars';
 
+interface Block {
+  block: string;
+  fields: Record<string, any>;
+}
+
 function registerComponents(hbs: exphbs.ExpressHandlebars | any): void {
 const componentsDir = path.join(process.cwd(), '/src/blocks');
 
@@ -36,6 +41,26 @@ const componentsDir = path.join(process.cwd(), '/src/blocks');
         : partial;
 
     return template(this, options);
+  });
+
+  hbs.handlebars.registerHelper('renderBlock', function(block: Block) {
+    if (!block || !block.block) {
+      return new hbs.handlebars.SafeString('');
+    }
+
+    const partial = hbs.handlebars.partials[block.block];
+    if (!partial) {
+      throw new Error(`Partial "${block.block}" not found`);
+    }
+
+    const template = typeof partial === 'string'
+      ? hbs.handlebars.compile(partial)
+      : partial;
+
+    // Render the partial with block.fields as context
+    const result = template(block.fields);
+
+    return new hbs.handlebars.SafeString(result);
   });
 }
 

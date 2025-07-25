@@ -24,7 +24,6 @@ function loadEntry(collection: string, slug: string): Entry | null {
 
 function loadPage(slug: string): Page | null {
   const filePath = path.join(process.cwd(), `/content/pages/${slug}.json`);
-  console.log('Loading page JSON:', filePath);
   if (!fs.existsSync(filePath)) return null;
   const raw = fs.readFileSync(filePath, 'utf-8');
   return JSON.parse(raw);

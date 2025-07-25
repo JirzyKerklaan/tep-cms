@@ -3,8 +3,14 @@
   "slug": "",
   "content": "This is the homepage",
   "blocks": [
-    { "block": "block", "heading": "Welcome to our site", "subheading": "We build awesome things" },
-    { "block": "block", "heading": "Welcome to our site", "subheading": "We build awesome things" },
-    { "block": "block", "heading": "Welcome to our site", "subheading": "We build awesome things" }
+    {
+      "block": "pageheader",
+      "fields": {
+        "blocks": [
+          { "block": "text", "fields": { "text": "<h1>Hello world</h1>" } },
+          { "block": "text", "fields": { "text": "<p>Another block</p>" } }
+        ]
+      }
+    }
   ]
 }
