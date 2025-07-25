@@ -1,0 +1,5 @@
+{
+  "title": "My First Blog Post",
+  "slug": "my-first-post",
+  "content": "This is the content of my post. Written in JSON, rendered in HTML!"
+}

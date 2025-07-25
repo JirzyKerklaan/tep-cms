@@ -1,0 +1,23 @@
+{
+  "name": "tep-cms",
+  "version": "0.0.1",
+  "description": "This evergrowing, powerful content management system is perfect for your website",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "concurrently \"nodemon src/server.js\" \"npm run watch-css\"",
+    "watch-css": "sass --watch scss/styles.scss:public/css/styles.css --style=expanded",
+    "prod": "sass scss/styles.scss public/css/styles.css --no-source-map --style=compressed"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "express-handlebars": "^7.0.7"
+  },
+  "author": "JirzyKerklaan",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^9.2.0",
+    "nodemon": "^3.1.10",
+    "sass": "^1.89.2"
+  }
+}

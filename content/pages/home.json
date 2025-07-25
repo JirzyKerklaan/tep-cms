@@ -1,0 +1,10 @@
+{
+  "title": "Homepage",
+  "slug": "",
+  "content": "This is the homepage",
+  "blocks": [
+    { "block": "block", "heading": "Welcome to our site", "subheading": "We build awesome things" },
+    { "block": "block", "heading": "Welcome to our site", "subheading": "We build awesome things" },
+    { "block": "block", "heading": "Welcome to our site", "subheading": "We build awesome things" }
+  ]
+}
