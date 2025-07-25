@@ -1,6 +1,16 @@
 # TEP CMS
 This evergrowing, powerful content management system is perfect for your website
 
+## Installation instructions
+
+1. run `npm install`
+2. Run `npm run dev` to run vite and watch for changes. 
+3. Run `npm run prod` to compile the resources for production.
+
+
+
+## More information
+
 ### File-based Content Management
 All your website content is saved as JSON files inside a folder called content. This means your website doesn’t rely on slow or complex databases, making it fast, reliable, and easy to manage.
 
