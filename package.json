@@ -2,12 +2,13 @@
   "name": "tep-cms",
   "version": "0.0.1",
   "description": "This evergrowing, powerful content management system is perfect for your website",
-  "main": "src/server.js",
+  "main": "dist/server.js",
   "scripts": {
-    "start": "node src/server.js",
-    "dev": "concurrently \"nodemon src/server.js\" \"npm run watch-css\"",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev": "concurrently \"nodemon\" \"npm run watch-css\"",
     "watch-css": "sass --watch scss/styles.scss:public/css/styles.css --style=expanded",
-    "prod": "sass scss/styles.scss public/css/styles.css --no-source-map --style=compressed"
+    "prod": "npm run build && sass scss/styles.scss public/css/styles.css --no-source-map --style=compressed"
   },
   "dependencies": {
     "express": "^4.18.2",
@@ -16,8 +17,16 @@
   "author": "JirzyKerklaan",
   "license": "ISC",
   "devDependencies": {
+    "@types/concurrently": "^6.4.0",
+    "@types/express": "^5.0.3",
+    "@types/express-handlebars": "^5.3.1",
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^24.1.0",
+    "@types/nodemon": "^1.19.6",
     "concurrently": "^9.2.0",
     "nodemon": "^3.1.10",
-    "sass": "^1.89.2"
+    "sass": "^1.89.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
   }
 }

@@ -1,37 +1,44 @@
-const express = require('express');
-const path = require('path');
-const fs = require('fs');
+import express, { Request, Response, NextFunction } from 'express';
+import path from 'path';
+import fs from 'fs';
 
 const router = express.Router();
 
-const collections = ['blog']; // TODO: Dynamisch maken
+const collections = ['blog'];
 
-function loadEntry(collection, slug) {
-  const filePath = path.join(__dirname, `../../content/${collection}/${slug}.json`);
+interface Page {
+  parent?: string;
+  [key: string]: any;
+}
+
+interface Entry {
+  [key: string]: any;
+}
+
+function loadEntry(collection: string, slug: string): Entry | null {
+  const filePath = path.join(process.cwd(), `/content/${collection}/${slug}.json`);
   if (!fs.existsSync(filePath)) return null;
-  const raw = fs.readFileSync(filePath);
+  const raw = fs.readFileSync(filePath, 'utf-8');
   return JSON.parse(raw);
 }
 
-function loadPage(slug) {
-  const filePath = path.join(__dirname, `../../content/pages/${slug}.json`);
+function loadPage(slug: string): Page | null {
+  const filePath = path.join(process.cwd(), `/content/pages/${slug}.json`);
+  console.log('Loading page JSON:', filePath);
   if (!fs.existsSync(filePath)) return null;
-  const raw = fs.readFileSync(filePath);
+  const raw = fs.readFileSync(filePath, 'utf-8');
   return JSON.parse(raw);
 }
 
-// Homepage route
-router.get('/', (req, res) => {
+router.get('/', (req: Request, res: Response) => {
   const homepage = loadPage('home');
   if (!homepage) return res.status(404).send('Homepage not found');
   res.render('pages', homepage);
 });
 
-// Route for pages without parent: /:slug
-router.get('/:slug', (req, res, next) => {
+router.get('/:slug', (req: Request, res: Response, next: NextFunction) => {
   const slug = req.params.slug;
 
-  // Avoid collections routes here
   if (collections.includes(slug)) return next();
 
   if (slug === 'home') return next();
@@ -46,8 +53,7 @@ router.get('/:slug', (req, res, next) => {
   res.render('pages', page);
 });
 
-// Collection root slug routes (e.g., /blog/:slug)
-router.get('/:collection/:slug', (req, res, next) => {
+router.get('/:collection/:slug', (req: Request, res: Response, next: NextFunction) => {
   const { collection, slug } = req.params;
 
   if (collections.includes(collection)) {
@@ -59,12 +65,10 @@ router.get('/:collection/:slug', (req, res, next) => {
   next();
 });
 
-// Route for pages with parent: /:parent/:slug (combined with collection route above)
-router.get('/:parent/:slug', (req, res, next) => {
+router.get('/:parent/:slug', (req: Request, res: Response, next: NextFunction) => {
   const { parent, slug } = req.params;
 
   if (collections.includes(parent)) {
-    // Already handled above, just call next()
     return next();
   }
 
@@ -76,4 +80,4 @@ router.get('/:parent/:slug', (req, res, next) => {
   res.render('pages', page);
 });
 
-module.exports = router;
+export default router;

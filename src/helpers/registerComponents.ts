@@ -1,17 +1,19 @@
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
+import * as exphbs from 'express-handlebars';
+import { HelperOptions } from 'handlebars';
 
-function registerComponents(hbs) {
-  const componentsDir = path.join(__dirname, '../blocks');
+function registerComponents(hbs: exphbs.ExpressHandlebars | any): void {
+const componentsDir = path.join(process.cwd(), '/src/blocks');
 
-  function registerFromDir(dir) {
+  function registerFromDir(dir: string): void {
     const entries = fs.readdirSync(dir, { withFileTypes: true });
 
     entries.forEach(entry => {
       const fullPath = path.join(dir, entry.name);
 
       if (entry.isDirectory()) {
-        registerFromDir(fullPath); // recurse into folders
+        registerFromDir(fullPath);
       } else if (entry.isFile() && path.extname(entry.name) === '.hbs') {
         const name = path.parse(entry.name).name;
         const template = fs.readFileSync(fullPath, 'utf-8');
@@ -22,8 +24,7 @@ function registerComponents(hbs) {
 
   registerFromDir(componentsDir);
 
-  // Register dynamic partial helper
-  hbs.handlebars.registerHelper('partial', function (name, options) {
+  hbs.handlebars.registerHelper('partial', function(this: any, name: string, options: HelperOptions) {
     const partial = hbs.handlebars.partials[name];
     if (!partial) {
       throw new Error(`Partial "${name}" not found`);
@@ -38,4 +39,4 @@ function registerComponents(hbs) {
   });
 }
 
-module.exports = registerComponents;
+export default registerComponents;
