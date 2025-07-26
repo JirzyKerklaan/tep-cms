@@ -1,0 +1,42 @@
+/*
+ * Breakpoints
+ */
+@mixin mobile {
+    @media (max-width: 760px) {
+        @content;
+    }
+}
+@mixin fixed {
+    @media (max-width: 1024px) {
+        @content;
+    }
+}
+@mixin tablet-lg {
+    @media (min-width: 1025px) and (max-width: 1280px) {
+        @content;
+    }
+}
+
+@mixin vw {
+    @media (max-width: 1608px) and (min-width: 1025px) {
+        @content;
+    }
+}
+
+@mixin sm-vw {
+    @media screen and (min-width: 1280px) and (max-width: 1608px) {
+        @content;
+    }
+}
+
+/*
+ * Reset default button styles
+ */
+@mixin button-reset {
+    padding: 0;
+    border: none;
+    font: inherit;
+    color: inherit;
+    background-color: transparent;
+    cursor: pointer;
+  }

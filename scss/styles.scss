@@ -1,1 +1,6 @@
-@forward "base/_base";
+@forward "vendor/__vendor-dir.scss";
+@forward "abstracts/_abstracts-dir";
+@forward "base/__base-dir.scss";
+@forward "components/_components-dir";
+@forward "layouts/_layouts-dir";
+@forward "pages/_pages-dir";

@@ -1,0 +1,14 @@
+@use '../abstracts/_abstracts-dir' as *;
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+@media screen and (min-width: 761px) and (max-width: 1919px) {
+    html{
+        font-size:0.834vw;
+    }
+}

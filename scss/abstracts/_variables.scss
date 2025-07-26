@@ -1,0 +1,35 @@
+//-- Color variables
+$primary-color: #1e1e1e;
+$secondary-color: #343230; //90% dekking voor header f.e.
+$tertiary-color: #000000; // 60% dekking voor blok bg f.e.
+
+// Primary button
+$btn-primary-border: #1e1e1e;
+$btn-primary-bg: #1e1e1e;
+$btn-primary-text: #000000;
+$btn-primary-border-hover: #1e1e1e;
+$btn-primary-bg-hover: #1e1e1e;
+$btn-primary-text-hover: #000000;
+// Secondary button
+$btn-secondary-border: #000000;
+$btn-secondary-bg: #000000;
+$btn-secondary-text: #1e1e1e;
+$btn-secondary-border-hover: #000000;
+$btn-secondary-bg-hover: #000000;
+$btn-secondary-text-hover: #1e1e1e;
+// Tertiary button
+$btn-tertiary-border: #ffffff;
+$btn-tertiary-bg: #ffffff;
+$btn-tertiary-text: #000000;
+$btn-tertiary-border-hover: #ffffff;
+$btn-tertiary-bg-hover: #ffffff;
+$btn-tertiary-text-hover: #000000;
+
+//-- Timing and animation
+$default-timing: 250ms;
+
+// Blocks
+$default-padding-top: 3.125rem;
+$default-padding-bottom: 3.125rem;
+$default-padding-top-mob: 30px;
+$default-padding-bottom-mob: 30px;
