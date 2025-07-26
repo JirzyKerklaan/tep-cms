@@ -2,7 +2,7 @@
   "title": "First blog",
   "slug": "my-first-post",
   "content": "This is the first post",
-  "blocks": [
+  "page_builder": [
     {
       "block": "pageheader",
       "fields": {

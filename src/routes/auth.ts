@@ -1,4 +1,5 @@
 import { Router, Request, Response } from 'express';
+import config from '../config';
 
 const authRouter = Router();
 
@@ -12,7 +13,7 @@ authRouter.post('/login', (req: Request, res: Response) => {
   const { username, password } = req.body;
 
   // Simple example - replace with real auth
-  if (username === 'admin' && password === 'password') {
+  if (username === config.auth.username && password === config.auth.password) {
     req.session.isAdmin = true;
     return res.redirect('/manager');
   }

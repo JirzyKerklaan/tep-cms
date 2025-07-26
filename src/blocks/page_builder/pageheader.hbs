@@ -1,0 +1,5 @@
+<div class="pageheader">
+  {{#each blocks}}
+    {{partial (concat "components/" this.block) this.fields}}
+  {{/each}}
+</div>

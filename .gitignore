@@ -27,6 +27,7 @@ pids
 .env
 .env.local
 .env.*.local
+src/config.ts
 
 # Mac system files
 .DS_Store

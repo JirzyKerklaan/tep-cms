@@ -2,13 +2,23 @@
   "title": "Homepage",
   "slug": "",
   "content": "This is the homepage",
-  "blocks": [
+  "page_builder": [
     {
       "block": "pageheader",
       "fields": {
         "blocks": [
           { "block": "text", "fields": { "text": "<h1>Hello world</h1>" } },
           { "block": "text", "fields": { "text": "<p>Another block</p>" } }
+        ]
+      }
+    },
+    {
+      "block": "usps",
+      "fields": {
+        "items": [
+          { "text": "usp 1" },
+          { "text": "usp 2" },
+          { "text": "usp 3" }
         ]
       }
     }

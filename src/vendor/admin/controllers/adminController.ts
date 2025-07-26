@@ -5,7 +5,6 @@ export function dashboard(req: Request, res: Response) {
 }
 
 export function listCollections(req: Request, res: Response) {
-  // Fetch collections from DB or JSON file
   res.render('admin/collections/list');
 }
 
