@@ -5,6 +5,7 @@ import session from 'express-session';
 
 import registerComponents from './helpers/registerComponents';
 import routes from './routes/routes';
+import managerRoutes from './routes/managerRoutes';
 import config from './config';
 
 const app = express();
@@ -39,6 +40,7 @@ app.set('views', path.join(process.cwd(), 'src/templates'));
 app.use(express.static(path.join(process.cwd(), '/public')));
 
 app.use('/', routes);
+app.use('/manager', managerRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running at http://localhost:${PORT}`);

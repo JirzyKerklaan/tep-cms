@@ -87,45 +87,4 @@ router.get('/:parent/:slug', (req: Request, res: Response, next: NextFunction) =
   res.render('views/pages', page);
 });
 
-router.get('/login', (req: Request, res: Response) => {
-  res.render('views/login', {
-    layout: 'main',
-    error: null,
-    username: ''
-  });
-});
-
-// Handle login form submission
-router.post('/login', (req: Request, res: Response) => {
-  const { username, password } = req.body;
-
-  if (username === config.auth.username && password === config.auth.password) {
-    req.session.user = { username };
-    return res.redirect('/dashboard');
-  }
-
-  res.status(401).render('login', {
-    layout: 'main',
-    error: 'Invalid username or password',
-    username
-  });
-});
-
-router.get('/logout', (req: Request, res: Response) => {
-  req.session.destroy(() => {
-    res.redirect('/')
-  });
-});
-
-// --- Authenticated routes ---
-
-router.use(isAuthenticated);
-
-router.get('/dashboard', (req: Request, res: Response) => {
-  res.render('views/dashboard', {
-    layout: 'manager',
-    user: req.session.user,
-  });
-});
-
 export default router;
