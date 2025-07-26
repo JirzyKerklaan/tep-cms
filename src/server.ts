@@ -15,10 +15,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(session({
   secret: config.session.secret,
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
 }));
 
-// ** Middleware to set global variables for all views **
 app.use((req, res, next) => {
   res.locals.site_name = config.site.site_name;
   next();
@@ -30,20 +29,14 @@ const hbs = exphbs.create({
   defaultLayout: 'main',
   partialsDir: path.join(process.cwd(), '/src/templates/partials'),
 });
+
 registerComponents(hbs);
+
 app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
-app.set('views', path.join(process.cwd(), '/src/templates'));
+app.set('views', path.join(process.cwd(), 'src/templates'));
 
 app.use(express.static(path.join(process.cwd(), '/public')));
-
-const adminHbs = exphbs.create({
-  extname: '.hbs',
-  layoutsDir: path.join(process.cwd(), '/src/vendor/admin/views/layouts'),
-  defaultLayout: 'adminMain',
-  partialsDir: path.join(process.cwd(), '/src/vendor/admin/views/partials'),
-});
-app.engine('adminhbs', adminHbs.engine);
 
 app.use('/', routes);
 

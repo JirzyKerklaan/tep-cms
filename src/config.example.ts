@@ -2,6 +2,10 @@
 // src/config.ts
 
 export default {
+  auth: {
+    username: '',
+    password: ''
+  },
   site: {
     site_name: 'TEPCMS',
   },

@@ -1,6 +1,7 @@
 import express, { Request, Response, NextFunction } from 'express';
 import path from 'path';
 import fs from 'fs';
+import config from '../config';
 
 const router = express.Router();
 
@@ -29,10 +30,17 @@ function loadPage(slug: string): Page | null {
   return JSON.parse(raw);
 }
 
+function isAuthenticated(req: Request, res: Response, next: NextFunction) {
+  if (req.session && req.session.user) {
+    return next();
+  }
+  return res.redirect('/login');
+}
+
 router.get('/', (req: Request, res: Response) => {
   const homepage = loadPage('home');
   if (!homepage) return res.status(404).send('Homepage not found');
-  res.render('views/pages', homepage);
+  res.render('views/pages', homepage); // views/pages.hbs
 });
 
 router.get('/:slug', (req: Request, res: Response, next: NextFunction) => {
@@ -58,7 +66,7 @@ router.get('/:collection/:slug', (req: Request, res: Response, next: NextFunctio
   if (collections.includes(collection)) {
     const entry = loadEntry(collection, slug);
     if (!entry) return res.status(404).send('Not found');
-    return res.render('views/'+collection, entry);
+    return res.render(collection, entry);
   }
 
   next();
@@ -77,6 +85,47 @@ router.get('/:parent/:slug', (req: Request, res: Response, next: NextFunction) =
   if (page.parent !== parent) return next();
 
   res.render('views/pages', page);
+});
+
+router.get('/login', (req: Request, res: Response) => {
+  res.render('views/login', {
+    layout: 'main',
+    error: null,
+    username: ''
+  });
+});
+
+// Handle login form submission
+router.post('/login', (req: Request, res: Response) => {
+  const { username, password } = req.body;
+
+  if (username === config.auth.username && password === config.auth.password) {
+    req.session.user = { username };
+    return res.redirect('/dashboard');
+  }
+
+  res.status(401).render('login', {
+    layout: 'main',
+    error: 'Invalid username or password',
+    username
+  });
+});
+
+router.get('/logout', (req: Request, res: Response) => {
+  req.session.destroy(() => {
+    res.redirect('/')
+  });
+});
+
+// --- Authenticated routes ---
+
+router.use(isAuthenticated);
+
+router.get('/dashboard', (req: Request, res: Response) => {
+  res.render('views/dashboard', {
+    layout: 'manager',
+    user: req.session.user,
+  });
 });
 
 export default router;
