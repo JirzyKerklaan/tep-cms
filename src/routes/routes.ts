@@ -32,7 +32,7 @@ function loadPage(slug: string): Page | null {
 router.get('/', (req: Request, res: Response) => {
   const homepage = loadPage('home');
   if (!homepage) return res.status(404).send('Homepage not found');
-  res.render('pages', homepage);
+  res.render('views/pages', homepage);
 });
 
 router.get('/:slug', (req: Request, res: Response, next: NextFunction) => {
@@ -49,7 +49,7 @@ router.get('/:slug', (req: Request, res: Response, next: NextFunction) => {
     return res.redirect(`/${page.parent}/${slug}`);
   }
 
-  res.render('pages', page);
+  res.render('views/pages', page);
 });
 
 router.get('/:collection/:slug', (req: Request, res: Response, next: NextFunction) => {
@@ -76,7 +76,7 @@ router.get('/:parent/:slug', (req: Request, res: Response, next: NextFunction) =
 
   if (page.parent !== parent) return next();
 
-  res.render('pages', page);
+  res.render('views/pages', page);
 });
 
 export default router;
