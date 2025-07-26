@@ -12,7 +12,7 @@ function isAuthenticated(req: Request, res: Response, next: NextFunction) {
 
 
 router.get('/login', (req: Request, res: Response) => {
-  res.render('views/login', {
+  res.render('manager/login', {
     layout: 'main',
     error: null,
     username: ''
@@ -45,7 +45,7 @@ router.get('/logout', (req: Request, res: Response) => {
 router.use(isAuthenticated);
 
 router.get('/dashboard', (req: Request, res: Response) => {
-  res.render('views/dashboard', { layout: 'manager', user: req.session.user });
+  res.render('manager/dashboard', { layout: 'manager', user: req.session.user });
 });
 
 export default router;
