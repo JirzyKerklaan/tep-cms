@@ -76,7 +76,6 @@ function registerComponents(hbs: exphbs.ExpressHandlebars | any): void {
     );
   });
 
-
   // New helper for base blocks (header, footer, etc.)
   hbs.handlebars.registerHelper('baseBlock', function (
     this: Record<string, any>,

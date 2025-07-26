@@ -1,5 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
 import config from '../config';
+import collectionController from '../manager/controllers/collectionController';
 
 const router = express.Router();
 
@@ -47,5 +48,13 @@ router.use(isAuthenticated);
 router.get('/dashboard', (req: Request, res: Response) => {
   res.render('manager/dashboard', { layout: 'manager', user: req.session.user });
 });
+
+router.get('/collection/create', collectionController.newForm);
+router.post('/collection/create', collectionController.create);
+
+router.get('/collection/edit/:id', collectionController.editForm);
+router.post('/collection/edit/:id', collectionController.update);
+
+router.get('/collection/list', collectionController.list);
 
 export default router;
