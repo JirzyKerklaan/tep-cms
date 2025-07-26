@@ -4,6 +4,7 @@ This evergrowing, powerful content management system is perfect for your website
 ## Installation instructions
 
 1. run `npm install`
+2. Copy the `config.example.ts` over to `config.ts`. Change the values of the fields to your preference.
 2. Run `npm run dev` to run vite and watch for changes. 
 3. Run `npm run prod` to compile the resources for production.
 

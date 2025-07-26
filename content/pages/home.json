@@ -11,16 +11,6 @@
           { "block": "text", "fields": { "text": "<p>Another block</p>" } }
         ]
       }
-    },
-    {
-      "block": "usps",
-      "fields": {
-        "items": [
-          { "text": "usp 1" },
-          { "text": "usp 2" },
-          { "text": "usp 3" }
-        ]
-      }
     }
   ]
 }
