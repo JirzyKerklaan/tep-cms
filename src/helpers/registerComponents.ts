@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import * as exphbs from 'express-handlebars';
 import { HelperOptions } from 'handlebars';
+import navigationData from '../navigation';
 
 interface Block {
   block: string;
@@ -98,6 +99,15 @@ function registerComponents(hbs: exphbs.ExpressHandlebars | any): void {
         data: options.data,
       })
     );
+  });
+
+  hbs.handlebars.registerHelper('nav', function(name: string) {
+    const nav = navigationData[name];
+    if (!nav) return '';
+    const items = nav.links.map((link: any) =>
+      `<li><a href="${link.url}">${link.label}</a></li>`
+    ).join('');
+    return new hbs.handlebars.SafeString(`<ul>${items}</ul>`);
   });
 }
 

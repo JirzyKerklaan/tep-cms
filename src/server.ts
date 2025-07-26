@@ -7,6 +7,7 @@ import registerComponents from './helpers/registerComponents';
 import routes from './routes/routes';
 import managerRoutes from './routes/managerRoutes';
 import config from './config';
+import navigationData from './navigation';
 
 const app = express();
 const PORT = 3000;
@@ -21,6 +22,11 @@ app.use(session({
 
 app.use((req, res, next) => {
   res.locals.site_name = config.site.site_name;
+  next();
+});
+
+app.use((req, res, next) => {
+  res.locals.navigation = navigationData;
   next();
 });
 

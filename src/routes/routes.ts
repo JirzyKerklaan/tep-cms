@@ -17,14 +17,14 @@ interface Entry {
 }
 
 function loadEntry(collection: string, slug: string): Entry | null {
-  const filePath = path.join(process.cwd(), `/content/${collection}/${slug}.json`);
+  const filePath = path.join(process.cwd(), `/content/collection/${collection}/${slug}.json`);
   if (!fs.existsSync(filePath)) return null;
   const raw = fs.readFileSync(filePath, 'utf-8');
   return JSON.parse(raw);
 }
 
 function loadPage(slug: string): Page | null {
-  const filePath = path.join(process.cwd(), `/content/pages/${slug}.json`);
+  const filePath = path.join(process.cwd(), `/content/collection/pages/${slug}.json`);
   if (!fs.existsSync(filePath)) return null;
   const raw = fs.readFileSync(filePath, 'utf-8');
   return JSON.parse(raw);
@@ -37,10 +37,14 @@ function isAuthenticated(req: Request, res: Response, next: NextFunction) {
   return res.redirect('/login');
 }
 
-router.get('/', (req: Request, res: Response) => {
+router.get('/', (req, res) => {
   const homepage = loadPage('home');
   if (!homepage) return res.status(404).send('Homepage not found');
-  res.render('views/pages', homepage); // views/pages.hbs
+
+  res.render('views/pages', {
+    ...homepage,
+    navigation: res.locals.navigation,
+  });
 });
 
 router.get('/:slug', (req: Request, res: Response, next: NextFunction) => {
@@ -57,7 +61,10 @@ router.get('/:slug', (req: Request, res: Response, next: NextFunction) => {
     return res.redirect(`/${page.parent}/${slug}`);
   }
 
-  res.render('views/pages', page);
+  res.render('views/pages', {
+    ...page,
+    navigation: res.locals.navigation,
+  });
 });
 
 router.get('/:collection/:slug', (req: Request, res: Response, next: NextFunction) => {

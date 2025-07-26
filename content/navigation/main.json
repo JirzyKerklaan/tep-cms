@@ -1,0 +1,13 @@
+{
+    "name": "Main menu",
+    "links": [
+        {
+            "label": "Home",
+            "url": "/"
+        },
+        {
+            "label": "About",
+            "url": "/about"
+        }
+    ]
+}
