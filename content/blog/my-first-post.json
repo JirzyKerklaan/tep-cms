@@ -1,5 +1,16 @@
 {
-  "title": "My First Blog Post",
+  "title": "First blog",
   "slug": "my-first-post",
-  "content": "This is the content of my post. Written in JSON, rendered in HTML!"
+  "content": "This is the first post",
+  "blocks": [
+    {
+      "block": "pageheader",
+      "fields": {
+        "blocks": [
+          { "block": "text", "fields": { "text": "<h1>First post</h1>" } },
+          { "block": "text", "fields": { "text": "<p>This is a blog post</p>" } }
+        ]
+      }
+    }
+  ]
 }
