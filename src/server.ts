@@ -45,20 +45,6 @@ const adminHbs = exphbs.create({
 });
 app.engine('adminhbs', adminHbs.engine);
 
-app.use('/manager', (req, res, next) => {
-    res.app.set('view engine', 'adminhbs');
-    res.app.set('views', path.join(process.cwd(), '/src/vendor/admin/views'));
-    next();
-  }
-);
-
-// Make sure default view engine and views are reset after /manager routes
-app.use((req, res, next) => {
-  res.app.set('view engine', 'hbs');
-  res.app.set('views', path.join(process.cwd(), '/src/templates'));
-  next();
-});
-
 app.use('/', routes);
 
 app.listen(PORT, () => {

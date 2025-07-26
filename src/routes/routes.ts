@@ -58,7 +58,7 @@ router.get('/:collection/:slug', (req: Request, res: Response, next: NextFunctio
   if (collections.includes(collection)) {
     const entry = loadEntry(collection, slug);
     if (!entry) return res.status(404).send('Not found');
-    return res.render(collection, entry);
+    return res.render('views/'+collection, entry);
   }
 
   next();
