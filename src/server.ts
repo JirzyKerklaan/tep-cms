@@ -5,8 +5,6 @@ import session from 'express-session';
 
 import registerComponents from './helpers/registerComponents';
 import routes from './routes/routes';
-import adminRouter from './vendor/admin/routes';
-import authRouter from './routes/auth';
 import config from './config';
 
 const app = express();
@@ -39,8 +37,6 @@ app.set('views', path.join(process.cwd(), '/src/templates'));
 
 app.use(express.static(path.join(process.cwd(), '/public')));
 
-app.use(authRouter);
-
 const adminHbs = exphbs.create({
   extname: '.hbs',
   layoutsDir: path.join(process.cwd(), '/src/vendor/admin/views/layouts'),
@@ -50,10 +46,11 @@ const adminHbs = exphbs.create({
 app.engine('adminhbs', adminHbs.engine);
 
 app.use('/manager', (req, res, next) => {
-  res.app.set('view engine', 'adminhbs');
-  res.app.set('views', path.join(process.cwd(), '/src/vendor/admin/views'));
-  next();
-}, adminRouter);
+    res.app.set('view engine', 'adminhbs');
+    res.app.set('views', path.join(process.cwd(), '/src/vendor/admin/views'));
+    next();
+  }
+);
 
 // Make sure default view engine and views are reset after /manager routes
 app.use((req, res, next) => {
