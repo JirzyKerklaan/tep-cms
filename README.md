@@ -1,36 +1,100 @@
+<p align="center">
+  <img width="200" draggable="false" src="./tep-cms.png" alt="TEP CMS Logo"/>
+</p>
+
 # TEP CMS
-This evergrowing, powerful content management system is perfect for your website
 
-## Installation instructions
+**The Evergrowing, Powerful CMS:** a fast, file-based content management system that's perfect for modern static and dynamic websites.
 
-1. run `npm install`
-2. Copy the `config.example.ts` over to `config.ts`. Change the values of the fields to your preference.
-2. Run `npm run dev` to run vite and watch for changes. 
-3. Run `npm run prod` to compile the resources for production.
+---
 
+<br>
 
+## 📚 Table of Contents
 
-## More information
+- [Features](#features)
+- [Installation](#installation)
+- [File Structure](#file-structure)
+- [More Information](#more-information)
 
-### File-based Content Management
-All your website content is saved as JSON files inside a folder called content. This means your website doesn’t rely on slow or complex databases, making it fast, reliable, and easy to manage.
+<br>
 
-### Organized Asset Management
-Uploads and user-added files go into the assets/uploads folder.
+<h2 id="features">✨ Features</h2>
 
-Standard images and base assets that come with the site are stored in assets/base.
-You can easily add, change, or remove images and files by managing these folders directly.
+- ⚡ **File-based Content Storage** (No DB required)
+- 🖼 **Organized Asset Management**
+- 🎨 **SCSS-based Styling**
+- 🪄 **Live Preview Editing**
+- 🖥️ **Easy Local Development**
+- 🚀 **Fast and Lightweight**
 
-### SCSS for Styling
-The CMS uses SCSS for styling your website, so you can write clean and flexible styles that compile quickly. You can run and edit SCSS locally with your preferred tools.
+<br>
 
-### Live Preview Editing
-Make changes to your site’s content while seeing exactly how it looks to your visitors. This live preview editing ensures you get the best results without guesswork.
+<h2 id="installation">🛠 Installation</h2>
 
-### Easy to Run Locally
-Set up and run the CMS on your local machine for development and testing. This gives you full control and makes changes safe before publishing.
+1. Clone the repo and install dependencies:
+   ```bash
+   npm install
+    ```
+2. Copy the example config and customize it:
+    ```bash
+    cp config.example.ts config.ts
+    ```
+3. Run the development server
+    ```bash
+    npm run dev
+    ```
+4. Build for production
+    ```bash
+    npm run prod
+    ```
+5. Now your site is ready for deployment!
 
-### Fast and Reliable
-Because everything is file-based and doesn’t rely on databases, the CMS loads quickly and works smoothly even with lots of content and assets.
+<br>
 
+<h2 id="file-structure">File Structure</h2>
 
+```bash
+tep-cms/
+├── content/
+│   ├── collection/      # All collections (pages, blogs etc.)
+│   └── navigation/      # Navigation menu's
+├── public/
+│   ├── assets/
+│   │   ├── base/        # Static theme images, icons, etc.
+│   │   └── uploads/     # Uploaded images, icons, etc.
+│   └── css/             # Compiled SCSS styling
+├── scss/                # SCSS styling
+├── src/
+│   ├── blocks/          # Usable blocks
+│   ├── helpers/         # System helpers
+│   ├── manager/         # /manager system
+│   ├── middlewares/     # Route middleware
+│   ├── navigation/      # Navigation system
+│   ├── routes/          # Public routes (to collections)
+│   ├── templates/       # Templates for pages & collections
+│   └── types/           # Session definitions
+└ server.ts              # System entry-point
+```
+
+<h2 id="more-information">📘 More Information</h2>
+
+### 🗃️ File-Based Content Management
+All website content is stored in JSON format under the `content/` folder. No databases are required—this makes the CMS fast, lightweight, and easy to manage with version control.
+
+### 🧾 Asset Management
+- `assets/uploads/` – stores user-uploaded images and files.
+- `assets/base/` – contains default theme assets and reusable base images.
+
+### 🎨 SCSS Styling
+The CMS uses SCSS for styling, making it easy to organize and maintain styles with variables, mixins, and modular architecture.
+
+### 👀 Live Preview Editing
+Edit content and instantly see a live preview of the website, improving the workflow and reducing guesswork during content updates.
+
+### 🧪 Easy Local Development
+Set up and run TEP CMS on your local machine for safe testing and development before deploying to production.
+
+---
+
+If you find bugs or have suggestions, feel free to open an [issue](https://github.com/JirzyKerklaan/tep-cms/issues/new).
