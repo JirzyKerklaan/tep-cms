@@ -6,8 +6,6 @@
 
 **The Evergrowing, Powerful CMS:** a fast, file-based content management system that's perfect for modern static and dynamic websites.
 
----
-
 <br>
 
 ## 📚 Table of Contents
