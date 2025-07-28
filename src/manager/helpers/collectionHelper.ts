@@ -12,36 +12,29 @@ const collectionHelper = {
   async createCollection(data: Partial<Collection>) {
     if (!data.name) throw new Error('Collection name is required');
 
-    // Define folder path based on collection name
-    const folderPath = path.join(process.cwd(), 'content', 'collection', data.name);
+    const folderPath = path.join(process.cwd(), 'content', 'collections', data.name);
+    const schemaPath = path.join(process.cwd(), 'content', 'schemas', 'collections' );
 
     try {
-      // Check if folder already exists
       await fs.stat(folderPath);
-      // If stat succeeds, folder exists, throw error
       throw new Error('That collection already exists');
     } catch (err: any) {
       if (err.code !== 'ENOENT') {
-        // If error is something other than folder not existing, rethrow
         throw err;
       }
-      // ENOENT means folder doesn't exist, proceed
     }
 
     const id = Date.now().toString();
     const newCollection = { id, ...data } as Collection;
     collections.push(newCollection);
 
-    // Create folder (recursive true ensures parent folders are created if missing)
-    await fs.mkdir(folderPath, { recursive: true });
+    const schemaContent = JSON.stringify({schema: `${newCollection.name}`}, null, 2);
+    await fs.writeFile(path.join(schemaPath, `${data.name}.schema.json`), schemaContent, 'utf-8'); // create collection schema
 
-    // Prepare file content with collection name
-    const fileContent = JSON.stringify({
-      title: `First ${newCollection.name}`
-    }, null, 2);
+    await fs.mkdir(folderPath, { recursive: true }); // Create collection directory
 
-    // Write standard.json file
-    await fs.writeFile(path.join(folderPath, 'standard.json'), fileContent, 'utf-8');
+    const fileContent = JSON.stringify({title: `First ${newCollection.name}`}, null, 2);
+    await fs.writeFile(path.join(folderPath, 'standard.json'), fileContent, 'utf-8'); // create first/standard collection entry
 
     return newCollection;
   },
