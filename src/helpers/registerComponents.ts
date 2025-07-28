@@ -1,3 +1,9 @@
+/** 
+ * @Author: JirzyKerklaan 
+ * @Date: 2025-07-27 17:05:48 
+ * @Desc:  System for registering new handlebars component call
+ */
+
 import fs from 'fs';
 import path from 'path';
 import * as exphbs from 'express-handlebars';

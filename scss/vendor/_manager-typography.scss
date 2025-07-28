@@ -1,0 +1,72 @@
+@use '../abstracts/_abstracts-dir' as *;
+@use './manager-vars' as *;
+
+#manager-page {
+    font-family: 'Arial, Helvetica, sans-serif';
+}
+
+h1 {
+  font-size: $man-h1-size;
+
+  @include mobile {
+    font-size: $man-h1-size-mob;
+  }
+}
+
+h2 {
+  font-size: $man-h2-size;
+
+  @include mobile {
+    font-size: $man-h2-size-mob;
+  }
+}
+
+h3 {
+  font-size: $man-h3-size;
+
+  @include mobile {
+    font-size: $man-h3-size-mob;
+  }
+}
+
+h4 {
+  font-size: $man-h4-size;
+
+  @include mobile {
+    font-size: $man-h4-size-mob;
+  }
+}
+
+h5 {
+  font-size: $man-h5-size;
+
+  @include mobile {
+    font-size: $man-h5-size-mob;
+  }
+}
+
+h6 {
+  font-size: $man-h6-size;
+
+  @include mobile {
+    font-size: $man-h6-size-mob;
+  }
+}
+
+p {
+    font-size: $man-text-size;
+
+    @include mobile {
+        font-size: $man-text-size-mob;
+    }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+    color: $man-text-color;
+}

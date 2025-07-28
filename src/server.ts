@@ -1,3 +1,9 @@
+/** 
+ * @Author: JirzyKerklaan 
+ * @Date: 2025-07-27 14:06:43 
+ * @Desc:  Server entrypoint
+ */
+
 import express from 'express';
 import * as exphbs from 'express-handlebars';
 import path from 'path';
