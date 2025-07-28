@@ -49,12 +49,12 @@ router.get('/dashboard', (req: Request, res: Response) => {
   res.render('manager/dashboard', { layout: 'manager', user: req.session.user });
 });
 
-router.get('/collection/create', collectionController.newForm);
-router.post('/collection/create', collectionController.create);
+router.get('/collections/create', collectionController.newForm);
+router.post('/collections/create', collectionController.create);
 
-router.get('/collection/edit/:id', collectionController.editForm);
-router.post('/collection/edit/:id', collectionController.update);
+router.get('/collections/edit/:id', collectionController.editForm);
+router.post('/collections/edit/:id', collectionController.update);
 
-router.get('/collection/list', collectionController.list);
+router.get('/collections/list', collectionController.list);
 
 export default router;

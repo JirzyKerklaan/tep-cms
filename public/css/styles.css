@@ -7,77 +7,69 @@
 #manager-page {
   font-family: "Arial, Helvetica, sans-serif";
 }
-
-h1 {
+#manager-page h1 {
   font-size: 3rem;
 }
 @media (max-width: 760px) {
-  h1 {
+  #manager-page h1 {
     font-size: 2.5rem;
   }
 }
-
-h2 {
+#manager-page h2 {
   font-size: 2.75rem;
 }
 @media (max-width: 760px) {
-  h2 {
+  #manager-page h2 {
     font-size: 2.25rem;
   }
 }
-
-h3 {
+#manager-page h3 {
   font-size: 2.5rem;
 }
 @media (max-width: 760px) {
-  h3 {
+  #manager-page h3 {
     font-size: 2rem;
   }
 }
-
-h4 {
+#manager-page h4 {
   font-size: 2.25rem;
 }
 @media (max-width: 760px) {
-  h4 {
+  #manager-page h4 {
     font-size: 1.75rem;
   }
 }
-
-h5 {
+#manager-page h5 {
   font-size: 2rem;
 }
 @media (max-width: 760px) {
-  h5 {
+  #manager-page h5 {
     font-size: 1.5rem;
   }
 }
-
-h6 {
+#manager-page h6 {
   font-size: 1.75rem;
 }
 @media (max-width: 760px) {
-  h6 {
+  #manager-page h6 {
     font-size: 1.25rem;
   }
 }
-
-p {
+#manager-page p {
   font-size: 1.25rem;
 }
 @media (max-width: 760px) {
-  p {
+  #manager-page p {
     font-size: 1rem;
   }
 }
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p {
+#manager-page h1,
+#manager-page h2,
+#manager-page h3,
+#manager-page h4,
+#manager-page h5,
+#manager-page h6,
+#manager-page p {
   color: #f0f0f0;
 }
 

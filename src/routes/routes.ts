@@ -17,14 +17,14 @@ interface Entry {
 }
 
 function loadEntry(collection: string, slug: string): Entry | null {
-  const filePath = path.join(process.cwd(), `/content/collection/${collection}/${slug}.json`);
+  const filePath = path.join(process.cwd(), `/content/collections/${collection}/${slug}.json`);
   if (!fs.existsSync(filePath)) return null;
   const raw = fs.readFileSync(filePath, 'utf-8');
   return JSON.parse(raw);
 }
 
 function loadPage(slug: string): Page | null {
-  const filePath = path.join(process.cwd(), `/content/collection/pages/${slug}.json`);
+  const filePath = path.join(process.cwd(), `/content/collections/pages/${slug}.json`);
   if (!fs.existsSync(filePath)) return null;
   const raw = fs.readFileSync(filePath, 'utf-8');
   return JSON.parse(raw);
@@ -67,7 +67,7 @@ router.get('/:slug', (req: Request, res: Response, next: NextFunction) => {
   });
 });
 
-router.get('/:collection/:slug', (req: Request, res: Response, next: NextFunction) => {
+router.get('/:collections/:slug', (req: Request, res: Response, next: NextFunction) => {
   const { collection, slug } = req.params;
 
   if (collections.includes(collection)) {

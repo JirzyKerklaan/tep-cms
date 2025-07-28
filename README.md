@@ -55,14 +55,14 @@
 ```bash
 tep-cms/
 ├── content/
-│   ├── collection/      # All collections (pages, blogs etc.)
+│   ├── collections/      # All collections (pages, blogs etc.)
 │   └── navigation/      # Navigation menu's
 ├── public/
 │   ├── assets/
 │   │   ├── base/        # Static theme images, icons, etc.
 │   │   └── uploads/     # Uploaded images, icons, etc.
 │   └── css/             # Compiled SCSS styling
-├── scss/                # SCSS styling
+├── styles/                # SCSS styling
 ├── src/
 │   ├── blocks/          # Usable blocks
 │   ├── helpers/         # System helpers

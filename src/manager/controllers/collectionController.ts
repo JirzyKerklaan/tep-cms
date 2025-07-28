@@ -3,16 +3,16 @@ import collectionHelper from '../helpers/collectionHelper';
 
 const collectionController = {
   newForm(req: Request, res: Response) {
-    res.render('manager/collection/create', { layout: 'manager', user: req.session.user, error: null });
+    res.render('manager/collections/create', { layout: 'manager', user: req.session.user, error: null });
   },
 
   async create(req: Request, res: Response) {
     try {
       const data = req.body;
       await collectionHelper.createCollection(data);
-      res.redirect('/manager/collection/list');
+      res.redirect('/manager/collections/list');
     } catch (error) {
-      res.render('manager/collection/create', {
+      res.render('manager/collections/create', {
         layout: 'manager',
         user: req.session.user,
         error: 'Failed to create collection'
@@ -27,7 +27,7 @@ const collectionController = {
       if (!collection) {
         return res.status(404).send('Collection not found');
       }
-      res.render('manager/collection/edit', { layout: 'manager', user: req.session.user, collection, error: null });
+      res.render('manager/collections/edit', { layout: 'manager', user: req.session.user, collection, error: null });
     } catch {
       res.status(500).send('Server error');
     }
@@ -38,9 +38,9 @@ const collectionController = {
     const data = req.body;
     try {
       await collectionHelper.updateCollection(id, data);
-      res.redirect('/manager/collection/list');
+      res.redirect('/manager/collections/list');
     } catch {
-      res.render('manager/collection/edit', {
+      res.render('manager/collections/edit', {
         layout: 'manager',
         user: req.session.user,
         collection: { id, ...data },
@@ -52,7 +52,7 @@ const collectionController = {
   async list(req: Request, res: Response) {
     try {
       const collections = await collectionHelper.getAllCollections();
-      res.render('manager/collection/list', { layout: 'manager', user: req.session.user, collections });
+      res.render('manager/collections/list', { layout: 'manager', user: req.session.user, collections });
     } catch {
       res.status(500).send('Server error');
     }

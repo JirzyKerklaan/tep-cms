@@ -7,8 +7,8 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "dev": "concurrently \"nodemon\" \"npm run watch-css\"",
-    "watch-css": "sass --watch scss/styles.scss:public/css/styles.css --style=expanded",
-    "prod": "npm run build && sass scss/styles.scss public/css/styles.css --no-source-map --style=compressed"
+    "watch-css": "sass --watch styles/styles.scss:public/css/styles.css --style=expanded",
+    "prod": "npm run build && sass styles/styles.scss public/css/styles.css --no-source-map --style=compressed"
   },
   "dependencies": {
     "express": "^4.18.2",
