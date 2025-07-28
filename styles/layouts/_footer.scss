@@ -4,8 +4,8 @@
   Let the footer stay where it belongs
 */
 body {
-    display: flex;
-    flex-direction: column;
+    // display: flex;
+    // flex-direction: column;
     min-height: 100vh; // Use min height because of the fixed header.
     overflow-x: hidden;
 }

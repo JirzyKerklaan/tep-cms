@@ -1,3 +1,86 @@
+#manager-page {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  background-color: #16171E;
+}
+#manager-page .sidebar {
+  width: 18.75rem;
+  min-width: 300px;
+  height: 100vh;
+  box-shadow: 2px 0 6px 2px rgba(0, 0, 0, 0.25);
+  padding-top: 2rem;
+  z-index: 10;
+}
+#manager-page .sidebar__branding {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+#manager-page .sidebar__branding svg {
+  max-width: 125px;
+  height: fit-content;
+}
+#manager-page .sidebar__navigation {
+  padding-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+#manager-page .sidebar__navigation--item {
+  border-radius: 5px;
+  display: flex;
+  flex-direction: row;
+  padding: 1.25rem 2rem;
+  gap: 1rem;
+  align-items: center;
+  color: #F3E7C8;
+  cursor: pointer;
+  transition: all ease-in-out 0.25s;
+}
+#manager-page .sidebar__navigation--item svg, #manager-page .sidebar__navigation--item path {
+  stroke: #F3E7C8;
+}
+#manager-page .sidebar__navigation--item .colored {
+  fill: #F3E7C8;
+}
+#manager-page .sidebar__navigation--item * {
+  transition: all ease-in-out 0.25s;
+}
+#manager-page .sidebar__navigation--item *:hover {
+  transition: all ease-in-out 0.25s;
+}
+#manager-page .sidebar__navigation--item:hover, #manager-page .sidebar__navigation--item.active {
+  transition: all ease-in-out 0.25s;
+  color: #F9706D;
+  background-color: #1F1F27;
+  box-shadow: 0px 0px 6px 1px rgba(0, 0, 0, 0.15);
+}
+#manager-page .sidebar__navigation--item:hover svg, #manager-page .sidebar__navigation--item:hover path, #manager-page .sidebar__navigation--item.active svg, #manager-page .sidebar__navigation--item.active path {
+  stroke: #F9706D;
+}
+#manager-page .sidebar__navigation--item:hover .colored, #manager-page .sidebar__navigation--item.active .colored {
+  fill: #F9706D;
+}
+#manager-page .sidebar__navigation__icon {
+  width: 25px;
+  height: 25px;
+}
+#manager-page .sidebar__navigation__label {
+  font-size: 1.25rem;
+  line-height: 1;
+  font-weight: 700;
+}
+#manager-page .sidebar__navigation__label--dot {
+  color: #F9706D;
+}
+#manager-page .content {
+  width: calc(100% - 300px);
+  padding: 2rem 1rem;
+  min-height: 100vh;
+}
+
 /*
  * Breakpoints
  */
@@ -1132,17 +1215,10 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
-@media screen and (min-width: 761px) and (max-width: 1919px) {
-  html {
-    font-size: 0.834vw;
-  }
-}
 /*
   Let the footer stay where it belongs
 */
 body {
-  display: flex;
-  flex-direction: column;
   min-height: 100vh;
   overflow-x: hidden;
 }

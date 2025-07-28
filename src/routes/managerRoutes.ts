@@ -26,7 +26,7 @@ router.post('/login', (req: Request, res: Response) => {
 
   if (username === config.auth.username && password === config.auth.password) {
     req.session.user = { username };
-    return res.redirect('/manager/dashboard');
+    return res.redirect('/manager/');
   }
 
   res.status(401).render('login', {
@@ -43,9 +43,9 @@ router.get('/logout', (req: Request, res: Response) => {
 });
 
 // Apply auth middleware for protected routes below
-router.use(isAuthenticated);
+// router.use(isAuthenticated);
 
-router.get('/dashboard', (req: Request, res: Response) => {
+router.get('/', (req: Request, res: Response) => {
   res.render('manager/dashboard', { layout: 'manager', user: req.session.user });
 });
 
