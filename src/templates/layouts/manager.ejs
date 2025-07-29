@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>{{title}} - {{site_name}}</title>
+  <title><%= title %> - <%= site_name %></title>
   <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body class="manager-page" id="manager-page">
@@ -83,7 +83,7 @@
   </div>
 
   <div class="content" id="manager-content">
-    {{{body}}}
+    <%- body %>
   </div>
 </body>
 </html>

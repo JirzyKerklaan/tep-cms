@@ -1,0 +1,3 @@
+<% page_builder.forEach(block => { %>
+  <%- include(`page_builder/${block.block}`, block.fields) %>
+<% }) %>
