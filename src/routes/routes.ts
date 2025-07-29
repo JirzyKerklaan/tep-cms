@@ -1,7 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
 import path from 'path';
 import fs from 'fs';
-import config from '../config';
 
 const router = express.Router();
 
@@ -28,13 +27,6 @@ function loadPage(slug: string): Page | null {
   if (!fs.existsSync(filePath)) return null;
   const raw = fs.readFileSync(filePath, 'utf-8');
   return JSON.parse(raw);
-}
-
-function isAuthenticated(req: Request, res: Response, next: NextFunction) {
-  if (req.session && req.session.user) {
-    return next();
-  }
-  return res.redirect('/login');
 }
 
 router.get('/', (req, res) => {

@@ -1,2 +1,3 @@
-// src/express-ejs-layouts.d.ts
+// src/types/express-ejs-layouts.d.ts
+
 declare module 'express-ejs-layouts';

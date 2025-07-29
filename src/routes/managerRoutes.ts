@@ -8,7 +8,7 @@ function isAuthenticated(req: Request, res: Response, next: NextFunction) {
   if (req.session?.user) {
     return next();
   }
-  res.redirect('/manager/login'); // Redirect stays absolute
+  res.redirect('/manager/login');
 }
 
 
@@ -19,7 +19,6 @@ router.get('/login', (req: Request, res: Response) => {
   });
 });
 
-// Handle login form submission
 router.post('/login', (req: Request, res: Response) => {
   const { username, password } = req.body;
 
@@ -40,8 +39,9 @@ router.get('/logout', (req: Request, res: Response) => {
   });
 });
 
-// Apply auth middleware for protected routes below
-// router.use(isAuthenticated);
+// -------------------- //
+
+router.use(isAuthenticated);
 
 router.get('/', (req: Request, res: Response) => {
   res.render('manager/dashboard', { layout: 'layouts/manager', user: req.session.user });

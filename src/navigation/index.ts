@@ -17,7 +17,6 @@ function loadNavigation() {
   });
 }
 
-// Load once when this module is imported
 loadNavigation();
 
 export default navigationData;
