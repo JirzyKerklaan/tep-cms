@@ -1,5 +1,6 @@
 import fs from 'fs-extra';
 import path from 'path';
+import { generateBlockTemplate } from '../helpers/blockTemplateHelper';
 
 const BLOCKS_DIR = path.join(process.cwd(), 'src/data/blocks');
 
@@ -14,17 +15,22 @@ interface BlockInput {
   fields: any[];
 }
 
-// Save a new block
-export async function saveBlock({ id, block, type, fields }: BlockInput) {
-  const blockPath = path.join(process.cwd(), 'src', 'blocks', type, `${block}.ejs`);
-  const schemaPath = path.join(process.cwd(), 'src', 'blocks', 'schemas', type, `${block}.schema.json`);
+function normalizeName(name: string) {
+  return name.toLowerCase().replace(/\s+/g, '-');
+}
 
-  // Create empty template file if it doesn't exist
+export async function saveBlock({ id, block, type, fields }: BlockInput) {
+  const normalizedBlock = normalizeName(block);
+
+  const blockPath = path.join(process.cwd(), 'src', 'blocks', type, `${normalizedBlock}.ejs`);
+  const schemaPath = path.join(process.cwd(), 'src', 'blocks', 'schemas', type, `${normalizedBlock}.schema.json`);
+
+  const templateContent = generateBlockTemplate(type, normalizedBlock, block);
+
   if (!(await fs.pathExists(blockPath))) {
-    await fs.outputFile(blockPath, `<div class="${block}">\n  <!-- ${block} block -->\n</div>\n`);
+    await fs.outputFile(blockPath, templateContent);
   }
 
-  // Create schema file
   const schema = {
     title: block,
     fields
@@ -32,14 +38,12 @@ export async function saveBlock({ id, block, type, fields }: BlockInput) {
   await fs.outputJson(schemaPath, schema, { spaces: 2 });
 }
 
-// Get a block by ID
 export async function getBlockById(id: string): Promise<BlockInput | null> {
   const filePath = path.join(BLOCKS_DIR, `${id}.json`);
   if (!fs.existsSync(filePath)) return null;
   return await fs.readJson(filePath);
 }
 
-// Update an existing block
 export async function updateBlock(id: string, data: Partial<BlockInput>): Promise<void> {
   const filePath = path.join(BLOCKS_DIR, `${id}.json`);
   const existing = await getBlockById(id);
@@ -48,7 +52,6 @@ export async function updateBlock(id: string, data: Partial<BlockInput>): Promis
   await fs.writeJson(filePath, updated, { spaces: 2 });
 }
 
-// List all blocks
 export async function listBlocks(): Promise<BlockInput[]> {
   const files = await fs.readdir(BLOCKS_DIR);
   const blocks: BlockInput[] = [];
@@ -63,7 +66,6 @@ export async function listBlocks(): Promise<BlockInput[]> {
   return blocks;
 }
 
-// Delete a block
 export async function deleteBlock(id: string): Promise<void> {
   const filePath = path.join(BLOCKS_DIR, `${id}.json`);
   await fs.remove(filePath);

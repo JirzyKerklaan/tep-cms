@@ -33,11 +33,25 @@ router.get('/', (req, res) => {
   const homepage = loadPage('home');
   if (!homepage) return res.status(404).send('Homepage not found');
 
-  res.render('views/pages', {
+  const viewsDir = req.app.get('views');
+  const viewsPath = Array.isArray(viewsDir) ? viewsDir[0] : viewsDir;
+
+  let viewToRender = 'standard';
+
+  if (homepage.template) {
+    const templatePath = path.join(viewsPath, `views/${homepage.template}.ejs`);
+    if (fs.existsSync(templatePath)) {
+      viewToRender = homepage.template;
+    } else {
+    }
+  }
+
+  res.render(`views/${viewToRender}`, {
     ...homepage,
     navigation: res.locals.navigation,
   });
 });
+
 
 router.get('/:slug', (req: Request, res: Response, next: NextFunction) => {
   const slug = req.params.slug;
