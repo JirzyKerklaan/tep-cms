@@ -7,39 +7,40 @@ fs.ensureDirSync(BLOCKS_DIR);
 
 export type BlockType = 'page_builder' | 'component';
 
-export interface BlockData {
+interface BlockInput {
   id: string;
-  type: BlockType;
   block: string;
-  fields: Record<string, any>;
+  type: 'page_builder' | 'components';
+  fields: any[];
 }
 
 // Save a new block
-export async function saveBlock({ id, block, type, fields }: BlockData) {
-  const basePath = path.join(process.cwd(), 'src', 'blocks');
+export async function saveBlock({ id, block, type, fields }: BlockInput) {
+  const blockPath = path.join(process.cwd(), 'src', 'blocks', type, `${block}.ejs`);
+  const schemaPath = path.join(process.cwd(), 'src', 'blocks', 'schemas', type, `${block}.schema.json`);
 
-  const templatePath = path.join(basePath, type, `${block}.ejs`);
-  const schemaPath = path.join(basePath, 'schemas', type, `${block}.json`);
+  // Create empty template file if it doesn't exist
+  if (!(await fs.pathExists(blockPath))) {
+    await fs.outputFile(blockPath, `<div class="${block}">\n  <!-- ${block} block -->\n</div>\n`);
+  }
 
-  // Generate basic EJS template content (can be enhanced later)
-  const templateContent = `<div>\n  <!-- ${block} block -->\n  <%- JSON.stringify(fields, null, 2) %>\n</div>`;
-
-  // Save EJS file
-  await fs.outputFile(templatePath, templateContent);
-
-  // Save schema/metadata
-  await fs.outputJson(schemaPath, { id, block, type, fields }, { spaces: 2 });
+  // Create schema file
+  const schema = {
+    title: block,
+    fields
+  };
+  await fs.outputJson(schemaPath, schema, { spaces: 2 });
 }
 
 // Get a block by ID
-export async function getBlockById(id: string): Promise<BlockData | null> {
+export async function getBlockById(id: string): Promise<BlockInput | null> {
   const filePath = path.join(BLOCKS_DIR, `${id}.json`);
   if (!fs.existsSync(filePath)) return null;
   return await fs.readJson(filePath);
 }
 
 // Update an existing block
-export async function updateBlock(id: string, data: Partial<BlockData>): Promise<void> {
+export async function updateBlock(id: string, data: Partial<BlockInput>): Promise<void> {
   const filePath = path.join(BLOCKS_DIR, `${id}.json`);
   const existing = await getBlockById(id);
   if (!existing) throw new Error('Block not found');
@@ -48,9 +49,9 @@ export async function updateBlock(id: string, data: Partial<BlockData>): Promise
 }
 
 // List all blocks
-export async function listBlocks(): Promise<BlockData[]> {
+export async function listBlocks(): Promise<BlockInput[]> {
   const files = await fs.readdir(BLOCKS_DIR);
-  const blocks: BlockData[] = [];
+  const blocks: BlockInput[] = [];
 
   for (const file of files) {
     if (file.endsWith('.json')) {

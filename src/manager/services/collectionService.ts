@@ -8,7 +8,7 @@ interface Collection {
 
 const collections: Collection[] = [];
 
-const collectionHelper = {
+const collectionService = {
   async createCollection(data: Partial<Collection>) {
     if (!data.name) throw new Error('Collection name is required');
 
@@ -56,4 +56,4 @@ const collectionHelper = {
   }
 };
 
-export default collectionHelper;
+export default collectionService;

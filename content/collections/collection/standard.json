@@ -1,0 +1,29 @@
+{
+  "title": "Standaard",
+  "slug": "standard",
+  "content": "Welcome to the standard page. Customize this content as needed.",
+  "page_builder": [
+    {
+      "block": "pageheader",
+      "fields": {
+        "title": "Welcome to Our Site",
+        "subtitle": "Your subtitle goes here",
+        "blocks": [
+          {
+            "block": "text",
+            "fields": {
+              "text": "<p>This is a nested text block inside the header.</p>"
+            }
+          },
+          {
+            "block": "image",
+            "fields": {
+              "src": "/images/example.jpg",
+              "alt": "Example Image"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

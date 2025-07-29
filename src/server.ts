@@ -6,6 +6,7 @@ import routes from './routes/routes';
 import managerRoutes from './routes/managerRoutes';
 import { sessionMiddleware } from './middlewares/session';
 import { globalLocals } from './middlewares/globalLocales';
+import { getDefaultFields } from './manager/helpers/defaultFieldsHelper';
 
 const app = express();
 const PORT = 3000;

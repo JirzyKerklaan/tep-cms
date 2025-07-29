@@ -1,0 +1,23 @@
+{
+  "title": "Page Header",
+  "fields": [
+    {
+      "name": "title",
+      "type": "text",
+      "label": "Titel",
+      "required": true
+    },
+    {
+      "name": "subtitle",
+      "type": "text",
+      "label": "Subtitel",
+      "required": false
+    },
+    {
+      "name": "blocks",
+      "type": "repeater",
+      "label": "Blocks",
+      "blockType": "components"
+    }
+  ]
+}

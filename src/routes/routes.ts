@@ -4,7 +4,7 @@ import fs from 'fs';
 
 const router = express.Router();
 
-const collections = ['blogs'];
+const collections = ['blogs', 'collection'];
 
 interface Page {
   parent?: string;
@@ -59,13 +59,24 @@ router.get('/:slug', (req: Request, res: Response, next: NextFunction) => {
   });
 });
 
-router.get('/:collections/:slug', (req: Request, res: Response, next: NextFunction) => {
+router.get('/:collection/:slug', (req: Request, res: Response, next: NextFunction) => {
   const { collection, slug } = req.params;
 
   if (collections.includes(collection)) {
     const entry = loadEntry(collection, slug);
     if (!entry) return res.status(404).send('Not found');
-    return res.render(collection, entry);
+
+    const viewsDir = req.app.get('views');
+    const viewsPath = Array.isArray(viewsDir) ? viewsDir[0] : viewsDir;
+
+    const collectionViewFile = path.join(viewsPath, `${collection}.ejs`);
+    let viewToRender = 'standard';
+
+    if (fs.existsSync(collectionViewFile)) {
+      viewToRender = collection;
+    }
+
+    return res.render(`views/${viewToRender}`, entry);
   }
 
   next();

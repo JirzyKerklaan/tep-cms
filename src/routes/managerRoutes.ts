@@ -40,7 +40,7 @@ router.get('/logout', (req: Request, res: Response) => {
 
 // -------------------- //
 
-router.use(isAuthenticated);
+// router.use(isAuthenticated);
 
 router.get('/', (req: Request, res: Response) => {
   res.render('manager/dashboard', { layout: 'layouts/manager', user: req.session.user });

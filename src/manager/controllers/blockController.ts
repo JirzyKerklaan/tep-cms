@@ -9,15 +9,18 @@ const blockController = {
 
   create: async (req: Request, res: Response) => {
     const id = uuidv4();
-    const { block, type, fields } = req.body;
+    const { block, type, fieldsJson } = req.body;
+    const fields = JSON.parse(fieldsJson);
 
-    await saveBlock({
-      id,
-      block,
-      type,
-      fields: JSON.parse(fields),
+    const cleanFields = fields.map((f: any) => {
+      const { name, type, label, required, defaultValue } = f;
+      const field: any = { name, type, label };
+      if (required) field.required = true;
+      if (defaultValue) field.defaultValue = defaultValue;
+      return field;
     });
 
+    await saveBlock({ id, block, type, fields: cleanFields });
     res.redirect('/manager/blocks/list');
   },
 

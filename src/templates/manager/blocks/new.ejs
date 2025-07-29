@@ -1,15 +1,49 @@
 <form action="/manager/blocks/new" method="POST">
-  <label for="block">Block name:</label><br>
-  <input type="text" id="block" name="block" placeholder="Block name" required><br><br>
-
-  <label for="type">Block type:</label><br>
-  <select id="type" name="type" required>
+  <label>Block Type</label>
+  <select name="type" required>
     <option value="page_builder">Page Builder</option>
-    <option value="components">Component</option>
-  </select><br><br>
+    <option value="components">Components</option>
+  </select>
 
-  <label for="fields">Fields (JSON):</label><br>
-  <textarea id="fields" name="fields" placeholder='{"example":"value"}' required></textarea><br><br>
+  <label>Block Name</label>
+  <input type="text" name="block" required>
 
+  <div id="fields">
+    <!-- Fields added here dynamically -->
+  </div>
+
+  <button type="button" onclick="addField()">Add Field</button>
   <button type="submit">Create Block</button>
+
+  <input type="hidden" name="fieldsJson" id="fieldsJson">
 </form>
+
+<script>
+  const fields = [];
+
+  function addField() {
+    const name = prompt("Field name:");
+    const type = prompt("Field type (text, textarea, assets, etc):");
+    const label = prompt("Field label:");
+    if (!name || !type || !label) return alert("Name, type, and label are required.");
+
+    const field = { name, type, label };
+    const optional = {
+      required: confirm("Is required?"),
+      defaultValue: prompt("Default value (optional):") || undefined
+    };
+    Object.assign(field, optional);
+    fields.push(field);
+
+    renderFields();
+  }
+
+  function renderFields() {
+    document.getElementById("fieldsJson").value = JSON.stringify(fields);
+    const div = document.getElementById("fields");
+    div.innerHTML = fields.map((f, i) =>
+      `<div>
+        <strong>${f.label}</strong> (${f.type}) ${f.required ? '[required]' : ''}
+      </div>`).join('');
+  }
+</script>

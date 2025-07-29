@@ -8,6 +8,10 @@
         {
             "label": "About",
             "url": "/about"
+        },
+        {
+            "label": "Blog",
+            "url": "/blogs/my-first-post"
         }
     ]
 }

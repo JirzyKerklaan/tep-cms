@@ -1,8 +1,24 @@
 <h1>Create New Collection</h1>
-  <form action="/manager/collections/create" method="POST">
-    <div>
-      <label for="name">Collection Name:</label>
-      <input type="text" id="name" name="name" required />
-    </div>
-    <button type="submit">Create Collection</button>
-  </form>
+
+<form action="/manager/collections/new" method="POST">
+  <div>
+    <label for="name">Collection Name:</label>
+    <input type="text" id="name" name="name" required />
+  </div>
+
+  <div>
+    <label>Include Page Builder Blocks:</label>
+    <% if (blocks && blocks.length) { %>
+      <% blocks.forEach(block => { %>
+        <div>
+          <input type="checkbox" id="<%= block %>" name="blocks" value="<%= block %>" />
+          <label for="<%= block %>"><%= block %></label>
+        </div>
+      <% }) %>
+    <% } else { %>
+      <p>No blocks found.</p>
+    <% } %>
+  </div>
+
+  <button type="submit">Create Collection</button>
+</form>
