@@ -14,7 +14,6 @@ function isAuthenticated(req: Request, res: Response, next: NextFunction) {
 
 router.get('/login', (req: Request, res: Response) => {
   res.render('manager/login', {
-    layout: 'main',
     error: null,
     username: ''
   });
@@ -30,7 +29,6 @@ router.post('/login', (req: Request, res: Response) => {
   }
 
   res.status(401).render('login', {
-    layout: 'main',
     error: 'Invalid username or password',
     username
   });
@@ -46,7 +44,7 @@ router.get('/logout', (req: Request, res: Response) => {
 // router.use(isAuthenticated);
 
 router.get('/', (req: Request, res: Response) => {
-  res.render('manager/dashboard', { layout: 'manager', user: req.session.user });
+  res.render('manager/dashboard', { layout: 'layouts/manager', user: req.session.user });
 });
 
 router.get('/collections/create', collectionController.newForm);

@@ -1,0 +1,5 @@
+<div class="pageheader">
+  <% blocks.forEach(block => { %>
+    <%- include(`components/${block.block}`, block.fields) %>
+  <% }) %>
+</div>

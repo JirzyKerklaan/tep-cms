@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= title %> - <%= site_name %></title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+  <!-- Include base/header.ejs -->
+  <%- include('base/header', locals) %>
+
+  <!-- Page body content -->
+  <%- body %>
+
+  <!-- Include base/footer.ejs -->
+  <%- include('base/footer', locals) %>
+
+</body>
+</html>

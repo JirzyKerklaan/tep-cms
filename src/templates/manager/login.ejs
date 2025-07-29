@@ -1,12 +1,12 @@
 <h1>Login</h1>
 
-{{#if error}}
-  <p style="color: red;">{{error}}</p>
-{{/if}}
+<% if (error) { %>
+  <p style="color: red;"><%= error %></p>
+<% } %>
 
 <form action="/manager/login" method="POST">
   <label>Username:</label><br>
-  <input type="text" name="username" value="{{username}}" required><br>
+  <input type="text" name="username" value="<%= username %>" required><br>
 
   <label>Password:</label><br>
   <input type="password" name="password" required><br><br>

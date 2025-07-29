@@ -1,5 +1,6 @@
 {
-  "title": "About us",
-  "slug": "about",
-  "content": "About us"
+  "title": "Homepage",
+  "slug": "",
+  "content": "This is the homepage",
+  "page_builder": [  ]
 }
