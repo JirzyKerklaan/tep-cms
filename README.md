@@ -55,24 +55,29 @@
 ```bash
 tep-cms/
 ├── content/
-│   ├── collections/      # All collections (pages, blogs etc.)
-│   └── navigation/      # Navigation menu's
+│   ├── collections/    # All collections (pages, blogs etc.)
+│   ├── globals/        # Global site settings (header, footer settings etc.)
+│   ├── navigation/     # Navigation menu's
+│   └── schemas/        # Collections & globals schemas
 ├── public/
 │   ├── assets/
-│   │   ├── base/        # Static theme images, icons, etc.
-│   │   └── uploads/     # Uploaded images, icons, etc.
-│   └── css/             # Compiled SCSS styling
-├── styles/                # SCSS styling
+│   │   ├── base/       # Static theme images, icons, etc.
+│   │   └── uploads/    # Uploaded images, icons, etc.
+│   └── css/            # Compiled SCSS styling
+├── styles/             # SCSS styling
 ├── src/
-│   ├── blocks/          # Usable blocks
-│   ├── helpers/         # System helpers
-│   ├── manager/         # /manager system
-│   ├── middlewares/     # Route middleware
-│   ├── navigation/      # Navigation system
-│   ├── routes/          # Public routes (to collections)
-│   ├── templates/       # Templates for pages & collections
-│   └── types/           # Session definitions
-└ server.ts              # System entry-point
+│   ├── blocks/         # Page_builder blocks & components
+│   ├── manager/        # /manager route system
+│   ├── middlewares/    # Global middleware
+│   ├── routes/         # System routing
+│   ├── templates/
+│   │   ├── layouts/    # Page layouts
+│   │   ├── manager/    # /manager views
+│   │   └── views/      # Public views
+│   ├── types/          # Package definitions
+│   └── utils/          # Utility functions
+├ config.ts
+└ server.ts
 ```
 
 <h2 id="more-information">📘 More Information</h2>
