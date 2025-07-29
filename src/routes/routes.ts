@@ -4,7 +4,7 @@ import fs from 'fs';
 
 const router = express.Router();
 
-const collections = ['blog'];
+const collections = ['blogs'];
 
 interface Page {
   parent?: string;

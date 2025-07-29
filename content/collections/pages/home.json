@@ -1,7 +1,6 @@
 {
   "title": "Homepage",
   "slug": "",
-  "content": "This is the homepage",
   "page_builder": [
     {
       "block": "pageheader",

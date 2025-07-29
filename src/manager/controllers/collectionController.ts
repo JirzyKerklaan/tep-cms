@@ -3,7 +3,7 @@ import collectionHelper from '../helpers/collectionHelper';
 
 const collectionController = {
   newForm(req: Request, res: Response) {
-    res.render('manager/collections/create', { layout: 'layouts/manager', user: req.session.user, error: null });
+    res.render('manager/collections/new', { layout: 'layouts/manager', user: req.session.user, error: null });
   },
 
   async create(req: Request, res: Response) {
@@ -12,7 +12,7 @@ const collectionController = {
       await collectionHelper.createCollection(data);
       res.redirect('/manager/collections/list');
     } catch (error) {
-      res.render('manager/collections/create', {
+      res.render('manager/collections/new', {
         layout: 'layouts/manager',
         user: req.session.user,
         error: 'Failed to create collection'

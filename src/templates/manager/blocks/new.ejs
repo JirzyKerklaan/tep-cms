@@ -1,0 +1,15 @@
+<form action="/manager/blocks/new" method="POST">
+  <label for="block">Block name:</label><br>
+  <input type="text" id="block" name="block" placeholder="Block name" required><br><br>
+
+  <label for="type">Block type:</label><br>
+  <select id="type" name="type" required>
+    <option value="page_builder">Page Builder</option>
+    <option value="components">Component</option>
+  </select><br><br>
+
+  <label for="fields">Fields (JSON):</label><br>
+  <textarea id="fields" name="fields" placeholder='{"example":"value"}' required></textarea><br><br>
+
+  <button type="submit">Create Block</button>
+</form>

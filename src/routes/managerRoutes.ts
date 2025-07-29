@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
 import config from '../config';
-import collectionController from '../manager/controllers/collectionController';
+import { collectionController, blockController } from '../manager/controllers';
 
 const router = express.Router();
 
@@ -10,7 +10,6 @@ function isAuthenticated(req: Request, res: Response, next: NextFunction) {
   }
   res.redirect('/manager/login');
 }
-
 
 router.get('/login', (req: Request, res: Response) => {
   res.render('manager/login', {
@@ -47,12 +46,24 @@ router.get('/', (req: Request, res: Response) => {
   res.render('manager/dashboard', { layout: 'layouts/manager', user: req.session.user });
 });
 
-router.get('/collections/create', collectionController.newForm);
-router.post('/collections/create', collectionController.create);
+// -------------------- //
+
+router.get('/collections/new', collectionController.newForm);
+router.post('/collections/new', collectionController.create);
 
 router.get('/collections/edit/:id', collectionController.editForm);
 router.post('/collections/edit/:id', collectionController.update);
 
 router.get('/collections/list', collectionController.list);
+
+// -------------------- //
+
+router.get('/blocks/new', blockController.newForm);
+router.post('/blocks/new', blockController.create);
+
+router.get('/blocks/edit/:id', blockController.editForm);
+router.post('/blocks/edit/:id', blockController.update);
+
+// -------------------- //
 
 export default router;
