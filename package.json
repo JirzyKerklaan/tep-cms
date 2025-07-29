@@ -1,7 +1,7 @@
 {
   "name": "tep-cms",
-  "version": "0.0.1",
-  "description": "This evergrowing, powerful content management system is perfect for your website",
+  "version": "1.0.0",
+  "description": "The Easy Publisher: the perfect CMS for your website!",
   "main": "dist/server.js",
   "scripts": {
     "build": "tsc",

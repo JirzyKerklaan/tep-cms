@@ -1,10 +1,10 @@
 <p align="center">
-  <img width="200" draggable="false" src="./tep-cms.png" alt="TEP CMS Logo"/>
+  <img width="200" draggable="false" src="./.github/docs/tep-cms.png" alt="TEP CMS Logo"/>
 </p>
 
 # TEP CMS
 
-**The Evergrowing, Powerful CMS:** a fast, file-based content management system that's perfect for modern static and dynamic websites.
+**The Easy Publisher:** a fast, file-based content management system that's perfect for modern static and dynamic websites.
 
 <br>
 
@@ -13,18 +13,22 @@
 - [Features](#features)
 - [Installation](#installation)
 - [File Structure](#file-structure)
-- [More Information](#more-information)
+- [More Information](#content-templates)
+- [Documentation](#docs)
+- [Developer tips](#tips)
+- [Suggestions or Issues](#contribute)
 
 <br>
 
-<h2 id="features">✨ Features</h2>
+<h2 id="features">📦 Features</h2>
 
-- ⚡ **File-based Content Storage** (No DB required)
-- 🖼 **Organized Asset Management**
-- 🎨 **SCSS-based Styling**
-- 🪄 **Live Preview Editing**
-- 🖥️ **Easy Local Development**
-- 🚀 **Fast and Lightweight**
+- ⚡ **File-based Content** – no DB needed.
+- 🧱 **Reusable Blocks** – with a modular `page_builder`.
+- 📁 **Organized Assets** – for base and uploaded files.
+- 🎨 **SCSS Styling** – modular, maintainable styles.
+- 👀 **Live Preview Editing** – instant frontend feedback.
+- 🧪 **Easy Local Dev** – run with zero setup.
+- 🚀 **Lightweight & Fast** – powered by Express & EJS.
 
 <br>
 
@@ -46,7 +50,6 @@
     ```bash
     npm run prod
     ```
-5. Now your site is ready for deployment!
 
 <br>
 
@@ -80,24 +83,66 @@ tep-cms/
 └ server.ts
 ```
 
-<h2 id="more-information">📘 More Information</h2>
+<br>
 
-### 🗃️ File-Based Content Management
-All website content is stored in JSON format under the `content/` folder. No databases are required—this makes the CMS fast, lightweight, and easy to manage with version control.
+<h2 id="content-templates">🛠 Content & Templates</h2>
 
-### 🧾 Asset Management
-- `assets/uploads/` – stores user-uploaded images and files.
-- `assets/base/` – contains default theme assets and reusable base images.
+### Page templating
+To use a custom template for a specific page, the page can be assigned a template. You can add:
 
-### 🎨 SCSS Styling
-The CMS uses SCSS for styling, making it easy to organize and maintain styles with variables, mixins, and modular architecture.
+```json
+    "template": "templatename",
+```
 
-### 👀 Live Preview Editing
-Edit content and instantly see a live preview of the website, improving the workflow and reducing guesswork during content updates.
+To your page .json. When adding this to the file, it will search for a ```templatename.ejs``` in the ```src/templates/views/...``` folder. If the file exists, this template will be used for the page.
 
-### 🧪 Easy Local Development
-Set up and run TEP CMS on your local machine for safe testing and development before deploying to production.
+### Pagebuilder looping:
+When your page uses a pagebuilder, you can loop over it in the following way:
 
----
+```ejs
+<% page_builder.forEach(block => { %>
+  <%- include(`page_builder/${block.block}`, block.fields) %>
+<% }) %>
+```
+
+This code includes the blocks you have used in the pagebuilder within ```yourpage.json```.
+
+<br>
+
+<h2 id="docs">📘 Documentation</h2>
+
+### 🧱 Blocks System
+- Create reusable content chunks
+- Each blok has:
+  - A template (.ejs)
+  - A Schema (.schema.json)
+- Blocks are loaded dynamically using the page_builder
+
+### 🗃 Collections
+- Stored in ```content/collections/{collection}/{slug}.json
+- Routes follow /{collection}/{slug}
+- Can be rendered with a custom template, or using the default template
+
+### 🌐 Routing
+- ```/```: loads home.json
+- ```/:slug```: loads a page
+- ```/:collection/:slug```: loads a collection entry
+- ```/:parent/:slug```: for nested pages
+
+### 🧠 Caching
+- EJS views are cached by default, caching can be turned off via the ```/manager``` panel
+- When editing a view, you may need to clear ejs.cache to reflect changes immediately
+
+<br>
+
+<h2 id="tips">🧪 Development Tips</h2>
+
+- Use version control to track content
+- Turn off caching during the development fase
+
+<br>
+
+<h2 id="contribute">🙋 Suggestions or Issues</h2>
 
 If you find bugs or have suggestions, feel free to open an [issue](https://github.com/JirzyKerklaan/tep-cms/issues/new).
+
