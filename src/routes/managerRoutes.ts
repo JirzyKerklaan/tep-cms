@@ -54,6 +54,8 @@ router.post('/collections/new', collectionController.create);
 router.get('/collections/edit/:id', collectionController.editForm);
 router.post('/collections/edit/:id', collectionController.update);
 
+router.post('/collections/delete/:id', collectionController.delete);
+
 router.get('/collections/list', collectionController.list);
 
 // -------------------- //
@@ -63,6 +65,10 @@ router.post('/blocks/new', blockController.create);
 
 router.get('/blocks/edit/:id', blockController.editForm);
 router.post('/blocks/edit/:id', blockController.update);
+
+router.post('/blocks/delete/:id', blockController.delete);
+
+router.get('/blocks/list', blockController.list);
 
 // -------------------- //
 

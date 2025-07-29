@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
-import { saveBlock, updateBlock, getBlockById } from '../services/blockService';
+import { saveBlock, updateBlock, getBlockById, listBlocks } from '../services/blockService';
 import { v4 as uuidv4 } from 'uuid';
+import fs from 'fs-extra';
+import path from 'path';
 
 const blockController = {
   newForm: (req: Request, res: Response) => {
@@ -41,6 +43,23 @@ const blockController = {
     });
 
     res.redirect('/manager/blocks/list');
+  },
+  
+  async delete(req: Request, res: Response) {
+    try { 
+      console.log('delete block');
+    } catch {
+      res.status(500).send('Server error');
+    }
+  },
+  
+  async list(req: Request, res: Response) {
+    try {
+      const collections = await listBlocks();
+      res.render('manager/collections/list', { layout: 'layouts/manager', user: req.session.user, collections });
+    } catch {
+      res.status(500).send('Server error');
+    }
   },
 };
 

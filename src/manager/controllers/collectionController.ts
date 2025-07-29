@@ -83,6 +83,27 @@ const collectionController = {
     }
   },
 
+  async delete(req: Request, res: Response) {
+    try { 
+      const id = req.params.id;
+      
+      // Remove the collection folder
+      const collectionDir = path.join(process.cwd(), 'content', 'collections', id);
+      await fs.remove(collectionDir);
+
+      // Remove the schema file
+      const schemaPath = path.join(process.cwd(), 'content', 'schemas', 'collections', `${id}.schema.json`);
+      await fs.remove(schemaPath);
+
+      const viewPath = path.join(process.cwd(), 'src', 'templates', 'views', `${id}.ejs`);
+      await fs.remove(viewPath);
+      
+      res.redirect('/manager/collections/list');
+    } catch {
+      res.status(500).send('Server error');
+    }
+  },
+
   async list(req: Request, res: Response) {
     try {
       const collections = await collectionService.getAllCollections();
