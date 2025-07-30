@@ -7,7 +7,7 @@
       "fields": {
         "blocks": [
           { "block": "text", "fields": { "text": "<h1>Hello world</h1>" } },
-          { "block": "text", "fields": { "text": "<p>Another block</p>" } }
+          { "block": "image", "fields": { "url": "/test.png", "alt": "alt" } }
         ]
       }
     }
