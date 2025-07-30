@@ -2,8 +2,6 @@
   <img width="200" draggable="false" src="./.github/docs/tep-cms.png" alt="TEP CMS Logo"/>
 </p>
 
-**The Easy Publisher:** a fast, file-based content management system that's perfect for modern static and dynamic websites.
-
 <br>
 
 ## 📚 Table of Contents
