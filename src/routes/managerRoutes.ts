@@ -1,10 +1,12 @@
 import express, { Request, Response, NextFunction } from 'express';
 import config from '../config';
-import { collectionController, blockController } from '../manager/controllers';
+import { collectionController, blockController, entryController } from '../manager/controllers';
 
 const router = express.Router();
 
 function isAuthenticated(req: Request, res: Response, next: NextFunction) {
+  return;
+  
   if (req.session?.user) {
     return next();
   }
@@ -40,7 +42,7 @@ router.get('/logout', (req: Request, res: Response) => {
 
 // -------------------- //
 
-// router.use(isAuthenticated);
+router.use(isAuthenticated);
 
 router.get('/', (req: Request, res: Response) => {
   res.render('manager/dashboard', { layout: 'layouts/manager', user: req.session.user });
@@ -57,6 +59,18 @@ router.post('/collections/edit/:id', collectionController.update);
 router.post('/collections/delete/:id', collectionController.delete);
 
 router.get('/collections/list', collectionController.list);
+
+// -------------------- //
+
+router.get('/collections/entry/new', entryController.newForm);
+router.post('/collections/new', entryController.create);
+
+router.get('/collections/entry/edit/:id', entryController.editForm);
+router.post('/collections/entry/edit/:id', entryController.update);
+
+router.post('/collections/entry/delete/:id', entryController.delete);
+
+router.get('/collections/entry/list', entryController.list);
 
 // -------------------- //
 

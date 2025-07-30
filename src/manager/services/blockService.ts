@@ -1,6 +1,6 @@
+import { generateBlockTemplate } from '../helpers/blockTemplateHelper';
 import fs from 'fs-extra';
 import path from 'path';
-import { generateBlockTemplate } from '../helpers/blockTemplateHelper';
 
 const BLOCKS_DIR = path.join(process.cwd(), 'src/blocks');
 

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import collectionService from '../services/collectionService';
 import { getDefaultFields } from '../helpers/defaultFieldsHelper';
+import collectionService from '../services/collectionService';
 import fs from 'fs-extra';
 import path from 'path';
 
