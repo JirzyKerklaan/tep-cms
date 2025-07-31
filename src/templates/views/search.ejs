@@ -1,0 +1,20 @@
+<h1>Search</h1>
+
+<form action="/search" method="GET">
+  <input type="text" name="q" value="<%= query %>" placeholder="Search content..." />
+  <button type="submit">Search</button>
+</form>
+
+<% if (query && results.length === 0) { %>
+  <p>No results found for "<%= query %>".</p>
+<% } %>
+
+<% if (results.length > 0) { %>
+  <ul>
+    <% results.forEach(result => { %>
+      <li>
+        <strong><%= result.title %></strong> — <%= result.type %> — <code><%= result.slug %></code>
+      </li>
+    <% }) %>
+  </ul>
+<% } %>

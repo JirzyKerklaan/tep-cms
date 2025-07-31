@@ -1,0 +1,25 @@
+{
+  "title": "Search",
+  "slug": "search",
+  "template": "search",
+  "page_builder": [
+    {
+      "block": "pageheader",
+      "fields": {
+        "blocks": [
+          { "block": "text", "fields": { "text": "<h1>Hello world</h1>" } },
+          { "block": "image", "fields": { "url": "/test.png", "alt": "alt" } }
+        ]
+      }
+    },
+    {
+      "block": "upload",
+      "fields": {
+        "blocks": [
+          { "block": "text", "fields": { "text": "<h1>Hello world</h1>" } },
+          { "block": "image", "fields": { "url": "/test.png", "alt": "alt" } }
+        ]
+      }
+    }
+  ]
+}

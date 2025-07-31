@@ -1,6 +1,7 @@
 import express, { Request, Response, NextFunction } from 'express';
 import path from 'path';
 import fs from 'fs';
+import { IndexEntry, searchContent } from '../services/contentIndex';
 
 const router = express.Router();
 
@@ -66,11 +67,37 @@ router.get('/:slug', (req: Request, res: Response, next: NextFunction) => {
   if (page.parent) {
     return res.redirect(`/${page.parent}/${slug}`);
   }
+  
+  let viewToRender = 'standard';
 
-  res.render('views/pages', {
-    ...page,
-    navigation: res.locals.navigation,
-  });
+  if (page.template) {
+    const templatePath = path.join(process.cwd(), 'src', 'templates', `views/${page.template}.ejs`);
+    if (fs.existsSync(templatePath)) {
+      viewToRender = page.template;
+    } else {
+    }
+  }
+
+  if (slug === 'search') {
+     const query = (req.query.q as string) || '';
+    let results: IndexEntry[] = [];
+
+    if (query) {
+      results = searchContent(query);
+    }
+    
+    res.render(`views/${viewToRender}`, {
+      ...page,
+      query,
+      results,
+      navigation: res.locals.navigation,
+    });
+  } else {
+    res.render(`views/${viewToRender}`, {
+      ...page,
+      navigation: res.locals.navigation,
+    });
+  }
 });
 
 router.get('/:collection/:slug', (req: Request, res: Response, next: NextFunction) => {
