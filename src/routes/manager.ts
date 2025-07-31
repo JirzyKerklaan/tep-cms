@@ -1,11 +1,12 @@
 import express, { Request, Response, NextFunction } from 'express';
 import config from '../config';
 import { collectionController, blockController, entryController } from '../manager/controllers';
+import { findUser, loadUsers, verifyPassword } from '../services/userService';
 
 const router = express.Router();
 
 function isAuthenticated(req: Request, res: Response, next: NextFunction) {
-  return;
+  // return;
   
   if (req.session?.user) {
     return next();
@@ -20,19 +21,35 @@ router.get('/login', (req: Request, res: Response) => {
   });
 });
 
-router.post('/login', (req: Request, res: Response) => {
-  const { username, password } = req.body;
+  router.post('/login', async (req: Request, res: Response) => {
+    const { username, password } = req.body;
 
-  if (username === config.auth.username && password === config.auth.password) {
-    req.session.user = { username };
+    await loadUsers(); // Refresh user list (optional for performance if loaded once at startup)
+
+    const user = findUser(username);
+    if (!user) {
+      return res.status(401).render('manager/login', {
+        error: 'Invalid username or password',
+        username,
+      });
+    }
+
+    const passwordValid = await verifyPassword(user, password);
+    if (!passwordValid) {
+      return res.status(401).render('manager/login', {
+        error: 'Invalid username or password',
+        username,
+      });
+    }
+
+    // Login successful — store user data in session
+    req.session.user = {
+      username: user.username
+    };
+
     return res.redirect('/manager/');
-  }
-
-  res.status(401).render('login', {
-    error: 'Invalid username or password',
-    username
   });
-});
+
 
 router.get('/logout', (req: Request, res: Response) => {
   req.session.destroy(() => {
