@@ -2,7 +2,11 @@ import fs from 'fs/promises';
 import path from 'path';
 import lunr from 'lunr';
 
-const COLLECTIONS_DIR = path.join(process.cwd(), 'content/collections');
+const BASE_DIRS = [
+  path.join(process.cwd(), 'content/collections'),
+  path.join(process.cwd(), 'content/globals'),
+  path.join(process.cwd(), 'content/navigation'),
+];
 
 export interface IndexEntry {
   slug: string;
@@ -16,37 +20,59 @@ let index: IndexEntry[] = [];
 let lunrIndex: ReturnType<typeof lunr> | null = null;
 
 export async function buildContentIndex(): Promise<void> {
-  const collections = await fs.readdir(COLLECTIONS_DIR);
   const result: IndexEntry[] = [];
 
-  for (const collection of collections) {
-    const collectionPath = path.join(COLLECTIONS_DIR, collection);
-    const stat = await fs.stat(collectionPath);
-    if (!stat.isDirectory()) continue;
+  for (const baseDir of BASE_DIRS) {
+    const type = path.basename(baseDir); // e.g., 'collections', 'globals'
 
-    const files = await fs.readdir(collectionPath);
+    let jsonFiles: string[] = [];
+    try {
+      jsonFiles = await recursivelyFindJsonFiles(baseDir);
+    } catch {
+      continue;
+    }
 
-    for (const file of files) {
-      if (!file.endsWith('.json')) continue;
+    for (const filePath of jsonFiles) {
+      const slug = path.basename(filePath, '.json');
 
-      const filePath = path.join(collectionPath, file);
-      const slug = path.basename(file, '.json');
+      try {
+        const jsonRaw = await fs.readFile(filePath, 'utf-8');
+        const data = JSON.parse(jsonRaw);
 
-      const jsonRaw = await fs.readFile(filePath, 'utf-8');
-      const data = JSON.parse(jsonRaw);
-
-      result.push({
-        slug,
-        title: data.title || slug,
-        content: JSON.stringify(data),
-        type: collection,
-        path: filePath,
-      });
+        result.push({
+          slug,
+          title: data.title || slug,
+          content: JSON.stringify(data),
+          type,
+          path: filePath,
+        });
+      } catch {
+        // skip unreadable or invalid JSON
+        continue;
+      }
     }
   }
 
   index = result;
   buildLunrIndex();
+}
+
+async function recursivelyFindJsonFiles(dir: string): Promise<string[]> {
+  const entries = await fs.readdir(dir, { withFileTypes: true });
+  const files: string[] = [];
+
+  for (const entry of entries) {
+    const fullPath = path.join(dir, entry.name);
+
+    if (entry.isDirectory()) {
+      const nestedFiles = await recursivelyFindJsonFiles(fullPath);
+      files.push(...nestedFiles);
+    } else if (entry.isFile() && entry.name.endsWith('.json')) {
+      files.push(fullPath);
+    }
+  }
+
+  return files;
 }
 
 function buildLunrIndex() {
@@ -55,6 +81,7 @@ function buildLunrIndex() {
     this.field('title');
     this.field('content');
     this.field('type');
+    this.field('slug');
 
     index.forEach(entry => this.add(entry));
   });

@@ -25,6 +25,7 @@
 - 👀 **Live Preview Editing** – instant frontend feedback.
 - 🧪 **Easy Local Dev** – run with zero setup.
 - 🚀 **Lightweight & Fast** – powered by Express & EJS.
+- 👥 **Multiple users** – Allows the user to have multiple accounts
 
 <br>
 
