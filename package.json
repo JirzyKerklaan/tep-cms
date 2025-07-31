@@ -16,6 +16,8 @@
     "express-ejs-layouts": "^2.5.1",
     "express-session": "^1.18.2",
     "fs-extra": "^11.3.0",
+    "multer": "^2.0.2",
+    "sharp": "^0.34.3",
     "uuid": "^11.1.0"
   },
   "author": "JirzyKerklaan",
@@ -25,6 +27,7 @@
     "@types/express": "^5.0.3",
     "@types/express-session": "^1.18.2",
     "@types/fs-extra": "^11.0.4",
+    "@types/multer": "^2.0.0",
     "@types/node": "^24.1.0",
     "@types/nodemon": "^1.19.6",
     "@types/uuid": "^10.0.0",

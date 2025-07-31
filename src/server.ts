@@ -6,6 +6,7 @@ import routes from './routes/routes';
 import managerRoutes from './routes/managerRoutes';
 import { sessionMiddleware } from './middlewares/session';
 import { globalLocals } from './middlewares/globalLocales';
+import uploadRoutes from './routes/uploadRoutes';
 
 const app = express();
 const PORT = 3000;
@@ -27,6 +28,7 @@ app.use(globalLocals);
 app.use(express.static(path.join(process.cwd(), 'public')));
 
 app.use('/', routes);
+app.use('/', uploadRoutes);
 app.use('/manager', managerRoutes);
 
 app.listen(PORT, () => {
