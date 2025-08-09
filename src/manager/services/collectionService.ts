@@ -53,7 +53,22 @@ const collectionService = {
   },
 
   async getAllCollections() {
-    return collections;
+    const collectionsPath = path.join(process.cwd(), 'content', 'collections');
+
+    try {
+      const items = await fs.readdir(collectionsPath, { withFileTypes: true });
+
+      const folderNames = items
+          .filter(item => item.isDirectory())
+          .map(item => item.name);
+
+      return folderNames;
+    } catch (err: any) {
+      if (err.code === 'ENOENT') {
+        return [];
+      }
+      throw err;
+    }
   }
 };
 

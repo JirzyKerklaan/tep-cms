@@ -7,7 +7,7 @@ import {ERROR_CODES} from "../../utils/errors";
 
 const blockController = {
   newForm: (req: Request, res: Response) => {
-    res.render('manager/blocks/new', { title: 'Create Block' });
+    res.render('manager/blocks/new', { layout: 'layouts/manager', title: 'Create Block' });
   },
 
   create: async (req: Request, res: Response) => {
@@ -24,7 +24,7 @@ const blockController = {
     });
 
     await saveBlock({ id, block, type, fields: cleanFields });
-    res.redirect('/manager/blocks/list');
+    res.redirect('/manager/blocks');
   },
 
   editForm: async (req: Request, res: Response) => {
@@ -43,7 +43,7 @@ const blockController = {
       fields: JSON.parse(fields),
     });
 
-    res.redirect('/manager/blocks/list');
+    res.redirect('/manager/blocks');
   },
   
   async delete(req: Request, res: Response) {
@@ -56,8 +56,8 @@ const blockController = {
   
   async list(req: Request, res: Response) {
     try {
-      const collections = await listBlocks();
-      res.render('manager/collections/list', { layout: 'layouts/manager', user: req.session.user, collections });
+      const blocks = await listBlocks();
+      res.render('manager/blocks/list', { layout: 'layouts/manager', user: req.session.user, blocks });
     } catch {
       res.status(500).send(ERROR_CODES["TEP450"]);
     }

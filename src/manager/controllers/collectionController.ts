@@ -13,7 +13,7 @@ const collectionController = {
       .filter(file => file.endsWith('.ejs'))
       .map(file => path.basename(file, '.ejs'));
 
-    res.render('manager/collections/new', { title: 'Create Collection', blocks });
+    res.render('manager/collections/new', { layout: 'layouts/manager', title: 'Create Collection', blocks });
   },
 
   async create(req: Request, res: Response) {
@@ -52,7 +52,7 @@ const collectionController = {
     const standardPath = path.join(process.cwd(), 'content', 'collections', name, 'standard.json');
     await fs.outputJson(standardPath, standard, { spaces: 2 });
 
-    res.redirect('/manager/collections/list');
+    res.redirect('/manager/collections');
   },
 
   async editForm(req: Request, res: Response) {
@@ -81,7 +81,7 @@ const collectionController = {
     const data = req.body;
     try {
       await collectionService.updateCollection(id, data);
-      res.redirect('/manager/collections/list');
+      res.redirect('/manager/collections');
     } catch {
       res.render('manager/collections/edit', {
         layout: 'layouts/manager',
@@ -107,13 +107,9 @@ const collectionController = {
       const viewPath = path.join(process.cwd(), 'src', 'templates', 'views', `${id}.ejs`);
       await fs.remove(viewPath);
       
-      res.redirect('/manager/collections/list');
+      res.redirect('/manager/collections');
     } catch {
-      res.render('manager/collections/list', {
-        layout: 'layouts/manager',
-        user: req.session.user,
-        error: ERROR_CODES["TEP463"]
-      });
+      res.redirect('/manager/collections');
     }
   },
 

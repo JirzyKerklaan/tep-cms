@@ -61,6 +61,7 @@ router.get('/logout', (req: Request, res: Response) => {
 router.get('/register', (req: Request, res: Response) => {
   res.render('manager/register', {
     error: ERROR_CODES["TEP200"],
+    email: '',
     username: ''
   });
 });
@@ -116,7 +117,7 @@ router.post('/register', async (req: Request, res: Response) => {
 
 // -------------------- //
 
-router.use(isAuthenticated);
+// router.use(isAuthenticated);
 
 router.get('/', (req: Request, res: Response) => {
   res.render('manager/dashboard', { layout: 'layouts/manager', user: req.session.user });
@@ -132,19 +133,7 @@ router.post('/collections/edit/:id', collectionController.update);
 
 router.post('/collections/delete/:id', collectionController.delete);
 
-router.get('/collections/list', collectionController.list);
-
-// -------------------- //
-
-router.get('/collections/entry/new', entryController.newForm);
-router.post('/collections/new', entryController.create);
-
-router.get('/collections/entry/edit/:id', entryController.editForm);
-router.post('/collections/entry/edit/:id', entryController.update);
-
-router.post('/collections/entry/delete/:id', entryController.delete);
-
-router.get('/collections/entry/list', entryController.list);
+router.get('/collections', collectionController.list);
 
 // -------------------- //
 
@@ -156,7 +145,7 @@ router.post('/blocks/edit/:id', blockController.update);
 
 router.post('/blocks/delete/:id', blockController.delete);
 
-router.get('/blocks/list', blockController.list);
+router.get('/blocks', blockController.list);
 
 // -------------------- //
 
