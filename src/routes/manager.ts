@@ -6,8 +6,6 @@ import { findUser, loadUsers, verifyPassword } from '../services/userService';
 const router = express.Router();
 
 function isAuthenticated(req: Request, res: Response, next: NextFunction) {
-  // return;
-  
   if (req.session?.user) {
     return next();
   }
@@ -24,7 +22,7 @@ router.get('/login', (req: Request, res: Response) => {
   router.post('/login', async (req: Request, res: Response) => {
     const { username, password } = req.body;
 
-    await loadUsers(); // Refresh user list (optional for performance if loaded once at startup)
+    await loadUsers();
 
     const user = findUser(username);
     if (!user) {
@@ -42,7 +40,6 @@ router.get('/login', (req: Request, res: Response) => {
       });
     }
 
-    // Login successful — store user data in session
     req.session.user = {
       username: user.username
     };
@@ -56,6 +53,10 @@ router.get('/logout', (req: Request, res: Response) => {
     res.redirect('/')
   });
 });
+
+// -------------------- //
+
+// TODO: Write code for registrating account
 
 // -------------------- //
 
