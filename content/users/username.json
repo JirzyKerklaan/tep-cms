@@ -1,0 +1,6 @@
+{
+  "username": "username",
+  "passwordHash": "$2b$10$QHkGkfq6n8.NjaLwaq/vs.hcnjjizNxHaOVr1DHyuzljc0VvAFrTm",
+  "role": "admin",
+  "email": "admin@example.com"
+}

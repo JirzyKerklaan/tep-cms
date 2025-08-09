@@ -1,7 +1,9 @@
 import express, { Request, Response, NextFunction } from 'express';
-import config from '../config';
 import { collectionController, blockController, entryController } from '../manager/controllers';
-import { findUser, loadUsers, verifyPassword } from '../services/userService';
+import {createPassword, findEmail, findUsername, loadUsers, verifyPassword} from '../services/userService';
+import { ERROR_CODES, ErrorCode } from '../utils/errors';
+import fs from 'fs-extra';
+import path from "path";
 
 const router = express.Router();
 
@@ -24,7 +26,7 @@ router.get('/login', (req: Request, res: Response) => {
 
     await loadUsers();
 
-    const user = findUser(username);
+    const user = findUsername(username);
     if (!user) {
       return res.status(401).render('manager/login', {
         error: 'Invalid username or password',
@@ -56,7 +58,63 @@ router.get('/logout', (req: Request, res: Response) => {
 
 // -------------------- //
 
-// TODO: Write code for registrating account
+router.get('/register', (req: Request, res: Response) => {
+  res.render('manager/register', {
+    error: null,
+    username: ''
+  });
+});
+
+router.post('/register', async (req: Request, res: Response) => {
+  const { email, username, password } = req.body;
+
+  await loadUsers();
+
+  const usernameIsRecognised = findUsername(username);
+  const emailIsRecognised = findEmail(email);
+
+  let errorCode: ErrorCode | null = null;
+
+  if (usernameIsRecognised && emailIsRecognised) {
+    errorCode = 'TEP102';
+  } else if (usernameIsRecognised) {
+    errorCode = 'TEP100';
+  } else if (emailIsRecognised) {
+    errorCode = 'TEP101';
+  }
+
+  if (errorCode) {
+    return res.status(401).render('manager/register', { error: ERROR_CODES[errorCode] });
+  }
+
+  try {
+    const userPath = path.join(process.cwd(), 'content', 'users');
+
+    if (!fs.existsSync(userPath)) {
+      fs.mkdirSync(userPath, {recursive: true});
+    }
+
+    const safeUsername = username
+        .trim()
+        .replace(/\s+/g, '-')
+        .replace(/[^a-zA-Z0-9-_]/g, '');
+
+    const filePath = path.join(userPath, `${safeUsername}.json`);
+
+    const userData = {
+      username: username,
+      passwordHash: await createPassword(password),
+      role: 'admin',
+      email: email
+    };
+
+    fs.writeFileSync(filePath, JSON.stringify(userData, null, 2), 'utf8');
+  } catch {
+    return res.status(401).render('manager/register', { error: ERROR_CODES["TEP003"] });
+  }
+
+  return res.status(401).redirect('/manager/login');
+});
 
 // -------------------- //
 

@@ -28,10 +28,18 @@ export async function loadUsers() {
   users = loadedUsers;
 }
 
-export function findUser(username: string): User | undefined {
+export function findEmail(email: string): User | undefined {
+  return users.find(u => u.email === email);
+}
+
+export function findUsername(username: string): User | undefined {
   return users.find(u => u.username === username);
 }
 
 export async function verifyPassword(user: User, password: string): Promise<boolean> {
   return bcrypt.compare(password, user.passwordHash);
+}
+
+export async function createPassword(password: string): Promise<string> {
+  return bcrypt.hash(password, 10);
 }
