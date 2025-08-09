@@ -136,7 +136,7 @@ This code includes the blocks you have used in the pagebuilder within ```yourpag
 
 - Use version control to track content
 - Turn off caching during the development fase
-- [error codes]('.github/docs/error-codes.md)
+- [error codes](.github/docs/error-codes.md)
 
 <br>
 
