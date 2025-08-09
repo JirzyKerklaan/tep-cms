@@ -1,5 +1,6 @@
 import fs from 'fs/promises';
 import path from 'path';
+import {ERROR_CODES} from "../../utils/errors";
 
 interface Collection {
   id: string;
@@ -10,7 +11,7 @@ const collections: Collection[] = [];
 
 const collectionService = {
   async createCollection(data: Partial<Collection>) {
-    if (!data.name) throw new Error('Collection name is required');
+    if (!data.name) throw new Error(ERROR_CODES["TEP465"]);
 
     const schemaPath = path.join(process.cwd(), 'content', 'schemas', 'collections' );
     const folderPath = path.join(process.cwd(), 'content', 'collections', data.name);
@@ -19,7 +20,7 @@ const collectionService = {
       await fs.stat(schemaPath);
       await fs.stat(folderPath);
 
-      throw new Error('That collection already exists');
+      throw new Error(ERROR_CODES["TEP464"]);
     } catch (err: any) {
       if (err.code !== 'ENOENT') {
         throw err;
@@ -47,7 +48,7 @@ const collectionService = {
 
   async updateCollection(id: string, data: Partial<Collection>) {
     const index = collections.findIndex(c => c.id === id);
-    if (index === -1) throw new Error('Not found');
+    if (index === -1) throw new Error(ERROR_CODES["TEP462"]);
     collections[index] = { ...collections[index], ...data };
   },
 

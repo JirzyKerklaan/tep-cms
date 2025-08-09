@@ -2,6 +2,7 @@
 import express from 'express';
 import { upload, convertToWebp } from '../utils/uploadHandler';
 import config from '../config';
+import {ERROR_CODES} from "../utils/errors";
 
 const router = express.Router();
 
@@ -18,8 +19,7 @@ router.post('/upload', upload.array('images'), async (req, res) => {
       res.redirect('/');
     }
   } catch (error) {
-    console.error('WebP conversion failed:', error);
-    res.status(500).json({ success: false, error: 'Conversion failed' });
+    res.status(500).json({ success: false, error: ERROR_CODES["TEP431"] });
   }
 });
 

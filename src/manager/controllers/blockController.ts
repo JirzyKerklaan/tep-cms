@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { saveBlock, updateBlock, getBlockById, listBlocks } from '../services/blockService';
 import fs from 'fs-extra';
 import path from 'path';
+import {ERROR_CODES} from "../../utils/errors";
 
 const blockController = {
   newForm: (req: Request, res: Response) => {
@@ -28,7 +29,7 @@ const blockController = {
 
   editForm: async (req: Request, res: Response) => {
     const block = await getBlockById(req.params.id);
-    if (!block) return res.status(404).send('Block not found');
+    if (!block) return res.status(404).send(ERROR_CODES["TEP471"]);
 
     res.render('manager/blocks/edit', { title: 'Edit Block', block });
   },
@@ -49,7 +50,7 @@ const blockController = {
     try { 
       console.log('delete block');
     } catch {
-      res.status(500).send('Server error');
+      res.status(500).send(ERROR_CODES["TEP450"]);
     }
   },
   
@@ -58,7 +59,7 @@ const blockController = {
       const collections = await listBlocks();
       res.render('manager/collections/list', { layout: 'layouts/manager', user: req.session.user, collections });
     } catch {
-      res.status(500).send('Server error');
+      res.status(500).send(ERROR_CODES["TEP450"]);
     }
   },
 };

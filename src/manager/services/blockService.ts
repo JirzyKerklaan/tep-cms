@@ -1,6 +1,7 @@
 import { generateBlockTemplate } from '../helpers/blockTemplateHelper';
 import fs from 'fs-extra';
 import path from 'path';
+import {ERROR_CODES} from "../../utils/errors";
 
 const BLOCKS_DIR = path.join(process.cwd(), 'src/blocks');
 
@@ -47,7 +48,7 @@ export async function getBlockById(id: string): Promise<BlockInput | null> {
 export async function updateBlock(id: string, data: Partial<BlockInput>): Promise<void> {
   const filePath = path.join(BLOCKS_DIR, `${id}.json`);
   const existing = await getBlockById(id);
-  if (!existing) throw new Error('Block not found');
+  if (!existing) throw new Error(ERROR_CODES["TEP471"]);
   const updated = { ...existing, ...data };
   await fs.writeJson(filePath, updated, { spaces: 2 });
 }

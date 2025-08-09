@@ -16,7 +16,7 @@ function isAuthenticated(req: Request, res: Response, next: NextFunction) {
 
 router.get('/login', (req: Request, res: Response) => {
   res.render('manager/login', {
-    error: null,
+    error: ERROR_CODES["TEP200"],
     username: ''
   });
 });
@@ -29,7 +29,7 @@ router.get('/login', (req: Request, res: Response) => {
     const user = findUsername(username);
     if (!user) {
       return res.status(401).render('manager/login', {
-        error: 'Invalid username or password',
+        error: ERROR_CODES["TEP111"],
         username,
       });
     }
@@ -37,7 +37,7 @@ router.get('/login', (req: Request, res: Response) => {
     const passwordValid = await verifyPassword(user, password);
     if (!passwordValid) {
       return res.status(401).render('manager/login', {
-        error: 'Invalid username or password',
+        error: ERROR_CODES["TEP111"],
         username,
       });
     }
@@ -60,7 +60,7 @@ router.get('/logout', (req: Request, res: Response) => {
 
 router.get('/register', (req: Request, res: Response) => {
   res.render('manager/register', {
-    error: null,
+    error: ERROR_CODES["TEP200"],
     username: ''
   });
 });
@@ -75,16 +75,14 @@ router.post('/register', async (req: Request, res: Response) => {
 
   let errorCode: ErrorCode | null = null;
 
-  if (usernameIsRecognised && emailIsRecognised) {
-    errorCode = 'TEP102';
+  if (emailIsRecognised) {
+    errorCode = 'TEP121';
   } else if (usernameIsRecognised) {
-    errorCode = 'TEP100';
-  } else if (emailIsRecognised) {
-    errorCode = 'TEP101';
+    errorCode = 'TEP122';
   }
 
   if (errorCode) {
-    return res.status(401).render('manager/register', { error: ERROR_CODES[errorCode] });
+    return res.status(401).render('manager/register', { error: ERROR_CODES[errorCode], username, email });
   }
 
   try {
@@ -110,7 +108,7 @@ router.post('/register', async (req: Request, res: Response) => {
 
     fs.writeFileSync(filePath, JSON.stringify(userData, null, 2), 'utf8');
   } catch {
-    return res.status(401).render('manager/register', { error: ERROR_CODES["TEP003"] });
+    return res.status(401).render('manager/register', { error: ERROR_CODES["TEP450"] });
   }
 
   return res.status(401).redirect('/manager/login');
@@ -159,6 +157,12 @@ router.post('/blocks/edit/:id', blockController.update);
 router.post('/blocks/delete/:id', blockController.delete);
 
 router.get('/blocks/list', blockController.list);
+
+// -------------------- //
+
+router.use('*', (req, res) => {
+  res.status(404).render('manager/404', { layout: 'layouts/manager', user: req.session.user });
+});
 
 // -------------------- //
 

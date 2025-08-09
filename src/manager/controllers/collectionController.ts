@@ -3,6 +3,7 @@ import { getDefaultFields } from '../helpers/defaultFieldsHelper';
 import collectionService from '../services/collectionService';
 import fs from 'fs-extra';
 import path from 'path';
+import {ERROR_CODES} from "../../utils/errors";
 
 const collectionController = {
   newForm: (req: Request, res: Response) => {
@@ -59,11 +60,19 @@ const collectionController = {
     try {
       const collection = await collectionService.getCollectionById(id);
       if (!collection) {
-        return res.status(404).send('Collection not found');
+        res.render('manager/collections/edit', {
+          layout: 'layouts/manager',
+          user: req.session.user,
+          error: ERROR_CODES["TEP461"]
+        });
       }
-      res.render('manager/collections/edit', { layout: 'layouts/manager', user: req.session.user, collection, error: null });
+      res.render('manager/collections/edit', { layout: 'layouts/manager', user: req.session.user, collection, error: ERROR_CODES["TEP200"] });
     } catch {
-      res.status(500).send('Server error');
+      res.render('manager/collections/edit', {
+        layout: 'layouts/manager',
+        user: req.session.user,
+        error: ERROR_CODES["TEP462"]
+      });
     }
   },
 
@@ -78,7 +87,7 @@ const collectionController = {
         layout: 'layouts/manager',
         user: req.session.user,
         collection: { id, ...data },
-        error: 'Failed to update collection'
+        error: ERROR_CODES["TEP462"]
       });
     }
   },
@@ -100,7 +109,11 @@ const collectionController = {
       
       res.redirect('/manager/collections/list');
     } catch {
-      res.status(500).send('Server error');
+      res.render('manager/collections/list', {
+        layout: 'layouts/manager',
+        user: req.session.user,
+        error: ERROR_CODES["TEP463"]
+      });
     }
   },
 
@@ -109,7 +122,7 @@ const collectionController = {
       const collections = await collectionService.getAllCollections();
       res.render('manager/collections/list', { layout: 'layouts/manager', user: req.session.user, collections });
     } catch {
-      res.status(500).send('Server error');
+      res.render('manager/collections/list', { layout: 'layouts/manager', user: req.session.user, error: ERROR_CODES["TEP460"] });
     }
   }
 };

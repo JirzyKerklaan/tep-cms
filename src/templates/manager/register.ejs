@@ -6,10 +6,10 @@
 
 <form action="/manager/register" method="POST">
   <label>Email:</label><br>
-  <input type="email" name="email" required><br>
+  <input type="email" name="email" value="<%= email %>" required><br>
 
   <label>Username:</label><br>
-  <input type="text" name="username" required><br>
+  <input type="text" name="username" value="<%= username %>" required><br>
 
   <label>Password:</label><br>
   <input type="password" name="password" required><br><br>
