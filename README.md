@@ -119,12 +119,6 @@ This code includes the blocks you have used in the pagebuilder within ```yourpag
 - Routes follow `/{collection}/{slug}`
 - Can be rendered with a custom template, or using the default template
 
-### 🌐 Routing
-- ```/```: loads home.json
-- ```/:slug```: loads a page
-- ```/:collection/:slug```: loads a collection entry
-- ```/:parent/:slug```: for nested pages
-
 <br>
 
 <h2 id="tips">🧪 Development Tips</h2>
