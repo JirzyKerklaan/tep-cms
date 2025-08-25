@@ -7,7 +7,7 @@ import {ERROR_CODES} from "../../utils/errors";
 
 const blockController = {
   newForm: (req: Request, res: Response) => {
-    res.render('manager/blocks/create', { layout: 'layouts/manager', title: 'Create Block' });
+    res.render('manager/blocks/new', { layout: 'layouts/manager', title: 'Create Block' });
   },
 
   create: async (req: Request, res: Response) => {
