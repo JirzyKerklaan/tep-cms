@@ -20,12 +20,11 @@
 
 - ⚡ **File-based Content** – no DB needed.
 - 🧱 **Reusable Blocks** – with a modular `page_builder`.
-- 📁 **Organized Assets** – for base and uploaded files.
+- 📁 **Organized Assets** – with a modern media library.
 - 🎨 **SCSS Styling** – modular, maintainable styles.
-- 👀 **Live Preview Editing** – instant frontend feedback.
-- 🧪 **Easy Local Dev** – run with zero setup.
+- 🧪 **Easy Local Dev** – run with nearly zero setup.
 - 🚀 **Lightweight & Fast** – powered by Express & EJS.
-- 👥 **Multiple users** – Allows the user to have multiple accounts
+- 👥 **Multiple users** – Allows the user to have multiple accounts.
 
 <br>
 
@@ -116,19 +115,9 @@ This code includes the blocks you have used in the pagebuilder within ```yourpag
 - Blocks are loaded dynamically using the page_builder
 
 ### 🗃 Collections
-- Stored in ```content/collections/{collection}/{slug}.json
-- Routes follow /{collection}/{slug}
+- Stored in `content/collections/{collection}/{slug}.json`
+- Routes follow `/{collection}/{slug}`
 - Can be rendered with a custom template, or using the default template
-
-### 🌐 Routing
-- ```/```: loads home.json
-- ```/:slug```: loads a page
-- ```/:collection/:slug```: loads a collection entry
-- ```/:parent/:slug```: for nested pages
-
-### 🧠 Caching
-- EJS views are cached by default, caching can be turned off via the ```/manager``` panel
-- When editing a view, you may need to clear ejs.cache to reflect changes immediately
 
 <br>
 
