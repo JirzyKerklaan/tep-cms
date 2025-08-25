@@ -13,7 +13,7 @@ const collectionController = {
       .filter(file => file.endsWith('.ejs'))
       .map(file => path.basename(file, '.ejs'));
 
-    res.render('manager/collections/new', { layout: 'layouts/manager', title: 'Create Collection', blocks });
+    res.render('manager/collections/create', { layout: 'layouts/manager', title: 'Create Collection', blocks });
   },
 
   async create(req: Request, res: Response) {

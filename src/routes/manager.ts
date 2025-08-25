@@ -125,8 +125,8 @@ router.get('/', (req: Request, res: Response) => {
 
 // -------------------- //
 
-router.get('/collections/new', collectionController.newForm);
-router.post('/collections/new', collectionController.create);
+router.get('/collections/create', collectionController.newForm);
+router.post('/collections/create', collectionController.create);
 
 router.get('/collections/edit/:id', collectionController.editForm);
 router.post('/collections/edit/:id', collectionController.update);
@@ -137,8 +137,8 @@ router.get('/collections', collectionController.list);
 
 // -------------------- //
 
-router.get('/blocks/new', blockController.newForm);
-router.post('/blocks/new', blockController.create);
+router.get('/blocks/create', blockController.newForm);
+router.post('/blocks/create', blockController.create);
 
 router.get('/blocks/edit/:id', blockController.editForm);
 router.post('/blocks/edit/:id', blockController.update);
