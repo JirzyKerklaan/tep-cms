@@ -5,7 +5,13 @@ import { IndexEntry, searchContent } from '../services/contentIndex';
 
 const router = express.Router();
 
-const collections = ['blogs', 'collection'];
+const collectionsDir = path.join(process.cwd(), 'content', 'collections');
+
+const allDirs = fs.readdirSync(collectionsDir, { withFileTypes: true })
+  .filter(dirent => dirent.isDirectory())
+  .map(dirent => dirent.name);
+
+const collections = allDirs.filter(name => name !== 'pages');
 
 interface Page {
   parent?: string;

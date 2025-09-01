@@ -106,7 +106,7 @@ const collectionController = {
 
       const viewPath = path.join(process.cwd(), 'src', 'templates', 'views', `${id}.ejs`);
       await fs.remove(viewPath);
-      
+
       res.redirect('/manager/collections');
     } catch {
       res.redirect('/manager/collections');

@@ -8,7 +8,7 @@
       "fields": {
         "blocks": [
           { "block": "text", "fields": { "text": "<h1>Hello world</h1>" } },
-          { "block": "image", "fields": { "url": "/test.png", "alt": "alt" } }
+          { "block": "image", "fields": { "src": "/test.png", "alt": "alt" } }
         ]
       }
     },
@@ -17,7 +17,7 @@
       "fields": {
         "blocks": [
           { "block": "text", "fields": { "text": "<h1>Hello world</h1>" } },
-          { "block": "image", "fields": { "url": "/test.png", "alt": "alt" } }
+          { "block": "image", "fields": { "src": "/test.png", "alt": "alt" } }
         ]
       }
     }

@@ -7,7 +7,7 @@
       "fields": {
         "blocks": [
           { "block": "text", "fields": { "text": "<h1>Hello world</h1>" } },
-          { "block": "image", "fields": { "url": "/assets/uploads/uploadstest.webp", "alt": "alt" } }
+          { "block": "image", "fields": { "src": "/assets/uploads/uploadstest.webp", "alt": "alt" } }
         ]
       }
     },
