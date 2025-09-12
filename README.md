@@ -2,7 +2,6 @@
   <img width="200" draggable="false" src="./.github/docs/tep-cms.png" alt="TEP CMS Logo"/>
 </p>
 
-<br>
 
 ## 📚 Table of Contents
 
@@ -13,7 +12,6 @@
 - [Developer tips](#tips)
 - [Suggestions or Issues](#contribute)
 
-<br>
 
 <h2 id="features">📦 Features</h2>
 
@@ -25,7 +23,6 @@
 - 🚀 **Lightweight & Fast** – powered by Express & EJS.
 - 👥 **Multiple users** – Allows the user to have multiple accounts.
 
-<br>
 
 <h2 id="installation">🛠 Installation</h2>
 
@@ -46,7 +43,6 @@
     npm run prod
     ```
 
-<br>
 
 <h2 id="file-structure">File Structure</h2>
 
@@ -85,39 +81,11 @@ tep-cms/
 └ server.ts
 ```
 
-<br>
-
-<h2 id="content-templates">🛠 Content & Templates</h2>
-
-### Page templating
-To use a custom template for a specific page, the page can be assigned a template. You can add:
-
-```json
-    "template": "templatename",
-```
-
-To your page .json. When adding this to the file, it will search for a ```templatename.ejs``` in the ```src/templates/views/...``` folder. If the file exists, this template will be used for the page.
-
-### Pagebuilder looping:
-When your page uses a pagebuilder, you can loop over it in the following way:
-
-```ejs
-<% page_builder.forEach(block => { %>
-  <%- include(`page_builder/${block.block}`, block.fields) %>
-<% }) %>
-```
-
-This code includes the blocks you have used in the pagebuilder within ```yourpage.json```.
-
-<br>
-
 <h2 id="tips">🧪 Development Tips</h2>
 
 - Use version control to track content
 - Turn off caching during the development fase
 - [error codes](.github/docs/error-codes.md)
-
-<br>
 
 <h2 id="contribute">🙋 Suggestions or Issues</h2>
 
