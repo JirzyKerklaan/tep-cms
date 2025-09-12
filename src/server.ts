@@ -3,13 +3,16 @@ import path from 'path';
 import expressLayouts from 'express-ejs-layouts';
 
 import { routes, managerRoutes, upload, search } from './routes'
-import { sessionMiddleware } from './middlewares/session';
-import { globalLocals } from './middlewares/globalLocales';
+import { sessionMiddleware } from './navigation/middlewares/session';
+import { globalLocals } from './navigation/middlewares/globalLocales';
 import chokidar from 'chokidar';
-import { buildContentIndex } from './services/contentIndex';
+import { buildContentIndex } from './navigation/services/contentIndex';
 
 const app = express();
 const PORT = 3000;
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.set('view engine', 'ejs');
 app.set('views', [

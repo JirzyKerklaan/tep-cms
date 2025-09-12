@@ -1,7 +1,9 @@
 import express, { Request, Response, NextFunction } from 'express';
 import path from 'path';
 import fs from 'fs';
-import { IndexEntry, searchContent } from '../services/contentIndex';
+import { IndexEntry, searchContent } from '../navigation/services/contentIndex';
+import {useRequest} from "../navigation/middlewares/useRequest";
+import {PostRequest} from "../requests/postRequest";
 
 const router = express.Router();
 
@@ -35,6 +37,13 @@ function loadPage(slug: string): Page | null {
   const raw = fs.readFileSync(filePath, 'utf-8');
   return JSON.parse(raw);
 }
+
+router.post('/post-test', useRequest(PostRequest), (req, res) => {
+  const validatedData = req.body.validated();
+  console.log('validatedData', validatedData)
+
+  res.json({'Message': 'validation succesful!'})
+});
 
 router.get('/', (req, res) => {
   const homepage = loadPage('home');
