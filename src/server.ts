@@ -3,10 +3,10 @@ import path from 'path';
 import expressLayouts from 'express-ejs-layouts';
 
 import { routes, managerRoutes, upload, search } from './routes'
-import { sessionMiddleware } from './navigation/middlewares/session';
-import { globalLocals } from './navigation/middlewares/globalLocales';
+import { sessionMiddleware } from './middlewares/session';
+import { globalLocals } from './middlewares/globalLocales';
 import chokidar from 'chokidar';
-import { buildContentIndex } from './navigation/services/contentIndex';
+import { buildContentIndex } from './services/contentIndex';
 
 const app = express();
 const PORT = 3000;

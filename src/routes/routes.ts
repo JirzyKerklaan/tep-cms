@@ -1,7 +1,7 @@
 import express, { Request, Response, NextFunction } from 'express';
 import path from 'path';
 import fs from 'fs';
-import { IndexEntry, searchContent } from '../navigation/services/contentIndex';
+import { IndexEntry, searchContent } from '../services/contentIndex';
 
 const router = express.Router();
 
