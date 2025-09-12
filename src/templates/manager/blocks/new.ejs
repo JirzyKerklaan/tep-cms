@@ -8,42 +8,78 @@
   <label>Block Name</label>
   <input type="text" name="block" required>
 
-  <div id="fields">
-    <!-- Fields added here dynamically -->
+  <h3>Fields</h3>
+  <div id="fields"></div>
+
+  <!-- Inline form to add a new field -->
+  <div id="new-field-form" style="margin-top: 1em; padding: 1em; border: 1px solid #ccc;">
+    <h4>Add New Field</h4>
+    <label>Field Name</label>
+    <input type="text" id="fieldName">
+
+    <label>Field Type</label>
+    <select id="fieldType">
+      <option value="text">Text</option>
+      <option value="textarea">Textarea</option>
+      <option value="assets">Assets</option>
+    </select>
+
+    <label>Field Label</label>
+    <input type="text" id="fieldLabel">
+
+    <label>
+      <input type="checkbox" id="fieldRequired"> Required
+    </label>
+
+    <label>Default Value</label>
+    <input type="text" id="fieldDefault">
+
+    <button type="button" onclick="addField()">Add Field</button>
   </div>
 
-  <button type="button" onclick="addField()">Add Field</button>
-  <button type="submit">Create Block</button>
-
   <input type="hidden" name="fieldsJson" id="fieldsJson">
+
+  <button type="submit">Create Block</button>
 </form>
 
 <script>
   const fields = [];
 
   function addField() {
-    const name = prompt("Field name:");
-    const type = prompt("Field type (text, textarea, assets, etc):");
-    const label = prompt("Field label:");
-    if (!name || !type || !label) return alert("Name, type, and label are required.");
+    const name = document.getElementById("fieldName").value.trim();
+    const type = document.getElementById("fieldType").value;
+    const label = document.getElementById("fieldLabel").value.trim();
+    const required = document.getElementById("fieldRequired").checked;
+    const defaultValue = document.getElementById("fieldDefault").value.trim() || undefined;
 
-    const field = { name, type, label };
-    const optional = {
-      required: confirm("Is required?"),
-      defaultValue: prompt("Default value (optional):") || undefined
-    };
-    Object.assign(field, optional);
+    if (!name || !type || !label) {
+      alert("Please fill in Name, Type, and Label.");
+      return;
+    }
+
+    const field = { name, type, label, required, defaultValue };
     fields.push(field);
 
     renderFields();
+    clearFieldForm();
   }
 
   function renderFields() {
     document.getElementById("fieldsJson").value = JSON.stringify(fields);
     const div = document.getElementById("fields");
     div.innerHTML = fields.map((f, i) =>
-      `<div>
+      `<div style="margin-bottom: .5em;">
         <strong>${f.label}</strong> (${f.type}) ${f.required ? '[required]' : ''}
-      </div>`).join('');
+        ${f.defaultValue ? `= "${f.defaultValue}"` : ''}
+      </div>`
+    ).join('');
+  }
+
+  function clearFieldForm() {
+    document.getElementById("fieldName").value = "";
+    document.getElementById("fieldType").value = "text";
+    document.getElementById("fieldLabel").value = "";
+    document.getElementById("fieldRequired").checked = false;
+    document.getElementById("fieldDefault").value = "";
   }
 </script>
