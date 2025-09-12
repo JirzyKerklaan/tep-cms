@@ -1,75 +1,41 @@
-import fs from 'fs/promises';
+import { Service, BaseEntity } from './service';
+import fs from 'fs-extra';
 import path from 'path';
-import {ERROR_CODES} from "../../utils/errors";
+import { ERROR_CODES } from '../../utils/errors';
 
-interface Collection {
-  id: string;
-  name: string;
+export interface Collection extends BaseEntity {
+    name: string;
 }
 
-const collections: Collection[] = [];
+const COLLECTIONS_DIR = path.join(process.cwd(), 'content', 'collections');
+const SCHEMAS_DIR = path.join(process.cwd(), 'content', 'schemas', 'collections');
 
-const collectionService = {
-  async createCollection(data: Partial<Collection>) {
-    if (!data.name) throw new Error(ERROR_CODES["TEP465"]);
+fs.ensureDirSync(COLLECTIONS_DIR);
+fs.ensureDirSync(SCHEMAS_DIR);
 
-    const schemaPath = path.join(process.cwd(), 'content', 'schemas', 'collections' );
-    const folderPath = path.join(process.cwd(), 'content', 'collections', data.name);
-
-    try {
-      await fs.stat(schemaPath);
-      await fs.stat(folderPath);
-
-      throw new Error(ERROR_CODES["TEP464"]);
-    } catch (err: any) {
-      if (err.code !== 'ENOENT') {
-        throw err;
-      }
+class CollectionService extends Service<Collection> {
+    constructor() {
+        super(COLLECTIONS_DIR);
     }
 
-    const id = Date.now().toString();
-    const newCollection = { id, ...data } as Collection;
-    collections.push(newCollection);
+    create = async (data: Partial<Collection>): Promise<Collection> => {
+        if (!data.name) throw new Error(ERROR_CODES["TEP465"]);
 
-    const schemaContent = JSON.stringify({schema: `${newCollection.name}`}, null, 2);
-    await fs.writeFile(path.join(schemaPath, `${data.name}.schema.json`), schemaContent, 'utf-8');
+        const id = Date.now().toString();
+        const newCollection: Collection = { id, name: data.name };
+        await this.save(newCollection);
 
-    await fs.mkdir(folderPath, { recursive: true });
+        const folderPath = path.join(COLLECTIONS_DIR, newCollection.name);
+        await fs.mkdir(folderPath, { recursive: true });
 
-    const fileContent = JSON.stringify({title: `First ${newCollection.name}`}, null, 2);
-    await fs.writeFile(path.join(folderPath, 'standard.json'), fileContent, 'utf-8');
+        const schemaContent = JSON.stringify({ schema: newCollection.name }, null, 2);
+        await fs.writeFile(path.join(SCHEMAS_DIR, `${newCollection.name}.schema.json`), schemaContent, 'utf-8');
 
-    return newCollection;
-  },
+        const fileContent = JSON.stringify({ title: `First ${newCollection.name}` }, null, 2);
+        await fs.writeFile(path.join(folderPath, 'standard.json'), fileContent, 'utf-8');
 
-  async getCollectionById(id: string) {
-    return collections.find(c => c.id === id);
-  },
+        return newCollection;
+    };
+}
 
-  async updateCollection(id: string, data: Partial<Collection>) {
-    const index = collections.findIndex(c => c.id === id);
-    if (index === -1) throw new Error(ERROR_CODES["TEP462"]);
-    collections[index] = { ...collections[index], ...data };
-  },
-
-  async getAllCollections() {
-    const collectionsPath = path.join(process.cwd(), 'content', 'collections');
-
-    try {
-      const items = await fs.readdir(collectionsPath, { withFileTypes: true });
-
-      const folderNames = items
-          .filter(item => item.isDirectory())
-          .map(item => item.name);
-
-      return folderNames;
-    } catch (err: any) {
-      if (err.code === 'ENOENT') {
-        return [];
-      }
-      throw err;
-    }
-  }
-};
-
-export default collectionService;
+export default new CollectionService();

@@ -1,73 +1,61 @@
+import { Service, BaseEntity } from './service';
 import { generateBlockTemplate } from '../helpers/blockTemplateHelper';
 import fs from 'fs-extra';
 import path from 'path';
-import {ERROR_CODES} from "../../utils/errors";
-
-const BLOCKS_DIR = path.join(process.cwd(), 'src/blocks');
-
-fs.ensureDirSync(BLOCKS_DIR);
+import { ERROR_CODES } from '../../utils/errors';
 
 export type BlockType = 'page_builder' | 'component';
 
-interface BlockInput {
-  id: string;
+export interface BlockInput extends BaseEntity {
   block: string;
-  type: 'page_builder' | 'components';
+  type: BlockType;
   fields: any[];
 }
+
+const BLOCKS_DIR = path.join(process.cwd(), 'src/blocks');
+const SCHEMAS_DIR = path.join(BLOCKS_DIR, 'schemas');
+
+fs.ensureDirSync(BLOCKS_DIR);
+fs.ensureDirSync(SCHEMAS_DIR);
 
 function normalizeName(name: string) {
   return name.toLowerCase().replace(/\s+/g, '-');
 }
 
-export async function saveBlock({ id, block, type, fields }: BlockInput) {
-  const normalizedBlock = normalizeName(block);
-
-  const blockPath = path.join(process.cwd(), 'src', 'blocks', type, `${normalizedBlock}.ejs`);
-  const schemaPath = path.join(process.cwd(), 'src', 'blocks', 'schemas', type, `${normalizedBlock}.schema.json`);
-
-  const templateContent = generateBlockTemplate(type, normalizedBlock, block);
-
-  if (!(await fs.pathExists(blockPath))) {
-    await fs.outputFile(blockPath, templateContent);
+class BlockService extends Service<BlockInput> {
+  constructor() {
+    super(BLOCKS_DIR);
   }
 
-  const schema = {
-    title: block,
-    fields
+  save = async ({ id, block, type, fields }: BlockInput) => {
+    const normalizedBlock = normalizeName(block);
+    const blockPath = path.join(BLOCKS_DIR, type, `${normalizedBlock}.ejs`);
+    const schemaPath = path.join(SCHEMAS_DIR, type, `${normalizedBlock}.schema.json`);
+
+    const templateContent = generateBlockTemplate(type, normalizedBlock, block);
+
+    if (!(await fs.pathExists(blockPath))) await fs.outputFile(blockPath, templateContent);
+
+    const schema = { title: block, fields };
+    await fs.outputJson(schemaPath, schema, { spaces: 2 });
+
+    // Save metadata using Service
+    await this.save({ id, block, type, fields });
   };
-  await fs.outputJson(schemaPath, schema, { spaces: 2 });
+
+  delete = async (id: string) => {
+    const block = await this.getById(id);
+    if (!block) return;
+
+    const normalizedBlock = normalizeName(block.block);
+    const blockPath = path.join(BLOCKS_DIR, block.type, `${normalizedBlock}.ejs`);
+    const schemaPath = path.join(SCHEMAS_DIR, block.type, `${normalizedBlock}.schema.json`);
+
+    if (await fs.pathExists(blockPath)) await fs.remove(blockPath);
+    if (await fs.pathExists(schemaPath)) await fs.remove(schemaPath);
+
+    await this.delete(id);
+  };
 }
 
-export async function getBlockById(id: string): Promise<BlockInput | null> {
-  const filePath = path.join(BLOCKS_DIR, `${id}.json`);
-  if (!fs.existsSync(filePath)) return null;
-  return await fs.readJson(filePath);
-}
-
-export async function updateBlock(id: string, data: Partial<BlockInput>): Promise<void> {
-  const filePath = path.join(BLOCKS_DIR, `${id}.json`);
-  const existing = await getBlockById(id);
-  if (!existing) throw new Error(ERROR_CODES["TEP471"]);
-  const updated = { ...existing, ...data };
-  await fs.writeJson(filePath, updated, { spaces: 2 });
-}
-
-export async function listBlocks(): Promise<BlockInput[]> {
-  const files = await fs.readdir(BLOCKS_DIR);
-  const blocks: BlockInput[] = [];
-
-  for (const file of files) {
-    if (file.endsWith('.json')) {
-      const block = await fs.readJson(path.join(BLOCKS_DIR, file));
-      blocks.push(block);
-    }
-  }
-
-  return blocks;
-}
-
-export async function deleteBlock(id: string): Promise<void> {
-  const filePath = path.join(BLOCKS_DIR, `${id}.json`);
-  await fs.remove(filePath);
-}
+export default new BlockService();

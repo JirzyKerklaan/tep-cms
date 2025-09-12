@@ -1,16 +1,19 @@
 import { Request, Response } from 'express';
 import { v4 as uuidv4 } from 'uuid';
-import { saveBlock, updateBlock, getBlockById, listBlocks } from '../services/blockService';
-import fs from 'fs-extra';
-import path from 'path';
-import {ERROR_CODES} from "../../utils/errors";
+import { Controller } from './controller';
+import blockService from '../services/blockService';
+import { ERROR_CODES } from '../../utils/errors';
 
-const blockController = {
-  newForm: (req: Request, res: Response) => {
-    res.render('manager/blocks/new', { layout: 'layouts/manager', title: 'Create Block' });
-  },
+class BlockController extends Controller {
+  constructor() {
+    super('manager/blocks', 'blocks');
+  }
 
-  create: async (req: Request, res: Response) => {
+  newForm = (req: Request, res: Response): void => {
+    res.render(`${this.viewFolder}/new`, { layout: 'layouts/manager', title: 'Create Block' });
+  };
+
+  create = async (req: Request, res: Response): Promise<void> => {
     const id = uuidv4();
     const { block, type, fieldsJson } = req.body;
     const fields = JSON.parse(fieldsJson);
@@ -23,45 +26,49 @@ const blockController = {
       return field;
     });
 
-    await saveBlock({ id, block, type, fields: cleanFields });
+    await blockService.save({ id, block, type, fields: cleanFields });
     res.redirect('/manager/blocks');
-  },
+  };
 
-  editForm: async (req: Request, res: Response) => {
-    const block = await getBlockById(req.params.id);
-    if (!block) return res.status(404).send(ERROR_CODES["TEP471"]);
+  editForm = async (req: Request, res: Response): Promise<void> => {
+    const block = await blockService.getById(req.params.id);
+    if (!block) {
+      res.status(404).send(ERROR_CODES["TEP471"]);
+      return;
+    }
 
-    res.render('manager/blocks/edit', { title: 'Edit Block', block });
-  },
+    res.render(`${this.viewFolder}/edit`, { layout: 'layouts/manager', title: 'Edit Block', block });
+  };
 
-  update: async (req: Request, res: Response) => {
+  update = async (req: Request, res: Response): Promise<void> => {
     const { block, fields, type } = req.body;
 
-    await updateBlock(req.params.id, {
+    await blockService.update(req.params.id, {
       block,
       type,
       fields: JSON.parse(fields),
     });
 
     res.redirect('/manager/blocks');
-  },
-  
-  async delete(req: Request, res: Response) {
-    try { 
-      console.log('delete block');
-    } catch {
-      res.status(500).send(ERROR_CODES["TEP450"]);
-    }
-  },
-  
-  async list(req: Request, res: Response) {
-    try {
-      const blocks = await listBlocks();
-      res.render('manager/blocks/list', { layout: 'layouts/manager', user: req.session.user, blocks });
-    } catch {
-      res.status(500).send(ERROR_CODES["TEP450"]);
-    }
-  },
-};
+  };
 
-export default blockController;
+  delete = async (req: Request, res: Response): Promise<void> => {
+    try {
+      await blockService.delete(req.params.id);
+      res.redirect('/manager/blocks');
+    } catch {
+      res.status(500).send(ERROR_CODES["TEP450"]);
+    }
+  };
+
+  list = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const blocks = await blockService.getAll();
+      res.render(`${this.viewFolder}/list`, { layout: 'layouts/manager', user: req.session.user, blocks });
+    } catch {
+      res.status(500).send(ERROR_CODES["TEP450"]);
+    }
+  };
+}
+
+export default new BlockController();

@@ -1,5 +1,5 @@
 import express, { Request, Response, NextFunction } from 'express';
-import { collectionController, blockController, entryController } from '../manager/controllers';
+import { collectionController, blockController } from '../manager/controllers';
 import {createPassword, findEmail, findUsername, loadUsers, verifyPassword} from '../services/userService';
 import { ERROR_CODES, ErrorCode } from '../utils/errors';
 import fs from 'fs-extra';
