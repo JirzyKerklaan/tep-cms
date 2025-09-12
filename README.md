@@ -10,7 +10,6 @@
 - [Installation](#installation)
 - [File Structure](#file-structure)
 - [More Information](#content-templates)
-- [Documentation](#docs)
 - [Developer tips](#tips)
 - [Suggestions or Issues](#contribute)
 
@@ -102,22 +101,6 @@ When your page uses a pagebuilder, you can loop over it in the following way:
 ```
 
 This code includes the blocks you have used in the pagebuilder within ```yourpage.json```.
-
-<br>
-
-<h2 id="docs">📘 Documentation</h2>
-
-### 🧱 Blocks System
-- Create reusable content chunks
-- Each blok has:
-  - A template (.ejs)
-  - A Schema (.schema.json)
-- Blocks are loaded dynamically using the page_builder
-
-### 🗃 Collections
-- Stored in `content/collections/{collection}/{slug}.json`
-- Routes follow `/{collection}/{slug}`
-- Can be rendered with a custom template, or using the default template
 
 <br>
 
