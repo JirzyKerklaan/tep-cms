@@ -1,7 +1,7 @@
 import { Service, BaseEntity } from './service';
 import fs from 'fs-extra';
 import path from 'path';
-import { ERROR_CODES } from '../../utils/errors';
+import { ERROR_CODES } from '../../../src/utils/errors';
 
 export interface Collection extends BaseEntity {
     name: string;

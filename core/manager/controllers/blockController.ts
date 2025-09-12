@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import { Controller } from './controller';
 import blockService from '../services/blockService';
-import { ERROR_CODES } from '../../utils/errors';
+import { ERROR_CODES } from '../../../src/utils/errors';
 
 class BlockController extends Controller {
   constructor() {

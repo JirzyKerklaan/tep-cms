@@ -4,7 +4,7 @@ import collectionService from '../services/collectionService';
 import fs from 'fs-extra';
 import path from 'path';
 import { getDefaultFields } from '../helpers/defaultFieldsHelper';
-import { ERROR_CODES } from '../../utils/errors';
+import { ERROR_CODES } from '../../../src/utils/errors';
 
 class CollectionController extends Controller {
     constructor() {

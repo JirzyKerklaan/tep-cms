@@ -1,5 +1,5 @@
 // src/requests/BaseRequest.ts
-import { Validator } from '../validation';
+import { Validator } from '../../core/validation';
 
 export abstract class BaseRequest {
     protected data: Record<string, any> = {};

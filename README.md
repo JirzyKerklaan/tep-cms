@@ -53,27 +53,34 @@
 ```bash
 tep-cms/
 ├── content/
-│   ├── collections/    # All collections (pages, blogs etc.)
-│   ├── globals/        # Global site settings (header, footer settings etc.)
-│   ├── navigation/     # Navigation menu's
-│   └── schemas/        # Collections & globals schemas
+│   ├── collections/      # All collections (pages, blogs etc.)
+│   ├── globals/          # Global site settings (header, footer settings etc.)
+│   ├── navigation/       # Navigation menu's
+│   └── schemas/          # Collections & globals schemas
+├── core/
+│   ├── manager/
+│   │   ├── controllers/  # Manager route controllers.
+│   │   ├── helpers/      # Manager route helpers.
+│   │   └── services/     # Manager controller services.
+│   ├── middlewares/      # Global middleware
+│   ├── services/         # Route services
+│   └── validation/       # Validation system
 ├── public/
 │   ├── assets/
-│   │   ├── base/       # Static theme images, icons, etc.
-│   │   └── uploads/    # Uploaded images, icons, etc.
-│   └── css/            # Compiled SCSS styling
-├── styles/             # SCSS styling
+│   │   ├── base/         # Static theme images, icons, etc.
+│   │   └── uploads/      # Uploaded images, icons, etc.
+│   └── css/              # Compiled SCSS styling
 ├── src/
-│   ├── blocks/         # Page_builder blocks & components
-│   ├── manager/        # /manager route system
-│   ├── middlewares/    # Global middleware
-│   ├── routes/         # System routing
+│   ├── blocks/           # Page_builder blocks & components
+│   ├── requests/         # Request validators
+│   ├── routes/           # System routing
 │   ├── templates/
-│   │   ├── layouts/    # Page layouts
-│   │   ├── manager/    # /manager views
-│   │   └── views/      # Public views
-│   ├── types/          # Package definitions
-│   └── utils/          # Utility functions
+│   │   ├── layouts/      # Page layouts
+│   │   ├── manager/      # /manager views
+│   │   └── views/        # Public views
+│   ├── types/            # Package definitions
+│   └── utils/            # Utility functions
+├── styles/               # SCSS styling
 ├ config.ts
 └ server.ts
 ```
