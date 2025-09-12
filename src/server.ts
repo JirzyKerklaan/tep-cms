@@ -2,11 +2,9 @@ import express from 'express';
 import path from 'path';
 import expressLayouts from 'express-ejs-layouts';
 
-import routes from './routes/routes';
-import managerRoutes from './routes/manager';
+import { routes, managerRoutes, upload, search } from './routes'
 import { sessionMiddleware } from './middlewares/session';
 import { globalLocals } from './middlewares/globalLocales';
-import uploadRoutes from './routes/upload';
 import chokidar from 'chokidar';
 import { buildContentIndex } from './services/contentIndex';
 
@@ -35,7 +33,8 @@ app.use(globalLocals);
 app.use(express.static(path.join(process.cwd(), 'public')));
 
 app.use('/', routes);
-app.use('/', uploadRoutes);
+app.use('/', upload);
+app.use('/', search);
 app.use('/manager', managerRoutes);
 
 (async () => {
