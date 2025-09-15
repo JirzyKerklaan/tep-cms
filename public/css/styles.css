@@ -1,9 +1,147 @@
+#manager-page {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+#manager-page .sidebar {
+  width: 18.75rem;
+  min-width: 300px;
+  height: 100vh;
+  box-shadow: 2px 0 4px 2px rgba(0, 0, 0, 0.05);
+  padding-top: 2rem;
+  z-index: 10;
+  position: relative;
+}
+#manager-page .sidebar__links {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0 0.5rem;
+  gap: 0.25rem;
+  color: #1F1F27;
+  text-decoration: none;
+}
+#manager-page .sidebar__links span, #manager-page .sidebar__links a {
+  color: #1F1F27;
+  text-decoration: none;
+}
+#manager-page .sidebar__link {
+  padding: 0.5rem 0.35rem;
+  border-radius: 0.5rem;
+  width: 100%;
+  transition: all ease-in-out 0.15s;
+  font-size: 1rem;
+  line-height: 1.25;
+}
+#manager-page .sidebar__link:hover {
+  background: #f4f4f4;
+  transition: all ease-in-out 0.15s;
+}
+#manager-page .sidebar__collapse {
+  position: absolute;
+  top: 2rem;
+  right: -1.25rem;
+  background: white;
+  aspect-ratio: 1/1;
+  box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.75rem;
+  z-index: 100;
+}
+#manager-page .sidebar__collapse button {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: white;
+  transition: all ease-in-out 0.15s;
+}
+#manager-page .sidebar__collapse button:hover {
+  background: #f4f4f4;
+  transition: all ease-in-out 0.15s;
+}
+#manager-page .content {
+  width: calc(100% - 300px);
+  padding: 2rem 1rem 2rem 2rem;
+  min-height: 100vh;
+}
+
 /*
  * Breakpoints
  */
 /*
  * Reset default button styles
  */
+#manager-page {
+  font-family: "Arial, Helvetica, sans-serif";
+}
+#manager-page h1 {
+  font-size: 3rem;
+}
+@media (max-width: 760px) {
+  #manager-page h1 {
+    font-size: 2.5rem;
+  }
+}
+#manager-page h2 {
+  font-size: 2.75rem;
+}
+@media (max-width: 760px) {
+  #manager-page h2 {
+    font-size: 2.25rem;
+  }
+}
+#manager-page h3 {
+  font-size: 2.5rem;
+}
+@media (max-width: 760px) {
+  #manager-page h3 {
+    font-size: 2rem;
+  }
+}
+#manager-page h4 {
+  font-size: 2.25rem;
+}
+@media (max-width: 760px) {
+  #manager-page h4 {
+    font-size: 1.75rem;
+  }
+}
+#manager-page h5 {
+  font-size: 2rem;
+}
+@media (max-width: 760px) {
+  #manager-page h5 {
+    font-size: 1.5rem;
+  }
+}
+#manager-page h6 {
+  font-size: 1.75rem;
+}
+@media (max-width: 760px) {
+  #manager-page h6 {
+    font-size: 1.25rem;
+  }
+}
+#manager-page p {
+  font-size: 1.25rem;
+}
+@media (max-width: 760px) {
+  #manager-page p {
+    font-size: 1rem;
+  }
+}
+#manager-page h1,
+#manager-page h2,
+#manager-page h3,
+#manager-page h4,
+#manager-page h5,
+#manager-page h6,
+#manager-page p {
+  color: #1F1F27;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
