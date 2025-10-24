@@ -61,7 +61,8 @@ class CollectionController extends Controller {
             title: '',
             slug: '',
             content: '',
-            page_builder: blockData
+            page_builder: blockData,
+            scheduledAt: req.body.scheduledAt || null,
         };
 
         const standardPath = path.join(process.cwd(), 'content', 'collections', name, 'standard.json');
@@ -86,7 +87,10 @@ class CollectionController extends Controller {
 
     update = async (req: Request, res: Response): Promise<void> => {
         const id = req.params.id;
-        const data = req.body;
+        const data = {
+            ...req.body,
+            scheduledAt: req.body.scheduledAt || null
+        };
         try {
             await collectionService.update(id, data);
             res.redirect('/manager/collections');
