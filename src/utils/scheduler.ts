@@ -2,17 +2,22 @@ import cron from 'node-cron';
 import { getScheduled, publishScheduled } from '../../core/services/schedulerService'
 
 export async function startScheduler() {
-    const scheduled = await getScheduled();
-    console.log('scheduled: ', scheduled);
-
     cron.schedule('* * * * *', async () => {
+        const scheduledCollections = await getScheduled();
         const now = new Date();
 
-        // for (const schedule of scheduled) {
-        //     if (schedule && schedule <= now) {
-        //         await publishScheduled();
-        //         console.log(schedule.name + ' has been published at ' + now)
-        //     }
-        // }
-    })
+        for (const collection of scheduledCollections) {
+            if (!collection.entries.length) continue;
+
+            for (const entry of collection.entries) {
+                if (!entry.scheduled_at) continue; // skip if scheduled_at is null
+
+                const scheduledDate = new Date(entry.scheduled_at);
+                if (scheduledDate <= now && entry.published_at === null) {
+                    await publishScheduled(entry, collection.name);
+                    console.log(`"${entry.title}" from collection "${collection.name}" published at ${now.toISOString()}`);
+                }
+            }
+        }
+    });
 }

@@ -1,16 +1,11 @@
-import { Service, BaseEntity } from './service';
+import { Service } from './service';
 import { generateBlockTemplate } from '../helpers/blockTemplateHelper';
 import fs from 'fs-extra';
 import path from 'path';
 import { ERROR_CODES } from '../../../src/utils/errors';
+import {BlockInput} from "../../interfaces/BlockInput";
 
 export type BlockType = 'page_builder' | 'component';
-
-export interface BlockInput extends BaseEntity {
-  block: string;
-  type: BlockType;
-  fields: any[];
-}
 
 const BLOCKS_DIR = path.join(process.cwd(), 'src/blocks');
 const SCHEMAS_DIR = path.join(BLOCKS_DIR, 'schemas');

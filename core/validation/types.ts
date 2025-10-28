@@ -1,5 +1,4 @@
 // src/validation/types.ts
-
 export type RuleFunction = (value: any, params?: string[]) => boolean;
 
 export interface RuleDefinition {

@@ -1,15 +1,9 @@
 import fs from 'fs/promises';
 import path from 'path';
 import bcrypt from 'bcrypt';
+import {User} from "../interfaces/User";
 
 const USERS_DIR = path.join(process.cwd(), 'content/users');
-
-export interface User {
-  username: string;
-  passwordHash: string;
-  role: string;
-  email?: string;
-}
 
 let users: User[] = [];
 

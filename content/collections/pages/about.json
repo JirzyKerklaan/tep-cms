@@ -1,9 +1,8 @@
 {
   "title": "About us",
   "slug": "about",
-  "content": "This is the homepage",
-  "created_on": "01-01-2024",
-  "release_date": "24-10-2025",
+  "published_at": null,
+  "scheduled_at": "2025-11-01T10:00:00Z",
   "page_builder": [
     {
       "block": "pageheader",
