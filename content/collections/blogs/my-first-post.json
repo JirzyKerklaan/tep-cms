@@ -2,13 +2,25 @@
   "title": "First blog",
   "slug": "my-first-post",
   "content": "This is the first post",
+  "published_at": "2025-10-28T14:30:00.038Z",
+  "scheduled_at": "2025-10-01T10:00:00Z",
   "page_builder": [
     {
       "block": "pageheader",
       "fields": {
         "blocks": [
-          { "block": "text", "fields": { "text": "<h1>First post</h1>" } },
-          { "block": "text", "fields": { "text": "<p>This is a blog post</p>" } }
+          {
+            "block": "text",
+            "fields": {
+              "text": "<h1>First post</h1>"
+            }
+          },
+          {
+            "block": "text",
+            "fields": {
+              "text": "<p>This is a blog post</p>"
+            }
+          }
         ]
       }
     }

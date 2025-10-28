@@ -2,13 +2,26 @@
   "title": "Search",
   "slug": "search",
   "template": "search",
+  "published_at": "2025-10-28T14:30:00.046Z",
+  "scheduled_at": "2025-10-01T10:00:00Z",
   "page_builder": [
     {
       "block": "pageheader",
       "fields": {
         "blocks": [
-          { "block": "text", "fields": { "text": "<h1>Hello world</h1>" } },
-          { "block": "image", "fields": { "src": "/test.png", "alt": "alt" } }
+          {
+            "block": "text",
+            "fields": {
+              "text": "<h1>Hello world</h1>"
+            }
+          },
+          {
+            "block": "image",
+            "fields": {
+              "src": "/test.png",
+              "alt": "alt"
+            }
+          }
         ]
       }
     },
@@ -16,8 +29,19 @@
       "block": "upload",
       "fields": {
         "blocks": [
-          { "block": "text", "fields": { "text": "<h1>Hello world</h1>" } },
-          { "block": "image", "fields": { "src": "/test.png", "alt": "alt" } }
+          {
+            "block": "text",
+            "fields": {
+              "text": "<h1>Hello world</h1>"
+            }
+          },
+          {
+            "block": "image",
+            "fields": {
+              "src": "/test.png",
+              "alt": "alt"
+            }
+          }
         ]
       }
     }

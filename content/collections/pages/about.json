@@ -1,6 +1,16 @@
 {
   "title": "About us",
   "slug": "about",
-  "content": "This is the homepage",
-  "page_builder": [  ]
+  "published_at": null,
+  "scheduled_at": "2025-11-01T10:00:00Z",
+  "page_builder": [
+    {
+      "block": "pageheader",
+      "fields": {
+        "blocks": [
+          { "block": "text", "fields": { "text": "<h1>Pageheader</h1>" } }
+        ]
+      }
+    }
+  ]
 }

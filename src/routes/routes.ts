@@ -1,7 +1,9 @@
 import express, { Request, Response, NextFunction } from 'express';
 import path from 'path';
 import fs from 'fs';
-import { IndexEntry, searchContent } from '../../core/services/contentIndex';
+import {IndexEntry} from "../../core/interfaces/IndexEntry";
+import { searchContent } from '../../core/services/contentIndex';
+import { Entry } from '../../core/interfaces/Entry';
 
 const router = express.Router();
 
@@ -15,10 +17,6 @@ const collections = allDirs.filter(name => name !== 'pages');
 
 interface Page {
   parent?: string;
-  [key: string]: any;
-}
-
-interface Entry {
   [key: string]: any;
 }
 

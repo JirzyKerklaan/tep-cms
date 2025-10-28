@@ -1,11 +1,8 @@
-import { Service, BaseEntity } from './service';
+import { Service } from './service';
 import fs from 'fs-extra';
 import path from 'path';
 import { ERROR_CODES } from '../../../src/utils/errors';
-
-export interface Collection extends BaseEntity {
-    name: string;
-}
+import {Collection} from "../../interfaces/Collection";
 
 const COLLECTIONS_DIR = path.join(process.cwd(), 'content', 'collections');
 const SCHEMAS_DIR = path.join(process.cwd(), 'content', 'schemas', 'collections');
@@ -35,6 +32,26 @@ class CollectionService extends Service<Collection> {
         await fs.writeFile(path.join(folderPath, 'standard.json'), fileContent, 'utf-8');
 
         return newCollection;
+    };
+
+    getAllWithEntryCount = async (): Promise<{ name: string; count: number }[]> => {
+        const collections = await fs.readdir(COLLECTIONS_DIR);
+        const results: { name: string; count: number }[] = [];
+
+        for (const folderName of collections) {
+            const folderPath = path.join(COLLECTIONS_DIR, folderName);
+            const stat = await fs.stat(folderPath);
+            if (stat.isDirectory()) {
+                const files = await fs.readdir(folderPath);
+                const jsonFiles = files.filter(f => f.endsWith('.json'));
+                results.push({
+                    name: folderName,
+                    count: jsonFiles.length,
+                });
+            }
+        }
+
+        return results;
     };
 }
 

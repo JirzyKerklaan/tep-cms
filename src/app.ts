@@ -5,8 +5,10 @@ import expressLayouts from 'express-ejs-layouts';
 import { sessionMiddleware } from '../core/middlewares/session';
 import { globalLocals } from '../core/middlewares/globalLocales';
 import router from './routes';
+import {startScheduler} from "./utils/scheduler";
 
 const app = express();
+startScheduler();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

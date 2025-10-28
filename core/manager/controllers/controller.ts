@@ -1,15 +1,7 @@
 import { Request, Response } from 'express';
 import fs from 'fs-extra';
 import path from 'path';
-
-export interface IController {
-    list?(req: Request, res: Response): Promise<void>;
-    create?(req: Request, res: Response): Promise<void>;
-    update?(req: Request, res: Response): Promise<void>;
-    delete?(req: Request, res: Response): Promise<void>;
-    newForm?(req: Request, res: Response): void;
-    editForm?(req: Request, res: Response): Promise<void>;
-}
+import {IController} from "../../interfaces/IController";
 
 export abstract class Controller implements IController {
     protected viewFolder: string;
