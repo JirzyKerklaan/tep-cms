@@ -1,5 +1,5 @@
 import express, { Request, Response, NextFunction } from 'express';
-import { collectionController, blockController } from '../../core/manager/controllers';
+import { collectionController, blockController, entryController } from '../../core/manager/controllers';
 import {createPassword, findEmail, findUsername, loadUsers, verifyPassword} from '../../core/services/userService';
 import { ERROR_CODES, ErrorCode } from '../utils/errors';
 import fs from 'fs-extra';
@@ -134,6 +134,18 @@ router.post('/collections/edit/:id', collectionController.update);
 router.post('/collections/delete/:id', collectionController.delete);
 
 router.get('/collections', collectionController.list);
+
+// -------------------- //
+
+router.get('/collections/:collection/new', entryController.newForm);
+router.post('/collections/:collection/new', entryController.create);
+
+router.get('/collections/:collection/edit/:id', entryController.editForm);
+router.post('/collections/:collection/edit/:id', entryController.update);
+
+router.post('/collections/:collection/delete/:id', entryController.delete);
+
+router.get('/collections/:collection', entryController.list);
 
 // -------------------- //
 
