@@ -2,4 +2,12 @@
     <p style="color: red;"><%= error %></p>
 <% } else { %>
 <p>edit</p>
+
+<select name="restore_version">
+    <option value="">Choose a previous version</option>
+  <% olderVersions.forEach(version => { %>
+    <option value="<%= version %>"><%= version %></option>
+  <% }) %>
+</select>
+
 <% } %>

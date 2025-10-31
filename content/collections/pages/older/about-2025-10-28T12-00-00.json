@@ -1,0 +1,16 @@
+{
+  "title": "About us - Draft 2",
+  "slug": "about",
+  "published_at": null,
+  "scheduled_at": "2025-11-01T10:00:00Z",
+  "page_builder": [
+    {
+      "block": "pageheader",
+      "fields": {
+        "blocks": [
+          { "block": "text", "fields": { "text": "<h1>About Our Company</h1>" } }
+        ]
+      }
+    }
+  ]
+}

@@ -5,6 +5,6 @@ export interface Entry extends BaseEntity {
     slug: string;
     content?: string;
     published_at: Date | null;
-    scheduled_at: string | null;
+    scheduled_at: Date | null;
     [key: string]: any;
 }

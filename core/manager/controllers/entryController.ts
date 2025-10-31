@@ -1,10 +1,9 @@
 import { Request, Response } from 'express';
 import { Controller } from './controller';
 import entryService from '../services/entryService';
-import fs from 'fs-extra';
-import path from 'path';
-import { getDefaultFields } from '../helpers/defaultFieldsHelper';
+import { VersioningService } from '../services/versioningService';
 import { ERROR_CODES } from '../../../src/utils/errors';
+import path from "path";
 
 class EntryController extends Controller {
     constructor() {
@@ -45,13 +44,19 @@ class EntryController extends Controller {
     editForm = async (req: Request, res: Response): Promise<void> => {
         const id = req.params.id;
         const collectionName = req.params.collection;
+        const versioningService = new VersioningService({
+            baseDir: path.join(process.cwd(), 'content', 'collections'),
+            maxVersions: 5,
+        });
+        const olderVersions = await versioningService.getVersions(collectionName, id);
+
         try {
             const entry = await entryService.getById(collectionName, id);
             if (!entry) {
                 res.render(`${this.viewFolder}/edit`, { layout: 'layouts/manager', user: req.session.user, error: ERROR_CODES["TEP461"] });
                 return;
             }
-            res.render(`${this.viewFolder}/edit`, { layout: 'layouts/manager', user: req.session.user, entry, error: ERROR_CODES["TEP200"] });
+            res.render(`${this.viewFolder}/edit`, { layout: 'layouts/manager', user: req.session.user, entry, olderVersions, error: ERROR_CODES["TEP200"] });
         } catch {
             res.render(`${this.viewFolder}/edit`, { layout: 'layouts/manager', user: req.session.user, error: ERROR_CODES["TEP462"] });
         }
