@@ -24,11 +24,8 @@ export async function getScheduled() {
 
 export async function publishScheduled(entry: Entry, collectionName: string): Promise<void> {
     try {
-        console.log('entry', entry);
         const now = new Date();
         await entryService.cronUpdate(collectionName, entry.slug, { published_at: now });
-
-        console.log(`Published entry "${entry.title}" at ${now.toISOString()}`);
     } catch (err) {
         console.error(`Failed to publish entry "${entry.title}":`, err);
     }

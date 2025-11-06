@@ -36,14 +36,11 @@ export class Service<T extends BaseEntity> {
         }
     }
 
-    async getAll(): Promise<T[]> {
+    async getAll(): Promise<string[]> {
         const files = await fs.readdir(this.baseDir);
-        const results: T[] = [];
+        const results: string[] = [];
         for (const file of files) {
-            if (file.endsWith('.json')) {
-                const entity = await fs.readJson(path.join(this.baseDir, file)) as T;
-                results.push(entity);
-            }
+            results.push(file);
         }
         return results;
     }

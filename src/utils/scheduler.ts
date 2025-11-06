@@ -15,7 +15,6 @@ export async function startScheduler() {
                 const scheduledDate = new Date(entry.scheduled_at);
                 if (scheduledDate <= now && entry.published_at === null) {
                     await publishScheduled(entry, collection.name);
-                    console.log(`"${entry.title}" from collection "${collection.name}" published at ${now.toISOString()}`);
                 }
             }
         }
