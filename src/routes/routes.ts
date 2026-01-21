@@ -61,11 +61,11 @@ router.get('/', (req, res) => {
 router.get('/:slug', (req: Request, res: Response, next: NextFunction) => {
   const slug = req.params.slug;
 
-  if (collections.includes(slug)) return next();
+  if (collections.includes(<string>slug)) return next();
 
   if (slug === 'home') return next();
 
-  const page = loadPage(slug);
+  const page = loadPage(<string>slug);
   if (!page) return next();
 
   if (page.parent) {
@@ -107,15 +107,15 @@ router.get('/:slug', (req: Request, res: Response, next: NextFunction) => {
 router.get('/:collection/:slug', (req: Request, res: Response, next: NextFunction) => {
   const { collection, slug } = req.params;
 
-  if (collections.includes(collection)) {
-    const entry = loadEntry(collection, slug);
+  if (collections.includes(<string>collection)) {
+    const entry = loadEntry(<string>collection, <string>slug);
     if (!entry) return res.status(404).send('Not found');
 
     const viewsDir = req.app.get('views');
     const viewsPath = Array.isArray(viewsDir) ? viewsDir[0] : viewsDir;
 
     const collectionViewFile = path.join(viewsPath, `${collection}.ejs`);
-    let viewToRender = 'standard';
+    let viewToRender: string | string[] = 'standard';
 
     if (fs.existsSync(collectionViewFile)) {
       viewToRender = collection;
@@ -130,11 +130,11 @@ router.get('/:collection/:slug', (req: Request, res: Response, next: NextFunctio
 router.get('/:parent/:slug', (req: Request, res: Response, next: NextFunction) => {
   const { parent, slug } = req.params;
 
-  if (collections.includes(parent)) {
+  if (collections.includes(<string>parent)) {
     return next();
   }
 
-  const page = loadPage(slug);
+  const page = loadPage(<string>slug);
   if (!page) return next();
 
   if (page.parent !== parent) return next();

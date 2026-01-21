@@ -3,6 +3,7 @@ import { Controller } from './controller';
 import entryService from '../services/entryService';
 import { VersioningService } from '../services/versioningService';
 import { ERROR_CODES } from '../../../src/utils/errors';
+import { Entry } from '../../interfaces/Entry';
 import path from "path";
 
 class EntryController extends Controller {
@@ -31,7 +32,7 @@ class EntryController extends Controller {
         const collection = req.params.collection;
 
         try {
-            entryService.saveEntry(collection, req.body)
+            entryService.saveEntry(<string>collection, req.body)
             res.redirect(`/manager/collections/${collection}`);
         } catch {
             res.status(500).render(`${this.viewFolder}/new`, {
@@ -48,10 +49,10 @@ class EntryController extends Controller {
             baseDir: path.join(process.cwd(), 'content', 'collections'),
             maxVersions: 5,
         });
-        const olderVersions = await versioningService.getVersions(collectionName, id);
+        const olderVersions = await versioningService.getVersions(<string>collectionName, <string>id);
 
         try {
-            const entry = await entryService.getById(collectionName, id);
+            const entry = await entryService.getById(<string>collectionName, <string>id);
             if (!entry) {
                 res.render(`${this.viewFolder}/edit`, { layout: 'layouts/manager', user: req.session.user, error: ERROR_CODES["TEP461"] });
                 return;
@@ -69,7 +70,7 @@ class EntryController extends Controller {
             scheduledAt: req.body.scheduledAt || null
         };
         try {
-            await entryService.update(id, data);
+            await entryService.update(<string>id, data);
             res.redirect('/manager/entries');
         } catch {
             res.render(`${this.viewFolder}/edit`, { layout: 'layouts/manager', user: req.session.user, entry: { id, ...data }, error: ERROR_CODES["TEP462"] });
