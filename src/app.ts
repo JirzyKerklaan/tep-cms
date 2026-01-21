@@ -6,6 +6,7 @@ import { sessionMiddleware } from '../core/middlewares/session';
 import { globalLocals } from '../core/middlewares/globalLocales';
 import router from './routes';
 import {startScheduler} from "./utils/scheduler";
+import favicon from 'serve-favicon';
 
 const app = express();
 startScheduler();
@@ -28,6 +29,8 @@ app.set('layout', 'layouts/main');
 app.use(sessionMiddleware);
 app.use(globalLocals);
 
+// Static files
+app.use(favicon(path.join(process.cwd(), 'public', 'favicon.ico')));
 app.use(express.static(path.join(process.cwd(), 'public')));
 
 // Routes
