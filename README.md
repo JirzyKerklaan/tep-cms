@@ -24,6 +24,7 @@
 - 👥 **Multiple users** – Allows the user to have multiple accounts.
 - 🕙 **Content scheduler** - Plan when a post should be released
 - 🔖 **Content versioning** - Configurable content versioning of entries
+- 🧩 **Headless mode** - Use headless mode to implement TEP anywhere
 
 <h2 id="installation">🛠 Installation</h2>
 
