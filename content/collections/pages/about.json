@@ -1,8 +1,7 @@
 {
-  "id": 2,
   "title": "About us",
   "slug": "about",
-  "published_at": "2025-11-05T14:29:00.038Z",
+  "published_at": null,
   "scheduled_at": "2025-11-01T10:00:00Z",
   "page_builder": [
     {

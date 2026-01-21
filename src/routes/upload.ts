@@ -10,7 +10,7 @@ router.post('/upload', upload.array('images'), async (req, res) => {
   const files = req.files as Express.Multer.File[];
 
   try {
-    if (config.convertToWebp == false) {
+    if (!config.convertToWebp) {
       res.redirect('/')
     } else {
       const webpConversions = await Promise.all(
