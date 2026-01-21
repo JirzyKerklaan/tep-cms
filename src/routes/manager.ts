@@ -4,15 +4,9 @@ import {createPassword, findEmail, findUsername, loadUsers, verifyPassword} from
 import { ERROR_CODES, ErrorCode } from '../utils/errors';
 import fs from 'fs-extra';
 import path from "path";
+import {isAuthenticated} from '../../core/middlewares/isAuthenticated';
 
 const router = express.Router();
-
-function isAuthenticated(req: Request, res: Response, next: NextFunction) {
-  if (req.session?.user) {
-    return next();
-  }
-  res.redirect('/manager/login');
-}
 
 router.get('/login', (req: Request, res: Response) => {
   res.render('manager/login', {
@@ -117,7 +111,7 @@ router.post('/register', async (req: Request, res: Response) => {
 
 // -------------------- //
 
-// router.use(isAuthenticated);
+router.use(isAuthenticated);
 
 router.get('/', (req: Request, res: Response) => {
   res.render('manager/dashboard', { layout: 'layouts/manager', user: req.session.user });
