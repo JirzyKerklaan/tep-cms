@@ -1,20 +1,13 @@
 import fs from 'fs/promises';
 import path from 'path';
 import lunr from 'lunr';
+import {IndexEntry} from "../interfaces/IndexEntry";
 
 const BASE_DIRS = [
   path.join(process.cwd(), 'content/collections'),
   path.join(process.cwd(), 'content/globals'),
   path.join(process.cwd(), 'content/navigation'),
 ];
-
-export interface IndexEntry {
-  slug: string;
-  title: string;
-  content: string;
-  type: string;
-  path: string;
-}
 
 let index: IndexEntry[] = [];
 let lunrIndex: ReturnType<typeof lunr> | null = null;

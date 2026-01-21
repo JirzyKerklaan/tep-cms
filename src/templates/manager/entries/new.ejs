@@ -1,0 +1,12 @@
+<h1>Create New Entry</h1>
+
+<form action="/manager/collections/<%= collection %>/new" method="POST">
+  <div>
+    <label for="name">Entry title:</label>
+    <input type="text" id="name" name="name" required />
+    <label for="name">Entry slug:</label>
+    <input type="text" id="slug" name="slug" required />
+  </div>
+
+  <button type="submit">Create Entry</button>
+</form>

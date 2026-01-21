@@ -1,18 +1,12 @@
 import express, { Request, Response, NextFunction } from 'express';
-import { collectionController, blockController } from '../../core/manager/controllers';
+import { collectionController, blockController, entryController } from '../../core/manager/controllers';
 import {createPassword, findEmail, findUsername, loadUsers, verifyPassword} from '../../core/services/userService';
 import { ERROR_CODES, ErrorCode } from '../utils/errors';
 import fs from 'fs-extra';
 import path from "path";
+import {isAuthenticated} from '../../core/middlewares/isAuthenticated';
 
 const router = express.Router();
-
-function isAuthenticated(req: Request, res: Response, next: NextFunction) {
-  if (req.session?.user) {
-    return next();
-  }
-  res.redirect('/manager/login');
-}
 
 router.get('/login', (req: Request, res: Response) => {
   res.render('manager/login', {
@@ -117,7 +111,7 @@ router.post('/register', async (req: Request, res: Response) => {
 
 // -------------------- //
 
-// router.use(isAuthenticated);
+router.use(isAuthenticated);
 
 router.get('/', (req: Request, res: Response) => {
   res.render('manager/dashboard', { layout: 'layouts/manager', user: req.session.user });
@@ -134,6 +128,18 @@ router.post('/collections/edit/:id', collectionController.update);
 router.post('/collections/delete/:id', collectionController.delete);
 
 router.get('/collections', collectionController.list);
+
+// -------------------- //
+
+router.get('/collections/:collection/new', entryController.newForm);
+router.post('/collections/:collection/new', entryController.create);
+
+router.get('/collections/:collection/edit/:id', entryController.editForm);
+router.post('/collections/:collection/edit/:id', entryController.update);
+
+router.post('/collections/:collection/delete/:id', entryController.delete);
+
+router.get('/collections/:collection', entryController.list);
 
 // -------------------- //
 

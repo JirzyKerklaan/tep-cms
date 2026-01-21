@@ -61,7 +61,8 @@ class CollectionController extends Controller {
             title: '',
             slug: '',
             content: '',
-            page_builder: blockData
+            page_builder: blockData,
+            scheduledAt: req.body.scheduledAt || null,
         };
 
         const standardPath = path.join(process.cwd(), 'content', 'collections', name, 'standard.json');
@@ -73,7 +74,7 @@ class CollectionController extends Controller {
     editForm = async (req: Request, res: Response): Promise<void> => {
         const id = req.params.id;
         try {
-            const collection = await collectionService.getById(id);
+            const collection = await collectionService.getById(<string>id);
             if (!collection) {
                 res.render(`${this.viewFolder}/edit`, { layout: 'layouts/manager', user: req.session.user, error: ERROR_CODES["TEP461"] });
                 return;
@@ -86,9 +87,12 @@ class CollectionController extends Controller {
 
     update = async (req: Request, res: Response): Promise<void> => {
         const id = req.params.id;
-        const data = req.body;
+        const data = {
+            ...req.body,
+            scheduledAt: req.body.scheduledAt || null
+        };
         try {
-            await collectionService.update(id, data);
+            await collectionService.update(<string>id, data);
             res.redirect('/manager/collections');
         } catch {
             res.render(`${this.viewFolder}/edit`, { layout: 'layouts/manager', user: req.session.user, collection: { id, ...data }, error: ERROR_CODES["TEP462"] });

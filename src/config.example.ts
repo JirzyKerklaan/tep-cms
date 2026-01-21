@@ -8,4 +8,8 @@ export default {
   session: {
     secret: 'your-secret-key',
   },
+  convertToWebp: false,
+  server: {
+    PORT: 3000,
+  },
 };
