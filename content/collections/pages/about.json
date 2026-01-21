@@ -1,14 +1,19 @@
 {
   "title": "About us",
   "slug": "about",
-  "published_at": null,
+  "published_at": "2026-01-21T13:00:00.011Z",
   "scheduled_at": "2025-11-01T10:00:00Z",
   "page_builder": [
     {
       "block": "pageheader",
       "fields": {
         "blocks": [
-          { "block": "text", "fields": { "text": "<h1>Pageheader</h1>" } }
+          {
+            "block": "text",
+            "fields": {
+              "text": "<h1>Pageheader</h1>"
+            }
+          }
         ]
       }
     }

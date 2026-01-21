@@ -24,7 +24,7 @@ export abstract class Controller implements IController {
     delete = async (req: Request, res: Response): Promise<void> => {
         try {
             const id = req.params.id;
-            const folderPath = path.join(process.cwd(), 'content', this.modelName, id);
+            const folderPath = path.join(process.cwd(), 'content', this.modelName, <string>id);
             const schemaPath = path.join(process.cwd(), 'content', 'schemas', this.modelName, `${id}.schema.json`);
 
             await fs.remove(folderPath);

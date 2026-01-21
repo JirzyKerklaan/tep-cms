@@ -31,7 +31,7 @@ class BlockController extends Controller {
   };
 
   editForm = async (req: Request, res: Response): Promise<void> => {
-    const block = await blockService.getById(req.params.id);
+    const block = await blockService.getById(<string>req.params.id);
     if (!block) {
       res.status(404).send(ERROR_CODES["TEP471"]);
       return;
@@ -43,7 +43,7 @@ class BlockController extends Controller {
   update = async (req: Request, res: Response): Promise<void> => {
     const { block, fields, type } = req.body;
 
-    await blockService.update(req.params.id, {
+    await blockService.update(<string>req.params.id, {
       block,
       type,
       fields: JSON.parse(fields),
@@ -54,7 +54,7 @@ class BlockController extends Controller {
 
   delete = async (req: Request, res: Response): Promise<void> => {
     try {
-      await blockService.delete(req.params.id);
+      await blockService.delete(<string>req.params.id);
       res.redirect('/manager/blocks');
     } catch {
       res.status(500).send(ERROR_CODES["TEP450"]);
