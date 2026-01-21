@@ -11,6 +11,9 @@ export const ERROR_CODES = {
     TEP112: 'Account locked or suspended',
     TEP113: 'Too many failed login attempts',
     TEP114: 'Session expired or invalid',
+    TEP115: 'Missing authorization header',
+    TEP116: 'Invalid authorization header',
+    TEP117: 'Invalid API key',
 
     // 12x — Registration
     TEP120: 'General registration error',
