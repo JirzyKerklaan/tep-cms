@@ -2,11 +2,16 @@
 // src/config.ts
 
 export default {
+  headless_mode: true,
+
   site: {
     site_name: 'TEPCMS',
   },
+  api: {
+    key: '',
+  },
   session: {
-    secret: 'your-secret-key',
+    secret: '',
   },
   convertToWebp: false,
   server: {
