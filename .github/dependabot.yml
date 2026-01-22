@@ -16,6 +16,3 @@ updates:
     commit-message:
       prefix: "⬆️"
       include: "scope"
-      branch-name:
-        prefix: "chore"
-        separator: "/"
