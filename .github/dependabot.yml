@@ -6,11 +6,11 @@ updates:
       interval: "weekly"
     open-pull-requests-limit: 1
     ignore:
-      - packages: "*"
+      - dependency-name: "*"
         update-types:
           - "version-update:semver-major"
     groups:
-      all-dependencies:
+      packages:
         patterns:
           - "*"
     commit-message:
