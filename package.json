@@ -42,7 +42,7 @@
     "@types/uuid": "^10.0.0",
     "concurrently": "^9.2.0",
     "nodemon": "^3.1.10",
-    "sass": "^1.89.2",
+    "sass": "^1.97.3",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   }
