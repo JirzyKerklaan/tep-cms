@@ -3,6 +3,7 @@ import path from 'path';
 import fs from 'fs';
 import {IndexEntry} from "../../core/interfaces/IndexEntry";
 import { searchContent } from '../../core/services/contentIndex';
+import { Page } from '../../core/interfaces/Page';
 import { Entry } from '../../core/interfaces/Entry';
 
 const router = express.Router();
@@ -14,11 +15,6 @@ const allDirs = fs.readdirSync(collectionsDir, { withFileTypes: true })
   .map(dirent => dirent.name);
 
 const collections = allDirs.filter(name => name !== 'pages');
-
-interface Page {
-  parent?: string;
-  [key: string]: any;
-}
 
 function loadEntry(collection: string, slug: string): Entry | null {
   const filePath = path.join(process.cwd(), `/content/collections/${collection}/${slug}.json`);
