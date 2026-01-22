@@ -4,8 +4,10 @@ import fs from 'fs';
 import {IndexEntry} from "../../core/interfaces/IndexEntry";
 import { searchContent } from '../../core/services/contentIndex';
 import { Entry } from '../../core/interfaces/Entry';
+import {handleRedirects} from "../../core/middlewares/handleRedirects";
 
 const router = express.Router();
+router.use(handleRedirects);
 
 const collectionsDir = path.join(process.cwd(), 'content', 'collections');
 
