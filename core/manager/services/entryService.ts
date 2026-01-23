@@ -3,6 +3,7 @@ import path from 'path';
 import { Service } from './service';
 import { Entry } from '../../interfaces/Entry';
 import VersioningService from './versioningService';
+import PluginManager from "../plugins/pluginManager";
 
 const COLLECTIONS_DIR = path.join(process.cwd(), 'content', 'collections');
 fs.ensureDirSync(COLLECTIONS_DIR);
@@ -26,6 +27,8 @@ class EntryService extends Service<Entry> {
             page_builder: [],
         };
 
+        await PluginManager.trigger('beforeEntryCreate', collectionName, entryData);
+
         const versioningService = new VersioningService({
             baseDir: COLLECTIONS_DIR,
             maxVersions: 5,
@@ -33,8 +36,11 @@ class EntryService extends Service<Entry> {
 
         await versioningService.saveVersion(collectionName, slug, entryData);
 
+        await PluginManager.trigger('afterEntryCreate', collectionName, entryData);
+
         return entryData;
     };
+
 
     getById = async (collectionName: string, id: string): Promise<Entry | null> => {
         const file = path.join(this.baseDir, collectionName, `${id}.json`);
