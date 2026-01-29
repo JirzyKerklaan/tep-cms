@@ -10,7 +10,5 @@ export interface Plugin {
     hooks?: {
         beforeEntryCreate?: EntryHook[];
         afterEntryCreate?: EntryHook[];
-        beforeEntryUpdate?: EntryHook[];
-        afterEntryUpdate?: EntryHook[];
     };
 }
