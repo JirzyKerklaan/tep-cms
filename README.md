@@ -21,10 +21,11 @@
 - 🎨 **SCSS Styling** – modular, maintainable styles.
 - 🧪 **Easy Local Dev** – run with nearly zero setup.
 - 🚀 **Lightweight & Fast** – powered by Express & EJS.
-- 👥 **Multiple users** – Allows the user to have multiple accounts.
-- 🕙 **Content scheduler** - Plan when a post should be released
-- 🔖 **Content versioning** - Configurable content versioning of entries
-- 🧩 **Headless mode** - Use headless mode to implement TEP anywhere
+- 👥 **Multiple users** – allows the user to have multiple accounts.
+- 🕙 **Content scheduler** - plan when a post should be released
+- 🔖 **Content versioning** - configurable content versioning of entries
+- 🧩 **Headless mode** - use headless mode to implement TEP anywhere
+- 🔌 **Plugins** - easy management for a variety of plugins
 
 <h2 id="installation">🛠 Installation</h2>
 
@@ -71,6 +72,7 @@ tep-cms/
 │   └── css/              # Compiled SCSS styling
 ├── src/
 │   ├── blocks/           # Page_builder blocks & components
+│   ├── plugins/          # Installed plugins
 │   ├── requests/         # Request validators
 │   ├── routes/           # System routing
 │   ├── templates/
