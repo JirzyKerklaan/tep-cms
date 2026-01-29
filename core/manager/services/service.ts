@@ -1,6 +1,7 @@
 import fs from 'fs-extra';
 import path from 'path';
 import { BaseEntity } from '../../interfaces/BaseEntity';
+import PluginManager from "../plugins/pluginManager";
 
 
 export class Service<T extends BaseEntity> {

@@ -8,6 +8,8 @@ import router from './routes';
 import {startScheduler} from "./utils/scheduler";
 import favicon from 'serve-favicon';
 
+import "./plugins";
+
 const app = express();
 startScheduler();
 
