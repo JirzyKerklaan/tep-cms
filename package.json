@@ -11,6 +11,7 @@
     "prod": "npm run build && sass styles/styles.scss public/css/styles.css --no-source-map --style=compressed"
   },
   "dependencies": {
+    "@the-node-forge/api-rate-limit": "^1.0.8",
     "bcrypt": "^6.0.0",
     "chokidar": "^4.0.3",
     "ejs": "^3.1.10",
