@@ -1,7 +1,7 @@
 import express from 'express';
 import path from 'path';
 import expressLayouts from 'express-ejs-layouts';
-
+import { RateLimiter, rateLimitMiddleware } from '@the-node-forge/api-rate-limit';
 import { sessionMiddleware } from '../core/middlewares/session';
 import { globalLocals } from '../core/middlewares/globalLocales';
 import router from './routes';
@@ -34,6 +34,10 @@ app.use(globalLocals);
 // Static files
 app.use(favicon(path.join(process.cwd(), 'public', 'favicon.ico')));
 app.use(express.static(path.join(process.cwd(), 'public')));
+
+// Rate limiter
+const limiter = new RateLimiter({ windowMs: 60000, maxRequests: 10 });
+app.use(rateLimitMiddleware(limiter));
 
 // Routes
 app.use(router);
