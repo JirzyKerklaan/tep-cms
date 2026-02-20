@@ -11,19 +11,22 @@ export function HasValidToken(req: Request, res: Response, next: NextFunction) {
     const authHeader = req.headers['authorization'];
 
     if (!authHeader) {
-        return res.status(401).json({ error: ERROR_CODES.TEP115 });
+        res.status(401).json({ error: ERROR_CODES.TEP115 });
+        return;
     }
 
     const parts = authHeader.split(' ');
 
     if (parts.length !== 2 || parts[0] !== 'Bearer') {
-        return res.status(401).json({ error: ERROR_CODES.TEP116 });
+        res.status(401).json({ error: ERROR_CODES.TEP116 });
+        return;
     }
 
     const token = parts[1];
 
     if (token !== config.api.key) {
-        return res.status(403).json({ error: ERROR_CODES.TEP117 });
+        res.status(403).json({ error: ERROR_CODES.TEP117 });
+        return;
     }
 
     next();

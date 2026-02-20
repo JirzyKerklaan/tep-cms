@@ -8,10 +8,11 @@ router.get('/', (req, res) => {
   const query = req.query.q as string;
 
   if (!query) {
-    return res.render('views/search', {
+    res.render('views/search', {
       query: '',
       results: [],
     });
+    return;
   }
 
   const results = searchContent(query);
