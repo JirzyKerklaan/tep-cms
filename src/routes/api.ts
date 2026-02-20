@@ -17,16 +17,16 @@ if (!config.headless_mode) {
 }
 
 router.get('/collections', async (req: Request, res: Response) => {
-    let entries = await collectionService.getAll();
+    const entries = await collectionService.getAll();
     res.json({data: entries});
 });
 router.get('/:collection', async (req: Request, res: Response) => {
-    let entries = await entryService.getAllFromCollection(<string>req.params.collection);
+    const entries = await entryService.getAllFromCollection(<string>req.params.collection);
     res.json({data: entries});
 });
 
 router.get('/:collection/:entry', async (req: Request, res: Response) => {
-    let entry = await entryService.getById(<string>req.params.collection, <string>req.params.entry);
+    const entry = await entryService.getById(<string>req.params.collection, <string>req.params.entry);
     res.json({data: entry});
 });
 

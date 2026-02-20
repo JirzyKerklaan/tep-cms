@@ -2,7 +2,6 @@ import { Service } from './service';
 import { generateBlockTemplate } from '../helpers/blockTemplateHelper';
 import fs from 'fs-extra';
 import path from 'path';
-import { ERROR_CODES } from '../../../src/utils/errors';
 import {BlockInput} from "../../interfaces/BlockInput";
 
 export type BlockType = 'page_builder' | 'component';

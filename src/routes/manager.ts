@@ -1,4 +1,4 @@
-import express, { Request, Response, NextFunction } from 'express';
+import express, { Request, Response } from 'express';
 import { collectionController, blockController, entryController } from '../../core/manager/controllers';
 import {createPassword, findEmail, findUsername, loadUsers, verifyPassword} from '../../core/services/userService';
 import { ERROR_CODES, ErrorCode } from '../utils/errors';

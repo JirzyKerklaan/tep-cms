@@ -13,12 +13,13 @@ router.post('/upload', upload.array('images'), async (req, res) => {
     if (!config.convertToWebp) {
       res.redirect('/')
     } else {
-      const webpConversions = await Promise.all(
+      await Promise.all(
         files.map(file => convertToWebp(file.path))
       );
       res.redirect('/');
     }
   } catch (error) {
+    console.log(error);
     res.status(500).json({ success: false, error: ERROR_CODES["TEP431"] });
   }
 });
