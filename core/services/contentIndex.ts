@@ -2,6 +2,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import lunr from 'lunr';
 import {IndexEntry} from "../interfaces/IndexEntry";
+import {SanitizedString} from "../manager/classes/sanitizedString";
 
 const BASE_DIRS = [
   path.join(process.cwd(), 'content/collections'),
@@ -55,7 +56,7 @@ async function recursivelyFindJsonFiles(dir: string): Promise<string[]> {
   const files: string[] = [];
 
   for (const entry of entries) {
-    const fullPath = path.join(dir, entry.name);
+    const fullPath = path.join(dir, new SanitizedString(entry.name).toString());
 
     if (entry.isDirectory()) {
       const nestedFiles = await recursivelyFindJsonFiles(fullPath);

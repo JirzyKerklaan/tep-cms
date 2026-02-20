@@ -6,6 +6,7 @@ import { searchContent } from '../../core/services/contentIndex';
 import { Page } from '../../core/interfaces/Page';
 import { Entry } from '../../core/interfaces/Entry';
 import {handleRedirects} from "../../core/middlewares/handleRedirects";
+import {SanitizedString} from "../../core/manager/classes/sanitizedString";
 
 const router = express.Router();
 router.use(handleRedirects);
@@ -19,6 +20,9 @@ const allDirs = fs.readdirSync(collectionsDir, { withFileTypes: true })
 const collections = allDirs.filter(name => name !== 'pages');
 
 function loadEntry(collection: string, slug: string): Entry | null {
+  collection = new SanitizedString(collection).toString();
+  slug = new SanitizedString(slug).toString();
+
   const filePath = path.join(process.cwd(), `/content/collections/${collection}/${slug}.json`);
   if (!fs.existsSync(filePath)) return null;
   const raw = fs.readFileSync(filePath, 'utf-8');
@@ -26,7 +30,7 @@ function loadEntry(collection: string, slug: string): Entry | null {
 }
 
 function loadPage(slug: string): Page | null {
-  const filePath = path.join(process.cwd(), `/content/collections/pages/${slug}.json`);
+  const filePath = path.join(process.cwd(), `/content/collections/pages/${new SanitizedString(slug).toString()}.json`);
   if (!fs.existsSync(filePath)) return null;
   const raw = fs.readFileSync(filePath, 'utf-8');
   return JSON.parse(raw);
@@ -34,7 +38,10 @@ function loadPage(slug: string): Page | null {
 
 router.get('/', (req, res) => {
   const homepage = loadPage('home');
-  if (!homepage) return res.status(404).send('Homepage not found');
+  if (!homepage) {
+    res.status(404).send('Homepage not found');
+    return;
+  }
 
   const viewsDir = req.app.get('views');
   const viewsPath = Array.isArray(viewsDir) ? viewsDir[0] : viewsDir;
@@ -59,15 +66,25 @@ router.get('/', (req, res) => {
 router.get('/:slug', (req: Request, res: Response, next: NextFunction) => {
   const slug = req.params.slug;
 
-  if (collections.includes(<string>slug)) return next();
+  if (collections.includes(<string>slug)) {
+    next();
+    return;
+  }
 
-  if (slug === 'home') return next();
+  if (slug === 'home') {
+    next();
+    return;
+  }
 
   const page = loadPage(<string>slug);
-  if (!page) return next();
+  if (!page) {
+    next();
+    return;
+  }
 
   if (page.parent) {
-    return res.redirect(`/${page.parent}/${slug}`);
+    res.redirect(`/${page.parent}/${slug}`);
+    return;
   }
   
   let viewToRender = 'standard';
@@ -103,11 +120,24 @@ router.get('/:slug', (req: Request, res: Response, next: NextFunction) => {
 });
 
 router.get('/:collection/:slug', (req: Request, res: Response, next: NextFunction) => {
-  const { collection, slug } = req.params;
+  let collection = new SanitizedString(
+      Array.isArray(req.params.collection)
+          ? req.params.collection[0]
+          : req.params.collection
+  ).toString();
+
+  let slug = new SanitizedString(
+      Array.isArray(req.params.slug)
+          ? req.params.slug[0]
+          : req.params.slug
+  ).toString();
 
   if (collections.includes(<string>collection)) {
     const entry = loadEntry(<string>collection, <string>slug);
-    if (!entry) return res.status(404).send('Not found');
+    if (!entry) {
+      res.status(404).send('Not found');
+      return;
+    }
 
     const viewsDir = req.app.get('views');
     const viewsPath = Array.isArray(viewsDir) ? viewsDir[0] : viewsDir;
@@ -119,23 +149,32 @@ router.get('/:collection/:slug', (req: Request, res: Response, next: NextFunctio
       viewToRender = collection;
     }
 
-    return res.render(`views/${viewToRender}`, entry);
+    res.render(`views/${viewToRender}`, entry);
+    return;
   }
 
   next();
+  return;
 });
 
 router.get('/:parent/:slug', (req: Request, res: Response, next: NextFunction) => {
   const { parent, slug } = req.params;
 
   if (collections.includes(<string>parent)) {
-    return next();
+    next();
+    return;
   }
 
   const page = loadPage(<string>slug);
-  if (!page) return next();
+  if (!page) {
+    next();
+    return;
+  }
 
-  if (page.parent !== parent) return next();
+  if (page.parent !== parent) {
+    next();
+    return;
+  }
 
   res.render('views/pages', page);
 });

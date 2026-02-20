@@ -4,6 +4,7 @@ import fs from 'fs-extra';
 import path from 'path';
 import { ERROR_CODES } from '../../../src/utils/errors';
 import {BlockInput} from "../../interfaces/BlockInput";
+import {SanitizedString} from "../classes/sanitizedString";
 
 export type BlockType = 'page_builder' | 'component';
 
@@ -42,9 +43,10 @@ class BlockService extends Service<BlockInput> {
     const block = await this.getById(id);
     if (!block) return;
 
-    const normalizedBlock = normalizeName(block.block);
-    const blockPath = path.join(BLOCKS_DIR, block.type, `${normalizedBlock}.ejs`);
-    const schemaPath = path.join(SCHEMAS_DIR, block.type, `${normalizedBlock}.schema.json`);
+    const normalizedBlock = new SanitizedString(normalizeName(block.block)).toString();
+    const safeType = new SanitizedString(block.type).toString();
+    const blockPath = path.join(BLOCKS_DIR, safeType, `${normalizedBlock}.ejs`);
+    const schemaPath = path.join(SCHEMAS_DIR, safeType, `${normalizedBlock}.schema.json`);
 
     if (await fs.pathExists(blockPath)) await fs.remove(blockPath);
     if (await fs.pathExists(schemaPath)) await fs.remove(schemaPath);

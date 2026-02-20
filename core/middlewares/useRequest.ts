@@ -18,7 +18,8 @@ export function useRequest<T extends BaseRequest>(RequestClass: new () => T) {
             next();
         } catch (err: any) {
             if (err.validation) {
-                return res.status(422).json({ errors: err.validation });
+                res.status(422).json({ errors: err.validation });
+                return;
             }
             res.status(500).json({ errors: 'Validation failed' });
         }

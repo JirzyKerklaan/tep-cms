@@ -12,7 +12,8 @@ export async function handleRedirects(req: Request, res: Response, next: NextFun
     const redirect = redirects.find(r => normalize(r.from) === path);
 
     if (redirect) {
-        return res.redirect(redirect.permanent ? 301 : 302, redirect.to);
+        res.redirect(redirect.permanent ? 301 : 302, redirect.to);
+        return;
     }
 
     next();

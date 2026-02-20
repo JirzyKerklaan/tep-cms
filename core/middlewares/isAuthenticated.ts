@@ -6,8 +6,10 @@ export function isAuthenticated(
     next: NextFunction
 ) {
   if (req.session && req.session.user) {
-    return next();
+    next();
+    return;
   }
 
-  return res.redirect("/manager/login");
+  res.redirect("/manager/login");
+  return;
 }

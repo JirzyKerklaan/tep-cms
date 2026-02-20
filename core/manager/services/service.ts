@@ -2,6 +2,7 @@ import fs from 'fs-extra';
 import path from 'path';
 import { BaseEntity } from '../../interfaces/BaseEntity';
 import PluginManager from "../plugins/pluginManager";
+import {SanitizedString} from "../classes/sanitizedString";
 
 
 export class Service<T extends BaseEntity> {
@@ -13,12 +14,16 @@ export class Service<T extends BaseEntity> {
     }
 
     async save(entity: T, fileName?: string): Promise<void> {
-        const file = path.join(this.baseDir, fileName ?? `${entity.id}.json`);
+        const safeFileName = fileName
+            ? new SanitizedString(fileName).toString()
+            : `${entity.id}.json`;
+
+        const file = path.join(this.baseDir, safeFileName);
         await fs.writeJson(file, entity, { spaces: 2 });
     }
 
     async getById(id: string, fileName?: string): Promise<T | null> {
-        const file = path.join(this.baseDir, fileName ?? `${id}.json`);
+        const file = path.join(this.baseDir, fileName ?? `${new SanitizedString(id).toString()}.json`);
         if (!(await fs.pathExists(file))) return null;
         return fs.readJson(file) as Promise<T>;
     }

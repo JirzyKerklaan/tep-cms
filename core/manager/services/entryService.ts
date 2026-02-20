@@ -4,6 +4,7 @@ import { Service } from './service';
 import { Entry } from '../../interfaces/Entry';
 import VersioningService from './versioningService';
 import PluginManager from "../plugins/pluginManager";
+import {SanitizedString} from "../classes/sanitizedString";
 
 const COLLECTIONS_DIR = path.join(process.cwd(), 'content', 'collections');
 fs.ensureDirSync(COLLECTIONS_DIR);
@@ -49,7 +50,7 @@ class EntryService extends Service<Entry> {
     }
 
     async getAllFromCollection(collectionName: string): Promise<Entry[]> {
-            const collectionPath = path.join(this.baseDir, collectionName);
+            const collectionPath = path.join(this.baseDir, new SanitizedString(collectionName).toString());
 
             if (!(await fs.pathExists(collectionPath))) return [];
 

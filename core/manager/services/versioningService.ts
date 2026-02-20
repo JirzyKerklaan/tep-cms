@@ -1,6 +1,7 @@
 import fs from 'fs-extra';
 import path from 'path';
 import {VersioningServiceOptions} from "../../interfaces/VersioningServiceInterface";
+import {SanitizedString} from "../classes/sanitizedString";
 
 export class VersioningService {
     private baseDir: string;
@@ -12,6 +13,9 @@ export class VersioningService {
     }
 
     async saveVersion(collectionName: string, slug: string, data: any): Promise<void> {
+        collectionName = new SanitizedString(collectionName).toString();
+        slug = new SanitizedString(slug).toString();
+
         const collectionDir = path.join(this.baseDir, collectionName);
         const filePath = path.join(collectionDir, `${slug}.json`);
         const olderDir = path.join(collectionDir, 'older');
@@ -37,6 +41,9 @@ export class VersioningService {
     }
 
     async getVersions(collectionName: string, slug: string): Promise<string[]> {
+        collectionName = new SanitizedString(collectionName).toString();
+        slug = new SanitizedString(slug).toString();
+
         const olderDir = path.join(this.baseDir, collectionName, 'older');
         if (!(await fs.pathExists(olderDir))) return [];
         return (await fs.readdir(olderDir))
@@ -46,6 +53,9 @@ export class VersioningService {
     }
 
     async restoreVersion(collectionName: string, slug: string, filename: string): Promise<void> {
+        collectionName = new SanitizedString(collectionName).toString();
+        slug = new SanitizedString(slug).toString();
+
         const collectionDir = path.join(this.baseDir, collectionName);
         const filePath = path.join(collectionDir, `${slug}.json`);
         const olderDir = path.join(collectionDir, 'older');

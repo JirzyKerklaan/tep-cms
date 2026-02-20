@@ -3,6 +3,7 @@ import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
 import sharp from 'sharp';
+import {SanitizedString} from "../../core/manager/classes/sanitizedString";
 
 const uploadPath = path.join(process.cwd(), 'public/assets/uploads');
 
@@ -11,10 +12,10 @@ if (!fs.existsSync(uploadPath)) {
 }
 
 function getAvailableFilename(destination: string, originalName: string, ext: string): string {
-  let filename = `${originalName}${ext}`;
+  let filename = `${new SanitizedString(originalName).toString()}${ext}`;
   let counter = 1;
 
-  while (fs.existsSync(path.join(destination, filename))) {
+  while (fs.existsSync(path.join(new SanitizedString(destination).toString(), filename))) {
     filename = `${originalName} (${counter})${ext}`;
     counter++;
   }
@@ -36,7 +37,7 @@ export const upload = multer({ storage });
 
 export async function convertToWebp(filePath: string): Promise<string> {
   const { name } = path.parse(filePath);
-  const webpPath = path.join(path.dirname(filePath), `${name}.webp`);
+  const webpPath = path.join(path.dirname(filePath), `${new SanitizedString(name).toString()}.webp`);
 
   await sharp(filePath)
     .webp({ quality: 80 })

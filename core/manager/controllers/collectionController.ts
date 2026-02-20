@@ -5,6 +5,7 @@ import fs from 'fs-extra';
 import path from 'path';
 import { getDefaultFields } from '../helpers/defaultFieldsHelper';
 import { ERROR_CODES } from '../../../src/utils/errors';
+import {SanitizedString} from "../classes/sanitizedString";
 
 class CollectionController extends Controller {
     constructor() {
@@ -35,7 +36,11 @@ class CollectionController extends Controller {
     };
 
     create = async (req: Request, res: Response): Promise<void> => {
-        const { name, blocks } = req.body;
+        let { name, blocks } = req.body;
+
+        name = new SanitizedString(name).toString();
+        blocks = new SanitizedString(blocks).toString();
+
         const selectedBlocks = Array.isArray(blocks) ? blocks : [blocks];
 
         const schema = {

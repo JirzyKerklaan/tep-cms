@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import fs from 'fs-extra';
 import path from 'path';
 import {IController} from "../../interfaces/IController";
+import {SanitizedString} from "../classes/sanitizedString";
 
 export abstract class Controller implements IController {
     protected viewFolder: string;
@@ -17,13 +18,23 @@ export abstract class Controller implements IController {
     };
 
     editForm = async (req: Request, res: Response): Promise<void> => {
-        const id = req.params.id;
+        const id = new SanitizedString(
+            Array.isArray(req.params.id)
+                ? req.params.id[0]
+                : req.params.id
+        ).toString();
+
         res.render(`${this.viewFolder}/edit`, { layout: 'layouts/manager', id });
     };
 
     delete = async (req: Request, res: Response): Promise<void> => {
         try {
-            const id = req.params.id;
+            const id = new SanitizedString(
+                Array.isArray(req.params.id)
+                    ? req.params.id[0]
+                    : req.params.id
+            ).toString();
+
             const folderPath = path.join(process.cwd(), 'content', this.modelName, <string>id);
             const schemaPath = path.join(process.cwd(), 'content', 'schemas', this.modelName, `${id}.schema.json`);
 
