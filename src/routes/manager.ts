@@ -22,25 +22,28 @@ router.get('/login', (req: Request, res: Response) => {
 
     const user = findUsername(username);
     if (!user) {
-      return res.status(401).render('manager/login', {
+      res.status(401).render('manager/login', {
         error: ERROR_CODES["TEP111"],
         username,
       });
+      return;
     }
 
     const passwordValid = await verifyPassword(user, password);
     if (!passwordValid) {
-      return res.status(401).render('manager/login', {
+      res.status(401).render('manager/login', {
         error: ERROR_CODES["TEP111"],
         username,
       });
+      return;
     }
 
     req.session.user = {
       username: user.username
     };
 
-    return res.redirect('/manager/');
+    res.redirect('/manager/');
+    return;
   });
 
 
@@ -77,7 +80,8 @@ router.post('/register', async (req: Request, res: Response) => {
   }
 
   if (errorCode) {
-    return res.status(401).render('manager/register', { error: ERROR_CODES[errorCode], username, email });
+    res.status(401).render('manager/register', { error: ERROR_CODES[errorCode], username, email });
+    return;
   }
 
   try {
@@ -103,10 +107,12 @@ router.post('/register', async (req: Request, res: Response) => {
 
     fs.writeFileSync(filePath, JSON.stringify(userData, null, 2), 'utf8');
   } catch {
-    return res.status(401).render('manager/register', { error: ERROR_CODES["TEP450"] });
+    res.status(401).render('manager/register', { error: ERROR_CODES["TEP450"] });
+    return;
   }
 
-  return res.status(401).redirect('/manager/login');
+  res.status(401).redirect('/manager/login');
+  return;
 });
 
 // -------------------- //

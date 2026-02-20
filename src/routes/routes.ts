@@ -34,7 +34,10 @@ function loadPage(slug: string): Page | null {
 
 router.get('/', (req, res) => {
   const homepage = loadPage('home');
-  if (!homepage) return res.status(404).send('Homepage not found');
+  if (!homepage) {
+    res.status(404).send('Homepage not found');
+    return;
+  }
 
   const viewsDir = req.app.get('views');
   const viewsPath = Array.isArray(viewsDir) ? viewsDir[0] : viewsDir;
@@ -59,15 +62,25 @@ router.get('/', (req, res) => {
 router.get('/:slug', (req: Request, res: Response, next: NextFunction) => {
   const slug = req.params.slug;
 
-  if (collections.includes(<string>slug)) return next();
+  if (collections.includes(<string>slug)) {
+    next();
+    return;
+  }
 
-  if (slug === 'home') return next();
+  if (slug === 'home') {
+    next();
+    return;
+  }
 
   const page = loadPage(<string>slug);
-  if (!page) return next();
+  if (!page) {
+    next();
+    return;
+  }
 
   if (page.parent) {
-    return res.redirect(`/${page.parent}/${slug}`);
+    res.redirect(`/${page.parent}/${slug}`);
+    return;
   }
   
   let viewToRender = 'standard';
@@ -107,7 +120,10 @@ router.get('/:collection/:slug', (req: Request, res: Response, next: NextFunctio
 
   if (collections.includes(<string>collection)) {
     const entry = loadEntry(<string>collection, <string>slug);
-    if (!entry) return res.status(404).send('Not found');
+    if (!entry) {
+      res.status(404).send('Not found');
+      return;
+    }
 
     const viewsDir = req.app.get('views');
     const viewsPath = Array.isArray(viewsDir) ? viewsDir[0] : viewsDir;
@@ -119,7 +135,8 @@ router.get('/:collection/:slug', (req: Request, res: Response, next: NextFunctio
       viewToRender = collection;
     }
 
-    return res.render(`views/${viewToRender}`, entry);
+    res.render(`views/${viewToRender}`, entry);
+    return;
   }
 
   next();
@@ -129,13 +146,20 @@ router.get('/:parent/:slug', (req: Request, res: Response, next: NextFunction) =
   const { parent, slug } = req.params;
 
   if (collections.includes(<string>parent)) {
-    return next();
+    next();
+    return;
   }
 
   const page = loadPage(<string>slug);
-  if (!page) return next();
+  if (!page) {
+    next();
+    return;
+  }
 
-  if (page.parent !== parent) return next();
+  if (page.parent !== parent) {
+    next();
+    return;
+  }
 
   res.render('views/pages', page);
 });
