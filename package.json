@@ -46,5 +46,8 @@
     "sass": "^1.97.3",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
+  },
+  "overrides": {
+    "minimatch": "10.2.1"
   }
 }
