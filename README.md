@@ -8,9 +8,9 @@
 - [Features](#features)
 - [Installation](#installation)
 - [File Structure](#file-structure)
-- [More Information](#content-templates)
 - [Developer tips](#tips)
-- [Suggestions or Issues](#contribute)
+
+[//]: # (- [Suggestions or Issues]&#40;#contribute&#41;)
 
 
 <h2 id="features">📦 Features</h2>
@@ -92,7 +92,8 @@ tep-cms/
 - Turn off caching during the development fase
 - [error codes](.github/docs/error-codes.md)
 
-<h2 id="contribute">🙋 Suggestions or Issues</h2>
+[//]: # (<h2 id="contribute">🙋 Suggestions or Issues</h2>)
 
-If you find bugs or have suggestions, feel free to open an [issue](https://github.com/JirzyKerklaan/tep-cms/issues/new).
+[//]: # ()
+[//]: # (If you find bugs or have suggestions, feel free to open an [issue]&#40;https://github.com/JirzyKerklaan/tep-cms/issues/new&#41;.)
 
