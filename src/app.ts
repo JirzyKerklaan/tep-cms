@@ -37,7 +37,7 @@ app.use(express.static(path.join(process.cwd(), 'public')));
 
 // Rate limiter
 const limiter = new RateLimiter({ windowMs: 60000, maxRequests: 10 });
-app.use(rateLimitMiddleware(limiter));
+app.use('/api/', rateLimitMiddleware(limiter));
 
 // Routes
 app.use(router);
