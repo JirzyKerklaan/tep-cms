@@ -1,5 +1,3 @@
-import { BaseRequest } from '../requests/request';
-
 declare global {
     namespace Express {
         interface Request {

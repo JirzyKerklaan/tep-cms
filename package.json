@@ -41,11 +41,17 @@
     "@types/node": "^24.10.13",
     "@types/nodemon": "^1.19.6",
     "@types/uuid": "^10.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.56.0",
+    "@typescript-eslint/parser": "^8.56.0",
     "concurrently": "^9.2.0",
+    "eslint": "^10.0.0",
+    "globals": "^17.3.0",
+    "jiti": "^2.6.1",
     "nodemon": "^3.1.10",
     "sass": "^1.97.3",
     "ts-node": "^10.9.2",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.56.0"
   },
   "overrides": {
     "minimatch": "10.2.1"
