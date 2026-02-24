@@ -11,7 +11,7 @@ export abstract class BaseRequest {
         return {};
     }
 
-    validate(raw: any): void {
+    validate(raw: object): void {
         this.data = raw;
         const validator = new Validator(this.data, this.rules(), this.messages());
 
@@ -20,7 +20,7 @@ export abstract class BaseRequest {
             throw { validation: this.errors };
         }
 
-        const validatedData: Record<string, any> = {};
+        const validatedData: Record<string, unknown> = {};
         for (const key of Object.keys(this.rules())) {
             validatedData[key] = this.data[key];
         }

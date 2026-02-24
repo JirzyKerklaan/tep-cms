@@ -1,6 +1,7 @@
 import fs from 'fs-extra';
 import path from 'path';
 import {VersioningServiceOptions} from "../../interfaces/VersioningServiceInterface";
+import {Entry} from "../../interfaces/Entry";
 
 export class VersioningService {
     private baseDir: string;
@@ -11,7 +12,7 @@ export class VersioningService {
         this.maxVersions = options.maxVersions ?? 5;
     }
 
-    async saveVersion(collectionName: string, slug: string, data: any): Promise<void> {
+    async saveVersion(collectionName: string, slug: string, data: Entry): Promise<void> {
         const collectionDir = path.join(this.baseDir, collectionName);
         const filePath = path.join(collectionDir, `${slug}.json`);
         const olderDir = path.join(collectionDir, 'older');

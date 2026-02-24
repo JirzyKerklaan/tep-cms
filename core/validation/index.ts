@@ -2,13 +2,13 @@ import {CustomMessages, ValidationRules} from "./types";
 import {ruleRegistry} from "./rules";
 
 export class Validator {
-    private data: Record<string, any>;
+    private data: Record<string, undefined>;
     private rules: ValidationRules;
     private messages: CustomMessages;
     public errors: Record<string, string[]> = {};
 
     constructor(
-        data: Record<string, any>,
+        data: Record<string, undefined>,
         rules: ValidationRules,
         messages: CustomMessages = {}
     ) {

@@ -2,8 +2,8 @@ declare global {
     namespace Express {
         interface Request {
             body: {
-                [key: string]: any;
-                validated?: (field?: string) => any;
+                [key: string]: unknown;
+                validated?: (field?: string) => unknown;
             };
         }
     }

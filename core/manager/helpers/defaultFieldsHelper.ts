@@ -1,5 +1,8 @@
-export function getDefaultFields(schemaFields: any[]) {
-  const defaultData: Record<string, any> = {};
+import {Field} from "../../interfaces/Field";
+
+export function getDefaultFields(schemaFields: Field[]): Record<string, string | unknown[] | null> {
+  const defaultData: Record<string, string | unknown[] | null> = {};
+
 
   for (const field of schemaFields) {
     switch (field.type) {

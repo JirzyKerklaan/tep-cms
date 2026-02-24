@@ -14,17 +14,16 @@ class EntryService extends Service<Entry> {
     }
 
     saveEntry = async (collectionName: string, data: Entry): Promise<Entry> => {
-        const slug = data.slug ?? data.name.toLowerCase().replace(/\s+/g, '-');
+        const slug = data.slug ?? data.title.toLowerCase().replace(/\s+/g, '-');
         const published = data.scheduled_at ? null : new Date();
         const scheduled = data.scheduled_at ? new Date(data.scheduled_at) : null;
 
         const entryData: Entry = {
             id: '',
-            title: data.name,
+            title: data.title,
             slug,
-            published_at: published,
-            scheduled_at: scheduled,
-            page_builder: [],
+            published_at: published ?? undefined,
+            scheduled_at: scheduled ?? undefined,
         };
 
         await PluginManager.trigger('beforeEntryCreate', collectionName, entryData);
