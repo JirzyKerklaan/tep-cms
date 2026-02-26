@@ -1,6 +1,6 @@
 import fs from 'fs-extra';
 import path from 'path';
-import {VersioningServiceOptions} from "../../interfaces/VersioningServiceInterface";
+import {VersioningServiceOptions} from "../../interfaces/VersioningService";
 import {Entry} from "../../interfaces/Entry";
 
 export class VersioningService {

@@ -2,6 +2,8 @@ import fs from 'fs/promises';
 import path from 'path';
 import lunr from 'lunr';
 import {IndexEntry} from "../interfaces/IndexEntry";
+import {LunrBuilder} from "../interfaces/LunrBuilder";
+import {LunrResult} from "../interfaces/LunrResult";
 
 const BASE_DIRS = [
   path.join(process.cwd(), 'content/collections'),
@@ -40,7 +42,6 @@ export async function buildContentIndex(): Promise<void> {
           path: filePath,
         });
       } catch {
-        // skip unreadable or invalid JSON
         continue;
       }
     }
@@ -69,7 +70,7 @@ async function recursivelyFindJsonFiles(dir: string): Promise<string[]> {
 }
 
 function buildLunrIndex() {
-  lunrIndex = lunr(function (this: any) {
+  lunrIndex = lunr(function (this: LunrBuilder) {
     this.ref('slug');
     this.field('title');
     this.field('content');
@@ -83,12 +84,11 @@ function buildLunrIndex() {
 export function searchContent(query: string): IndexEntry[] {
   if (!lunrIndex) return [];
 
-  const results = lunrIndex.search(query);
-  return results
-    .map((result: any) => index.find((item: IndexEntry) => item.slug === result.ref))
-    .filter((item: any): item is IndexEntry => Boolean(item));
-}
+  const results: LunrResult[] = lunrIndex.search(query);
 
-export function getAllIndex(): IndexEntry[] {
-  return index;
+  const matched: (IndexEntry | undefined)[] = results.map(result =>
+      index.find(item => item.slug === result.ref)
+  );
+
+  return matched.filter((item): item is IndexEntry => item !== undefined);
 }

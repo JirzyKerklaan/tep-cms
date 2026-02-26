@@ -1,38 +1,28 @@
 // src/requests/BaseRequest.ts
 import { Validator } from '../../core/validation';
 
-export abstract class BaseRequest {
-    protected data: Record<string, any> = {};
+export abstract class BaseRequest<T extends Record<string, unknown>> {
+    protected data!: T;
     protected errors: Record<string, string[]> = {};
 
-    abstract rules(): Record<string, string | string[]>;
+    abstract rules(): Record<keyof T, string | string[]>;
 
     messages(): Record<string, Record<string, string>> {
         return {};
     }
 
-    validate(raw: object): void {
-        this.data = raw;
-        const validator = new Validator(this.data, this.rules(), this.messages());
+    validate(raw: T): void {
+        const validator = new Validator<T>(raw, this.rules(), this.messages());
 
         if (!validator.passes()) {
             this.errors = validator.errors;
             throw { validation: this.errors };
         }
 
-        const validatedData: Record<string, unknown> = {};
-        for (const key of Object.keys(this.rules())) {
-            validatedData[key] = this.data[key];
-        }
-
-        Object.defineProperty(validatedData, 'validated', {
-            value: (field?: string) => (field ? validatedData[field] : validatedData),
-            enumerable: false,
-        });
-
-        this.data = validatedData;
+        this.data = raw;
     }
-    validated(field?: string) {
+
+    validated<K extends keyof T>(field?: K): T[K] | T {
         if (field) return this.data[field];
         return this.data;
     }

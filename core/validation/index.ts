@@ -1,17 +1,14 @@
-import {CustomMessages, ValidationRules} from "./types";
-import {ruleRegistry} from "./rules";
+import {CustomMessages} from "../interfaces/CustomMessages";
+import {ValidationRules} from "../interfaces/ValidationRules";
+import { ruleRegistry } from "./rules";
 
-export class Validator {
-    private data: Record<string, undefined>;
+export class Validator<T extends Record<string, unknown> = Record<string, unknown>> {
+    private data: T;
     private rules: ValidationRules;
     private messages: CustomMessages;
     public errors: Record<string, string[]> = {};
 
-    constructor(
-        data: Record<string, undefined>,
-        rules: ValidationRules,
-        messages: CustomMessages = {}
-    ) {
+    constructor(data: T, rules: ValidationRules, messages: CustomMessages = {}) {
         this.data = data;
         this.rules = rules;
         this.messages = messages;
@@ -21,7 +18,7 @@ export class Validator {
         this.errors = {};
 
         for (const field in this.rules) {
-            const value = this.data[field];
+            const value = this.data[field as keyof T];
             const fieldRules = Array.isArray(this.rules[field])
                 ? this.rules[field]
                 : this.rules[field].split("|");
@@ -42,7 +39,6 @@ export class Validator {
                     if (!this.errors[field]) this.errors[field] = [];
                     this.errors[field].push(message);
                 }
-
             }
         }
 
