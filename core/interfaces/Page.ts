@@ -1,4 +1,4 @@
 export interface Page {
     parent?: string;
-    [key: string]: any;
+    [key: string]: string | undefined;
 }

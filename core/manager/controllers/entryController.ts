@@ -3,7 +3,6 @@ import { Controller } from './controller';
 import entryService from '../services/entryService';
 import { VersioningService } from '../services/versioningService';
 import { ERROR_CODES } from '../../../src/utils/errors';
-import { Entry } from '../../interfaces/Entry';
 import path from "path";
 
 class EntryController extends Controller {

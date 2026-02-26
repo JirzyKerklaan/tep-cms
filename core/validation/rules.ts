@@ -1,5 +1,5 @@
 // src/validation/rules.ts
-import { RuleDefinition } from './types';
+import {RuleDefinition} from "../interfaces/RuleDefinition";
 
 export const ruleRegistry: Record<string, RuleDefinition> = {
     required: {

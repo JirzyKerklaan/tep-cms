@@ -1,6 +1,6 @@
 // src/routes/search.ts
 import express from 'express';
-import { searchContent, getAllIndex } from '../../core/services/contentIndex';
+import { searchContent } from '../../core/services/contentIndex';
 
 const router = express.Router();
 

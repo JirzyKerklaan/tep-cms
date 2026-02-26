@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { Controller } from './controller';
 import blockService from '../services/blockService';
 import { ERROR_CODES } from '../../../src/utils/errors';
+import {Field} from "../../interfaces/Field";
 
 class BlockController extends Controller {
   constructor() {
@@ -16,15 +17,17 @@ class BlockController extends Controller {
   create = async (req: Request, res: Response): Promise<void> => {
     const id = uuidv4();
     const { block, type, fieldsJson } = req.body;
-    const fields = JSON.parse(fieldsJson);
 
-    const cleanFields = fields.map((f: any) => {
-      const { name, type, label, required, defaultValue } = f;
-      const field: any = { name, type, label };
-      if (required) field.required = true;
-      if (defaultValue) field.defaultValue = defaultValue;
-      return field;
-    });
+    const fields: Field[] = JSON.parse(fieldsJson);
+
+    const cleanFields: Field[] = fields.map(f => ({
+      id: f.id,
+      name: f.name,
+      type: f.type,
+      label: f.label,
+      required: f.required ?? false,
+      defaultValue: f.defaultValue
+    }));
 
     await blockService.save({ id, block, type, fields: cleanFields });
     res.redirect('/manager/blocks');

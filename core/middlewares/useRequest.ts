@@ -16,12 +16,15 @@ export function useRequest<T extends BaseRequest>(RequestClass: new () => T) {
             };
 
             next();
-        } catch (err: any) {
-            if (err.validation) {
-                res.status(422).json({ errors: err.validation });
-                return;
+        } catch (err: unknown) {
+                const error = err as { validation?: unknown }; // Type assertion
+
+                if (error.validation) {
+                    res.status(422).json({ errors: error.validation });
+                    return;
+                }
+
+                res.status(500).json({ errors: 'Validation failed' });
             }
-            res.status(500).json({ errors: 'Validation failed' });
-        }
     };
 }

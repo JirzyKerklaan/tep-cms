@@ -2,7 +2,6 @@ import { Service } from './service';
 import { generateBlockTemplate } from '../helpers/blockTemplateHelper';
 import fs from 'fs-extra';
 import path from 'path';
-import { ERROR_CODES } from '../../../src/utils/errors';
 import {BlockInput} from "../../interfaces/BlockInput";
 
 export type BlockType = 'page_builder' | 'component';
@@ -22,7 +21,7 @@ class BlockService extends Service<BlockInput> {
     super(BLOCKS_DIR);
   }
 
-  save = async ({ id, block, type, fields }: BlockInput) => {
+  save = async ({ block, type, fields }: BlockInput) => {
     const normalizedBlock = normalizeName(block);
     const blockPath = path.join(BLOCKS_DIR, type, `${normalizedBlock}.ejs`);
     const schemaPath = path.join(SCHEMAS_DIR, type, `${normalizedBlock}.schema.json`);
@@ -33,9 +32,6 @@ class BlockService extends Service<BlockInput> {
 
     const schema = { title: block, fields };
     await fs.outputJson(schemaPath, schema, { spaces: 2 });
-
-    // Save metadata using Service
-    await this.save({ id, block, type, fields });
   };
 
   delete = async (id: string) => {
@@ -48,8 +44,6 @@ class BlockService extends Service<BlockInput> {
 
     if (await fs.pathExists(blockPath)) await fs.remove(blockPath);
     if (await fs.pathExists(schemaPath)) await fs.remove(schemaPath);
-
-    await this.delete(id);
   };
 }
 
