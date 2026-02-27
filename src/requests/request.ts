@@ -1,4 +1,3 @@
-// src/requests/BaseRequest.ts
 import { Validator } from '../../core/validation';
 
 export abstract class BaseRequest<T extends Record<string, unknown>> {

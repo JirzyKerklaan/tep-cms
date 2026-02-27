@@ -1,30 +1,36 @@
-// src/requests/useRequest.ts
 import { Request, Response, NextFunction } from 'express';
 import { BaseRequest } from '../../src/requests/request';
 
-export function useRequest<T extends BaseRequest>(RequestClass: new () => T) {
+export function useRequest<
+    TData extends Record<string, unknown>,
+    TRequest extends BaseRequest<TData>
+>(
+    RequestClass: new () => TRequest
+) {
     return (req: Request, res: Response, next: NextFunction) => {
         try {
             const instance = new RequestClass();
-            instance.validate(req.body);
 
-            const validatedData = instance.validated();
+            instance.validate(req.body as TData);
+
+            const validatedData = instance.validated() as TData;
 
             req.body = {
                 ...validatedData,
-                validated: (field?: string) => instance.validated(field),
+                validated: <K extends keyof TData>(field?: K) =>
+                    instance.validated(field),
             };
 
             next();
         } catch (err: unknown) {
-                const error = err as { validation?: unknown }; // Type assertion
+            const error = err as { validation?: unknown };
 
-                if (error.validation) {
-                    res.status(422).json({ errors: error.validation });
-                    return;
-                }
-
-                res.status(500).json({ errors: 'Validation failed' });
+            if (error.validation) {
+                res.status(422).json({ errors: error.validation });
+                return;
             }
+
+            res.status(500).json({ errors: 'Validation failed' });
+        }
     };
 }

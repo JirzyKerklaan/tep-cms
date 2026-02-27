@@ -1,5 +1,3 @@
-// src/utils/errors.ts
-
 export const ERROR_CODES = {
     // ===============================
     // 1xx — Authentication & Registration

@@ -1,4 +1,3 @@
-// middleware/handleRedirects.ts
 import { Request, Response, NextFunction } from 'express';
 import { Redirect } from "../interfaces/Redirect";
 import {redirectService} from "../services/redirectService";
