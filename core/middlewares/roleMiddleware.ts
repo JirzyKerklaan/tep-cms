@@ -1,4 +1,3 @@
-// core/middlewares/roleMiddleware.ts
 import { Request, Response, NextFunction } from 'express';
 
 export const roleMiddleware = (roles: string[]) => {

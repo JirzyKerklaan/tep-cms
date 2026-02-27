@@ -1,4 +1,3 @@
-// src/routes/uploadRoutes.ts
 import express from 'express';
 import { upload, convertToWebp } from '../utils/uploadHandler';
 import config from '../config';

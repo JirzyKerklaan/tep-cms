@@ -1,4 +1,3 @@
-// src/routes/search.ts
 import express from 'express';
 import { searchContent } from '../../core/services/contentIndex';
 

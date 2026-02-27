@@ -1,4 +1,3 @@
-// middleware/HasValidToken.ts
 import { Request, Response, NextFunction } from 'express';
 import config from '../../src/config';
 import {ERROR_CODES} from "../../src/utils/errors";
