@@ -39,7 +39,8 @@ router.get('/login', (req: Request, res: Response) => {
     }
 
     req.session.user = {
-      username: user.username
+      username: user.username,
+      role: user.role
     };
 
     res.redirect('/manager/');
