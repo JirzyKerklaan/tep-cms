@@ -37,20 +37,20 @@
     "@types/express-session": "^1.18.2",
     "@types/fs-extra": "^11.0.4",
     "@types/lunr": "^2.3.7",
-    "@types/multer": "^2.0.0",
-    "@types/node": "^24.11.0",
+    "@types/multer": "^2.1.0",
+    "@types/node": "^24.12.0",
     "@types/nodemon": "^1.19.6",
     "@types/uuid": "^10.0.0",
-    "@typescript-eslint/eslint-plugin": "^8.56.0",
-    "@typescript-eslint/parser": "^8.56.0",
+    "@typescript-eslint/eslint-plugin": "^8.57.0",
+    "@typescript-eslint/parser": "^8.57.0",
     "concurrently": "^9.2.0",
-    "eslint": "^10.0.0",
+    "eslint": "^10.0.3",
     "globals": "^17.4.0",
     "jiti": "^2.6.1",
     "nodemon": "^3.1.10",
-    "sass": "^1.97.3",
+    "sass": "^1.98.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3",
-    "typescript-eslint": "^8.56.0"
+    "typescript-eslint": "^8.57.0"
   }
 }
