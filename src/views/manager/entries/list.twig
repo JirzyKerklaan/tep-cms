@@ -1,0 +1,8 @@
+{% extends "layouts/manager.twig" %}
+
+{% block body %}
+    <p>list</p>
+    {% for entry in entries %}
+        <li>{{ entry }}</li>
+    {% endfor %}
+{% endblock %}

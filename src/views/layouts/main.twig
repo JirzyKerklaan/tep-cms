@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{% block title %}{{ title }} - {{ site_name }}{% endblock %}</title>
+
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+{% include "base/header.twig" %}
+
+{% block body %}{% endblock %}
+
+{% include "base/footer.twig" %}
+
+</body>
+</html>

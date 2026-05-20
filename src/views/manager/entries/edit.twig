@@ -1,0 +1,16 @@
+{% extends "layouts/manager.twig" %}
+
+{% block body %}
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+
+    <p>edit</p>
+
+    <select name="restore_version">
+        <option value="">Choose a previous version</option>
+        {% for version in olderVersions %}
+            <option value="{{ version }}">{{ version }}</option>
+        {% endfor %}
+    </select>
+{% endblock %}

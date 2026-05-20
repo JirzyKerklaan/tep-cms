@@ -45,7 +45,7 @@ router.get('/', (req, res) => {
   let viewToRender = 'standard';
 
   if (homepage.template) {
-    const templatePath = path.join(viewsPath, `views/${homepage.template}.ejs`);
+    const templatePath = path.join(viewsPath, `views/${homepage.template}.twig`);
     if (fs.existsSync(templatePath)) {
       viewToRender = homepage.template;
     } else {
@@ -86,7 +86,7 @@ router.get('/:slug', (req: Request, res: Response, next: NextFunction) => {
   let viewToRender = 'standard';
 
   if (page.template) {
-    const templatePath = path.join(process.cwd(), 'src', 'templates', `views/${page.template}.ejs`);
+    const templatePath = path.join(process.cwd(), 'src', 'templates', `views/${page.template}.twig`);
     if (fs.existsSync(templatePath)) {
       viewToRender = page.template;
     } else {
@@ -128,7 +128,7 @@ router.get('/:collection/:slug', (req: Request, res: Response, next: NextFunctio
     const viewsDir = req.app.get('views');
     const viewsPath = Array.isArray(viewsDir) ? viewsDir[0] : viewsDir;
 
-    const collectionViewFile = path.join(viewsPath, `${collection}.ejs`);
+    const collectionViewFile = path.join(viewsPath, `${collection}.twig`);
     let viewToRender: string | string[] = 'standard';
 
     if (fs.existsSync(collectionViewFile)) {

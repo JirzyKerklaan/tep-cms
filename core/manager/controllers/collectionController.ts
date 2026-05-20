@@ -21,11 +21,11 @@ class CollectionController extends Controller {
     }
 
     newForm = (req: Request, res: Response): void => {
-        const blocksDir = path.join(process.cwd(), 'src', 'blocks', 'page_builder');
+        const blocksDir = path.join(process.cwd(), 'src', 'views', 'page_builder');
         const blocks = fs
             .readdirSync(blocksDir)
-            .filter(file => file.endsWith('.ejs'))
-            .map(file => path.basename(file, '.ejs'));
+            .filter(file => file.endsWith('.twig'))
+            .map(file => path.basename(file, '.twig'));
 
         res.render(`${this.viewFolder}/new`, {
             layout: 'layouts/manager',

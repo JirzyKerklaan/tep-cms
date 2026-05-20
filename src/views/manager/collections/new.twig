@@ -1,3 +1,6 @@
+{% extends "layouts/manager.twig" %}
+
+{% block body %}
 <h1>Create New Collection</h1>
 
 <form action="/manager/collections/new" method="POST">
@@ -8,17 +11,18 @@
 
   <div>
     <label>Include Page Builder Blocks:</label>
-    <% if (blocks && blocks.length) { %>
-      <% blocks.forEach(block => { %>
+    {% if blocks and blocks.length %}
+      {% for block in blocks %}
         <div>
-          <input type="checkbox" id="<%= block %>" name="blocks" value="<%= block %>" />
-          <label for="<%= block %>"><%= block %></label>
+          <input type="checkbox" id="{{ block }}" name="blocks" value="{{ block }}" />
+          <label for="{{ block }}">{{ block }}</label>
         </div>
-      <% }) %>
-    <% } else { %>
+      {% endfor %}
+    {% else %}
       <p>No blocks found.</p>
-    <% } %>
+    {% endif %}
   </div>
 
   <button type="submit">Create Collection</button>
 </form>
+{% endblock %}

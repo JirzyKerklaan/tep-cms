@@ -1,0 +1,6 @@
+
+<div class="block block__pageheader">
+  {% for block in blocks %}
+    {% include 'components/' ~ block.block ~ '.twig' with block.fields %}
+  {% endfor %}
+</div>

@@ -1,0 +1,9 @@
+{% extends "layouts/manager.twig" %}
+
+{% block body %}
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% else %}
+    <p>edit</p>
+    {% endif %}
+{% endblock %}

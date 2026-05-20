@@ -23,7 +23,7 @@ class BlockService extends Service<BlockInput> {
 
   save = async ({ block, type, fields }: BlockInput) => {
     const normalizedBlock = normalizeName(block);
-    const blockPath = path.join(BLOCKS_DIR, type, `${normalizedBlock}.ejs`);
+    const blockPath = path.join(BLOCKS_DIR, type, `${normalizedBlock}.twig`);
     const schemaPath = path.join(SCHEMAS_DIR, type, `${normalizedBlock}.schema.json`);
 
     const templateContent = generateBlockTemplate(type, normalizedBlock, block);
@@ -39,7 +39,7 @@ class BlockService extends Service<BlockInput> {
     if (!block) return;
 
     const normalizedBlock = normalizeName(block.block);
-    const blockPath = path.join(BLOCKS_DIR, block.type, `${normalizedBlock}.ejs`);
+    const blockPath = path.join(BLOCKS_DIR, block.type, `${normalizedBlock}.twig`);
     const schemaPath = path.join(SCHEMAS_DIR, block.type, `${normalizedBlock}.schema.json`);
 
     if (await fs.pathExists(blockPath)) await fs.remove(blockPath);

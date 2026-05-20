@@ -1,0 +1,12 @@
+{% extends "layouts/manager.twig" %}
+
+{% block body %}
+    <a href='/manager'>back</a>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <a href='/manager/collections/new'>Add collection</a>
+
+    <p>list</p>
+    {% for collection in collections %}
+        <li>{{ collection }}</li>
+    {% endfor %}
+{% endblock %}
