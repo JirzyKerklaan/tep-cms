@@ -7,21 +7,21 @@ import path from "path";
 
 class EntryController extends Controller {
     constructor() {
-        super('manager/entries', 'entries');
+        super('admin/entries', 'entries');
     }
 
     list = async (req: Request, res: Response): Promise<void> => {
         try {
             const entries = await entryService.getAll();
-            res.render(`${this.viewFolder}/list`, { layout: 'layouts/manager', user: req.session.user, entries });
+            res.render(`${this.viewFolder}/list`, { layout: 'layouts/admin', user: req.session.user, entries });
         } catch {
-            res.render(`${this.viewFolder}/list`, { layout: 'layouts/manager', user: req.session.user, error: ERROR_CODES["TEP460"] });
+            res.render(`${this.viewFolder}/list`, { layout: 'layouts/admin', user: req.session.user, error: ERROR_CODES["TEP460"] });
         }
     }
 
     newForm = (req: Request, res: Response): void => {
         res.render(`${this.viewFolder}/new`, {
-            layout: 'layouts/manager',
+            layout: 'layouts/admin',
             title: 'Create Entry',
             collection: req.params.collection
         });
@@ -32,10 +32,10 @@ class EntryController extends Controller {
 
         try {
             entryService.saveEntry(<string>collection, req.body)
-            res.redirect(`/manager/collections/${collection}`);
+            res.redirect(`/admin/collections/${collection}`);
         } catch {
             res.status(500).render(`${this.viewFolder}/new`, {
-                layout: 'layouts/manager',
+                layout: 'layouts/admin',
                 title: 'Create Entry',
                 error: 'Failed to create entry file.',
             });        }
@@ -53,12 +53,12 @@ class EntryController extends Controller {
         try {
             const entry = await entryService.getById(<string>collectionName, <string>id);
             if (!entry) {
-                res.render(`${this.viewFolder}/edit`, { layout: 'layouts/manager', user: req.session.user, error: ERROR_CODES["TEP461"] });
+                res.render(`${this.viewFolder}/edit`, { layout: 'layouts/admin', user: req.session.user, error: ERROR_CODES["TEP461"] });
                 return;
             }
-            res.render(`${this.viewFolder}/edit`, { layout: 'layouts/manager', user: req.session.user, entry, olderVersions, error: ERROR_CODES["TEP200"] });
+            res.render(`${this.viewFolder}/edit`, { layout: 'layouts/admin', user: req.session.user, entry, olderVersions, error: ERROR_CODES["TEP200"] });
         } catch {
-            res.render(`${this.viewFolder}/edit`, { layout: 'layouts/manager', user: req.session.user, error: ERROR_CODES["TEP462"] });
+            res.render(`${this.viewFolder}/edit`, { layout: 'layouts/admin', user: req.session.user, error: ERROR_CODES["TEP462"] });
         }
     }
 
@@ -70,9 +70,9 @@ class EntryController extends Controller {
         };
         try {
             await entryService.update(<string>id, data);
-            res.redirect('/manager/entries');
+            res.redirect('/admin/entries');
         } catch {
-            res.render(`${this.viewFolder}/edit`, { layout: 'layouts/manager', user: req.session.user, entry: { id, ...data }, error: ERROR_CODES["TEP462"] });
+            res.render(`${this.viewFolder}/edit`, { layout: 'layouts/admin', user: req.session.user, entry: { id, ...data }, error: ERROR_CODES["TEP462"] });
         }
     }
 }

@@ -13,12 +13,12 @@ export abstract class Controller implements IController {
     }
 
     newForm(req: Request, res: Response): void {
-        res.render(`${this.viewFolder}/new`, { layout: 'layouts/manager', title: `Create ${this.modelName}` });
+        res.render(`${this.viewFolder}/new`, { layout: 'layouts/admin', title: `Create ${this.modelName}` });
     }
 
     editForm(req: Request, res: Response): void {
         const id = req.params.id;
-        res.render(`${this.viewFolder}/edit`, { layout: 'layouts/manager', id });
+        res.render(`${this.viewFolder}/edit`, { layout: 'layouts/admin', id });
     }
 
     delete(req: Request, res: Response): void {
@@ -30,9 +30,9 @@ export abstract class Controller implements IController {
             fs.remove(folderPath);
             fs.remove(schemaPath);
 
-            res.redirect(`/manager/${this.modelName}`);
+            res.redirect(`/admin/${this.modelName}`);
         } catch {
-            res.redirect(`/manager/${this.modelName}`);
+            res.redirect(`/admin/${this.modelName}`);
         }
     }
 

@@ -8,15 +8,15 @@ import { ERROR_CODES } from '../../../src/utils/errors';
 
 class CollectionController extends Controller {
     constructor() {
-        super('manager/collections', 'collections');
+        super('admin/collections', 'collections');
     }
 
     list = async (req: Request, res: Response): Promise<void> => {
         try {
             const collections = await collectionService.getAll();
-            res.render(`${this.viewFolder}/list`, { layout: 'layouts/manager', user: req.session.user, collections });
+            res.render(`${this.viewFolder}/list`, { layout: 'layouts/admin', user: req.session.user, collections });
         } catch {
-            res.render(`${this.viewFolder}/list`, { layout: 'layouts/manager', user: req.session.user, error: ERROR_CODES["TEP460"] });
+            res.render(`${this.viewFolder}/list`, { layout: 'layouts/admin', user: req.session.user, error: ERROR_CODES["TEP460"] });
         }
     }
 
@@ -28,7 +28,7 @@ class CollectionController extends Controller {
             .map(file => path.basename(file, '.twig'));
 
         res.render(`${this.viewFolder}/new`, {
-            layout: 'layouts/manager',
+            layout: 'layouts/admin',
             title: 'Create Collection',
             blocks,
         });
@@ -68,7 +68,7 @@ class CollectionController extends Controller {
         const standardPath = path.join(process.cwd(), 'content', 'collections', name, 'standard.json');
         await fs.outputJson(standardPath, standard, { spaces: 2 });
 
-        res.redirect('/manager/collections');
+        res.redirect('/admin/collections');
     }
 
     editForm = async (req: Request, res: Response): Promise<void> => {
@@ -76,12 +76,12 @@ class CollectionController extends Controller {
         try {
             const collection = await collectionService.getById(<string>id);
             if (!collection) {
-                res.render(`${this.viewFolder}/edit`, { layout: 'layouts/manager', user: req.session.user, error: ERROR_CODES["TEP461"] });
+                res.render(`${this.viewFolder}/edit`, { layout: 'layouts/admin', user: req.session.user, error: ERROR_CODES["TEP461"] });
                 return;
             }
-            res.render(`${this.viewFolder}/edit`, { layout: 'layouts/manager', user: req.session.user, collection, error: ERROR_CODES["TEP200"] });
+            res.render(`${this.viewFolder}/edit`, { layout: 'layouts/admin', user: req.session.user, collection, error: ERROR_CODES["TEP200"] });
         } catch {
-            res.render(`${this.viewFolder}/edit`, { layout: 'layouts/manager', user: req.session.user, error: ERROR_CODES["TEP462"] });
+            res.render(`${this.viewFolder}/edit`, { layout: 'layouts/admin', user: req.session.user, error: ERROR_CODES["TEP462"] });
         }
     }
 
@@ -93,9 +93,9 @@ class CollectionController extends Controller {
         };
         try {
             await collectionService.update(<string>id, data);
-            res.redirect('/manager/collections');
+            res.redirect('/admin/collections');
         } catch {
-            res.render(`${this.viewFolder}/edit`, { layout: 'layouts/manager', user: req.session.user, collection: { id, ...data }, error: ERROR_CODES["TEP462"] });
+            res.render(`${this.viewFolder}/edit`, { layout: 'layouts/admin', user: req.session.user, collection: { id, ...data }, error: ERROR_CODES["TEP462"] });
         }
     }
 }

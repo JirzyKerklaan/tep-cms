@@ -10,6 +10,6 @@ export function isAuthenticated(
     return;
   }
 
-  res.redirect("/manager/login");
+  res.redirect("/admin/login");
   return;
 }

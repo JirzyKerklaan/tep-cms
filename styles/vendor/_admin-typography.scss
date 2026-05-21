@@ -1,7 +1,7 @@
 @use '../abstracts/_abstracts-dir' as *;
-@use './manager-vars' as *;
+@use './admin-vars' as *;
 
-#manager-page {
+#admin-page {
   font-family: 'Arial, Helvetica, sans-serif';
 
   h1 {

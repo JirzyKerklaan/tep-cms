@@ -7,11 +7,11 @@ import {Field} from "../../interfaces/Field";
 
 class BlockController extends Controller {
   constructor() {
-    super('manager/blocks', 'blocks');
+    super('admin/blocks', 'blocks');
   }
 
   newForm = (req: Request, res: Response): void => {
-    res.render(`${this.viewFolder}/new`, { layout: 'layouts/manager', title: 'Create Block' });
+    res.render(`${this.viewFolder}/new`, { layout: 'layouts/admin', title: 'Create Block' });
   };
 
   create = async (req: Request, res: Response): Promise<void> => {
@@ -30,7 +30,7 @@ class BlockController extends Controller {
     }));
 
     await blockService.save({ id, block, type, fields: cleanFields });
-    res.redirect('/manager/blocks');
+    res.redirect('/admin/blocks');
   };
 
   editForm = async (req: Request, res: Response): Promise<void> => {
@@ -40,7 +40,7 @@ class BlockController extends Controller {
       return;
     }
 
-    res.render(`${this.viewFolder}/edit`, { layout: 'layouts/manager', title: 'Edit Block', block });
+    res.render(`${this.viewFolder}/edit`, { layout: 'layouts/admin', title: 'Edit Block', block });
   };
 
   update = async (req: Request, res: Response): Promise<void> => {
@@ -52,13 +52,13 @@ class BlockController extends Controller {
       fields: JSON.parse(fields),
     });
 
-    res.redirect('/manager/blocks');
+    res.redirect('/admin/blocks');
   };
 
   delete = async (req: Request, res: Response): Promise<void> => {
     try {
       await blockService.delete(<string>req.params.id);
-      res.redirect('/manager/blocks');
+      res.redirect('/admin/blocks');
     } catch {
       res.status(500).send(ERROR_CODES["TEP450"]);
     }
@@ -67,7 +67,7 @@ class BlockController extends Controller {
   list = async (req: Request, res: Response): Promise<void> => {
     try {
       const blocks = await blockService.getAll();
-      res.render(`${this.viewFolder}/list`, { layout: 'layouts/manager', user: req.session.user, blocks });
+      res.render(`${this.viewFolder}/list`, { layout: 'layouts/admin', user: req.session.user, blocks });
     } catch {
       res.status(500).send(ERROR_CODES["TEP450"]);
     }

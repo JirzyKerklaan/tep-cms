@@ -1,9 +1,9 @@
-{% extends "layouts/manager.twig" %}
+{% extends "layouts/admin.twig" %}
 
 {% block body %}
 <h1>Create New Collection</h1>
 
-<form action="/manager/collections/new" method="POST">
+<form action="/admin/collections/new" method="POST">
   <div>
     <label for="name">Collection Name:</label>
     <input type="text" id="name" name="name" required />

@@ -1,5 +1,5 @@
-import collectionService from "../manager/services/collectionService";
-import entryService from "../manager/services/entryService";
+import collectionService from "../admin/services/collectionService";
+import entryService from "../admin/services/entryService";
 import { Entry } from "../interfaces/Entry";
 
 export async function getScheduled() {

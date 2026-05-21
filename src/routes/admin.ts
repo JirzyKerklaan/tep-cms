@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { collectionController, blockController, entryController } from '../../core/manager/controllers';
+import { collectionController, blockController, entryController } from '../../core/admin/controllers';
 import {createPassword, findEmail, findUsername, loadUsers, verifyPassword} from '../../core/services/userService';
 import { ERROR_CODES, ErrorCode } from '../utils/errors';
 import fs from 'fs-extra';
@@ -9,7 +9,7 @@ import {isAuthenticated} from '../../core/middlewares/isAuthenticated';
 const router = express.Router();
 
 router.get('/login', (req: Request, res: Response) => {
-  res.render('manager/login', {
+  res.render('admin/login', {
     error: ERROR_CODES["TEP200"],
     username: ''
   });
@@ -22,7 +22,7 @@ router.get('/login', (req: Request, res: Response) => {
 
     const user = findUsername(username);
     if (!user) {
-      res.status(401).render('manager/login', {
+      res.status(401).render('admin/login', {
         error: ERROR_CODES["TEP111"],
         username,
       });
@@ -31,7 +31,7 @@ router.get('/login', (req: Request, res: Response) => {
 
     const passwordValid = await verifyPassword(user, password);
     if (!passwordValid) {
-      res.status(401).render('manager/login', {
+      res.status(401).render('admin/login', {
         error: ERROR_CODES["TEP111"],
         username,
       });
@@ -43,7 +43,7 @@ router.get('/login', (req: Request, res: Response) => {
       role: user.role
     };
 
-    res.redirect('/manager/');
+    res.redirect('/admin/');
     return;
   });
 
@@ -57,7 +57,7 @@ router.get('/logout', (req: Request, res: Response) => {
 // -------------------- //
 
 router.get('/register', (req: Request, res: Response) => {
-  res.render('manager/register', {
+  res.render('admin/register', {
     error: ERROR_CODES["TEP200"],
     email: '',
     username: ''
@@ -81,7 +81,7 @@ router.post('/register', async (req: Request, res: Response) => {
   }
 
   if (errorCode) {
-    res.status(401).render('manager/register', { error: ERROR_CODES[errorCode], username, email });
+    res.status(401).render('admin/register', { error: ERROR_CODES[errorCode], username, email });
     return;
   }
 
@@ -108,11 +108,11 @@ router.post('/register', async (req: Request, res: Response) => {
 
     fs.writeFileSync(filePath, JSON.stringify(userData, null, 2), 'utf8');
   } catch {
-    res.status(401).render('manager/register', { error: ERROR_CODES["TEP450"] });
+    res.status(401).render('admin/register', { error: ERROR_CODES["TEP450"] });
     return;
   }
 
-  res.status(401).redirect('/manager/login');
+  res.status(401).redirect('/admin/login');
   return;
 });
 
@@ -121,7 +121,7 @@ router.post('/register', async (req: Request, res: Response) => {
 router.use(isAuthenticated);
 
 router.get('/', (req: Request, res: Response) => {
-  res.render('manager/dashboard', { layout: 'layouts/manager', user: req.session.user });
+  res.render('admin/dashboard', { layout: 'layouts/admin', user: req.session.user });
 });
 
 // -------------------- //
@@ -163,7 +163,7 @@ router.get('/blocks', blockController.list);
 // -------------------- //
 
 router.use('*', (req, res) => {
-  res.status(404).render('manager/404', { layout: 'layouts/manager', user: req.session.user });
+  res.status(404).render('admin/404', { layout: 'layouts/admin', user: req.session.user });
 });
 
 // -------------------- //
