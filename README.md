@@ -20,7 +20,7 @@
 - 📁 **Organized Assets** – with a modern media library.
 - 🎨 **SCSS Styling** – modular, maintainable styles.
 - 🧪 **Easy Local Dev** – run with nearly zero setup.
-- 🚀 **Lightweight & Fast** – powered by Express & EJS.
+- 🚀 **Lightweight & Fast** – powered by Express & Twig.
 - 👥 **Multiple users** – allows the user to have multiple accounts.
 - 🕙 **Content scheduler** - plan when a post should be released
 - 🔖 **Content versioning** - configurable content versioning of entries
