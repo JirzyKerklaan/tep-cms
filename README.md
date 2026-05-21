@@ -58,10 +58,10 @@ tep-cms/
 │   └── schemas/          # Collections & globals schemas
 ├── core/
 │   ├── interfaces/       # Interface exports
-│   ├── manager/
-│   │   ├── controllers/  # Manager route controllers.
-│   │   ├── helpers/      # Manager route helpers.
-│   │   └── services/     # Manager controller services.
+│   ├── admin/
+│   │   ├── controllers/  # admin route controllers.
+│   │   ├── helpers/      # admin route helpers.
+│   │   └── services/     # admin controller services.
 │   ├── middlewares/      # Global middleware
 │   ├── services/         # Route services
 │   └── validation/       # Validation system
@@ -77,7 +77,7 @@ tep-cms/
 │   ├── routes/           # System routing
 │   ├── templates/
 │   │   ├── layouts/      # Page layouts
-│   │   ├── manager/      # /manager views
+│   │   ├── admin/      # /admin views
 │   │   └── views/        # Public views
 │   ├── types/            # Package definitions
 │   └── utils/            # Utility functions

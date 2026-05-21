@@ -1,0 +1,28 @@
+{% extends "layouts/admin.twig" %}
+
+{% block body %}
+<h1>Create New Collection</h1>
+
+<form action="/admin/collections/new" method="POST">
+  <div>
+    <label for="name">Collection Name:</label>
+    <input type="text" id="name" name="name" required />
+  </div>
+
+  <div>
+    <label>Include Page Builder Blocks:</label>
+    {% if blocks and blocks.length %}
+      {% for block in blocks %}
+        <div>
+          <input type="checkbox" id="{{ block }}" name="blocks" value="{{ block }}" />
+          <label for="{{ block }}">{{ block }}</label>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p>No blocks found.</p>
+    {% endif %}
+  </div>
+
+  <button type="submit">Create Collection</button>
+</form>
+{% endblock %}

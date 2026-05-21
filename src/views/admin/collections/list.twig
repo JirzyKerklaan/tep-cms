@@ -1,0 +1,12 @@
+{% extends "layouts/admin.twig" %}
+
+{% block body %}
+    <a href="/admin">back</a>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="/admin/collections/new">Add collection</a>
+
+    <p>list</p>
+    {% for collection in collections %}
+        <li>{{ collection }}</li>
+    {% endfor %}
+{% endblock %}
