@@ -1,6 +1,5 @@
 import express from 'express';
 import path from 'path';
-import expressLayouts from 'express-ejs-layouts';
 import { RateLimiter, rateLimitMiddleware } from '@the-node-forge/api-rate-limit';
 import { sessionMiddleware } from '../core/middlewares/session';
 import { globalLocals } from '../core/middlewares/globalLocales';
