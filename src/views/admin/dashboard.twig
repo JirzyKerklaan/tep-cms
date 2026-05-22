@@ -1,6 +1,7 @@
 {% extends "layouts/admin.twig" %}
 
 {% block body %}
-<h1>Dashboard</h1>
-<a href="/admin/collections">Collections</a>
+    <h1>Dashboard</h1>
+    <a href="{{ route('admin.collections') }}">Collections</a>
+    <a href="{{ route('admin.blocks') }}">Blocks</a>
 {% endblock %}

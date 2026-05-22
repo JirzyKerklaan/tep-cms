@@ -124,7 +124,7 @@ router.get('/', (req: Request, res: Response) => {
   res.render('admin/dashboard', { layout: 'layouts/admin', user: req.session.user });
 });
 
-// -------------------- //
+// --------- Collections ----------- //
 
 router.get('/collections/new', collectionController.newForm);
 router.post('/collections/new', collectionController.create);
@@ -136,7 +136,7 @@ router.post('/collections/delete/:id', collectionController.delete);
 
 router.get('/collections', collectionController.list);
 
-// -------------------- //
+// --------- Entries ----------- //
 
 router.get('/collections/:collection/new', entryController.newForm);
 router.post('/collections/:collection/new', entryController.create);
@@ -148,7 +148,7 @@ router.post('/collections/:collection/delete/:id', entryController.delete);
 
 router.get('/collections/:collection', entryController.list);
 
-// -------------------- //
+// --------- Blocks ----------- //
 
 router.get('/blocks/new', blockController.newForm);
 router.post('/blocks/new', blockController.create);
@@ -160,7 +160,7 @@ router.post('/blocks/delete/:id', blockController.delete);
 
 router.get('/blocks', blockController.list);
 
-// -------------------- //
+// --------- CatchAll ----------- //
 
 router.use('*', (req, res) => {
   res.status(404).render('admin/404', { layout: 'layouts/admin', user: req.session.user });
