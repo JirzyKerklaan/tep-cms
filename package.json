@@ -2,13 +2,12 @@
   "name": "tep-cms",
   "version": "1.0.0",
   "description": "The Easy Publisher: the perfect CMS for your website!",
-  "main": "dist/server.js",
+  "main": "public/dist/server.js",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/server.js",
-    "dev": "concurrently \"nodemon\" \"npm run watch-css\"",
-    "watch-css": "sass --watch styles/styles.scss:public/css/styles.css --style=expanded",
-    "prod": "npm run build && sass styles/styles.scss public/css/styles.css --no-source-map --style=compressed"
+    "start": "node public/dist/server.js",
+    "dev": "concurrently \"nodemon\"",
+    "prod": "npm run build --no-source-map --style=compressed"
   },
   "dependencies": {
     "@the-node-forge/api-rate-limit": "^1.0.8",
@@ -47,7 +46,6 @@
     "globals": "^17.4.0",
     "jiti": "^2.6.1",
     "nodemon": "^3.1.10",
-    "sass": "^1.97.3",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.56.0"

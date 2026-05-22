@@ -69,7 +69,7 @@ tep-cms/
 │   ├── assets/
 │   │   ├── base/         # Static theme images, icons, etc.
 │   │   └── uploads/      # Uploaded images, icons, etc.
-│   └── css/              # Compiled SCSS styling
+│   └── css/              # Compiled styling
 ├── src/
 │   ├── blocks/           # Page_builder blocks & components
 │   ├── plugins/          # Installed plugins
