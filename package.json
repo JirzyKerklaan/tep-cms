@@ -6,10 +6,12 @@
   "scripts": {
     "build": "tsc",
     "start": "node public/dist/server.js",
-    "dev": "concurrently \"nodemon\"",
-    "prod": "npm run build --no-source-map --style=compressed"
+    "dev": "concurrently \"nodemon\" \"npm run watch-css\"",
+    "watch-css": "npx @tailwindcss/cli -i ./src/assets/app.css -o ./public/css/style.css --watch",
+    "prod": "npm run build && npx @tailwindcss/cli -i ./src/assets/app.css -o ./public/css/style.css"
   },
   "dependencies": {
+    "@tailwindcss/cli": "^4.3.0",
     "@the-node-forge/api-rate-limit": "^1.0.8",
     "bcrypt": "^6.0.0",
     "chokidar": "^4.0.3",
@@ -22,6 +24,7 @@
     "node-cron": "^4.2.1",
     "serve-favicon": "^2.5.1",
     "sharp": "^0.34.3",
+    "tailwindcss": "^4.3.0",
     "twig": "^3.0.0",
     "uuid": "^11.1.1"
   },
