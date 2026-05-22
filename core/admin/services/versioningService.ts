@@ -43,7 +43,19 @@ export class VersioningService {
         return (await fs.readdir(olderDir))
             .filter(f => f.startsWith(slug) && f.endsWith('.json'))
             .sort()
-            .reverse(); // newest last
+            .reverse() // newest last
+            .map(file => {
+                const rawDate = file
+                    .replace(`${slug}-`, '')
+                    .replace(`.json`, '');
+
+                const isoDate = rawDate.replace(
+                    /T(\d{2})-(\d{2})-(\d{2})/,
+                    'T$1:$2:$3'
+                );
+
+                return new Date(isoDate).toLocaleString();
+            })
     }
 
     async restoreVersion(collectionName: string, slug: string, filename: string): Promise<void> {

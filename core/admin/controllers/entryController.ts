@@ -50,6 +50,8 @@ class EntryController extends Controller {
         });
         const olderVersions = await versioningService.getVersions(<string>collectionName, <string>id);
 
+        console.log(olderVersions)
+
         try {
             const entry = await entryService.getById(<string>collectionName, <string>id);
             if (!entry) {
