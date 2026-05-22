@@ -16,16 +16,16 @@
 <h2 id="features">📦 Features</h2>
 
 - ⚡ **File-based Content** – no DB needed.
-- 🧱 **Reusable Blocks** – with a modular `page_builder`.
-- 📁 **Organized Assets** – with a modern media library.
-- 🎨 **SCSS Styling** – modular, maintainable styles.
+- 🧱 **Reusable Blocks** – Use a modular `page_builder`.
+- 📁 **Organized Assets** – Assets managed via a modern media library.
+- 🎨 **Tailwind Styling** – modular, maintainable styles.
 - 🧪 **Easy Local Dev** – run with nearly zero setup.
 - 🚀 **Lightweight & Fast** – powered by Express & Twig.
-- 👥 **Multiple users** – allows the user to have multiple accounts.
-- 🕙 **Content scheduler** - plan when a post should be released
+- 👥 **Multiple users** – allow users to have multiple accounts.
+- 🕙 **Content scheduler** - easily schedule posts or page releases
 - 🔖 **Content versioning** - configurable content versioning of entries
 - 🧩 **Headless mode** - use headless mode to implement TEP anywhere
-- 🔌 **Plugins** - easy management for a variety of plugins
+- 🔌 **Plugins** - easily create your own plugins
 
 <h2 id="installation">🛠 Installation</h2>
 
@@ -69,7 +69,7 @@ tep-cms/
 │   ├── assets/
 │   │   ├── base/         # Static theme images, icons, etc.
 │   │   └── uploads/      # Uploaded images, icons, etc.
-│   └── css/              # Compiled SCSS styling
+│   └── css/              # Compiled styling
 ├── src/
 │   ├── blocks/           # Page_builder blocks & components
 │   ├── plugins/          # Installed plugins
@@ -81,7 +81,6 @@ tep-cms/
 │   │   └── views/        # Public views
 │   ├── types/            # Package definitions
 │   └── utils/            # Utility functions
-├── styles/               # SCSS styling
 ├ config.ts
 └ server.ts
 ```
@@ -89,11 +88,12 @@ tep-cms/
 <h2 id="tips">🧪 Development Tips</h2>
 
 - Use version control to track content
-- Turn off caching during the development fase
+- Turn off caching during the development phase
 - [error codes](.github/docs/error-codes.md)
 
 [//]: # (<h2 id="contribute">🙋 Suggestions or Issues</h2>)
 
+[//]: # ()
 [//]: # ()
 [//]: # (If you find bugs or have suggestions, feel free to open an [issue]&#40;https://github.com/JirzyKerklaan/tep-cms/issues/new&#41;.)
 

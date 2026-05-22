@@ -1,9 +1,6 @@
 # Node.js dependencies
 /node_modules
 
-# Build output
-/dist
-
 # Logs
 logs
 *.log
@@ -40,7 +37,8 @@ src/config.ts
 
 # Output CSS files if you want to exclude generated CSS
 # Uncomment if you want to ignore built CSS
-# public/css/*.css
+/public/css
+/public/dist
 
 # Others
 .idea/

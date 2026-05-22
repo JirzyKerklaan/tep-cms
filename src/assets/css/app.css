@@ -1,0 +1,9 @@
+@import 'tailwindcss';
+
+@import './theme.css';
+
+@import './base/global.css';
+@import './base/header.css';
+@import './base/footer.css';
+
+@import './blocks/pageheader.css';

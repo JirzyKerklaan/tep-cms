@@ -2,15 +2,16 @@
   "name": "tep-cms",
   "version": "1.0.0",
   "description": "The Easy Publisher: the perfect CMS for your website!",
-  "main": "dist/server.js",
+  "main": "public/dist/server.js",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/server.js",
+    "start": "node public/dist/server.js",
     "dev": "concurrently \"nodemon\" \"npm run watch-css\"",
-    "watch-css": "sass --watch styles/styles.scss:public/css/styles.css --style=expanded",
-    "prod": "npm run build && sass styles/styles.scss public/css/styles.css --no-source-map --style=compressed"
+    "watch-css": "npx @tailwindcss/cli -i ./src/assets/css/app.css -o ./public/css/style.css --watch",
+    "prod": "npm run build && npx @tailwindcss/cli -i ./src/assets/css/app.css -o ./public/css/style.css"
   },
   "dependencies": {
+    "@tailwindcss/cli": "^4.3.0",
     "@the-node-forge/api-rate-limit": "^1.0.8",
     "bcrypt": "^6.0.0",
     "chokidar": "^4.0.3",
@@ -23,6 +24,7 @@
     "node-cron": "^4.2.1",
     "serve-favicon": "^2.5.1",
     "sharp": "^0.34.3",
+    "tailwindcss": "^4.3.0",
     "twig": "^3.0.0",
     "uuid": "^11.1.1"
   },
@@ -47,7 +49,6 @@
     "globals": "^17.4.0",
     "jiti": "^2.6.1",
     "nodemon": "^3.1.10",
-    "sass": "^1.97.3",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.56.0"

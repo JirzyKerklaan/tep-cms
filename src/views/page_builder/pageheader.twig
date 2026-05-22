@@ -1,6 +1,8 @@
 
-<div class="block block__pageheader">
+<div class="block pageheader">
   {% for block in blocks %}
     {% include 'components/' ~ block.block ~ '.twig' with block.fields %}
   {% endfor %}
+
+    <a href="{{ route('admin.login') }}">Log in to TEP</a>
 </div>
