@@ -8,6 +8,7 @@ import {startScheduler} from "./utils/scheduler";
 import favicon from 'serve-favicon';
 
 import "./plugins";
+import {route} from "./utils/namedRoutes";
 
 const app = express();
 startScheduler();
@@ -33,5 +34,7 @@ app.use('/api/', rateLimitMiddleware(limiter));
 
 // Routes
 app.use(router);
+
+app.locals.route = route;
 
 export default app;

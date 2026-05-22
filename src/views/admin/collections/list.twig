@@ -1,12 +1,16 @@
 {% extends "layouts/admin.twig" %}
 
 {% block body %}
-    <a href="/admin">back</a>
+    <a href="{{ route('admin.dashboard') }}">back</a>
     &nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="/admin/collections/new">Add collection</a>
+    <a href="{{ route('admin.collections.new') }}">Add collection</a>
 
     <p>list</p>
     {% for collection in collections %}
-        <li>{{ collection }}</li>
+        <li>
+            <a href="{{ route('admin.collections.edit', collection) }}">
+                {{ collection }}
+            </a>
+        </li>
     {% endfor %}
 {% endblock %}
