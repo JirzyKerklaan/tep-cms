@@ -69,15 +69,17 @@ tep-cms/
 │   ├── assets/
 │   │   ├── base/         # Static theme images, icons, etc.
 │   │   └── uploads/      # Uploaded images, icons, etc.
-│   └── css/              # Compiled styling
+│   ├── css/              # Compiled styling
+│   └── dist/             # Compiled typescript
 ├── src/
+│   ├── assets/           # CSS & JS files
 │   ├── blocks/           # Page_builder blocks & components
 │   ├── plugins/          # Installed plugins
 │   ├── requests/         # Request validators
 │   ├── routes/           # System routing
 │   ├── templates/
 │   │   ├── layouts/      # Page layouts
-│   │   ├── admin/      # /admin views
+│   │   ├── admin/        # /admin views
 │   │   └── views/        # Public views
 │   ├── types/            # Package definitions
 │   └── utils/            # Utility functions
