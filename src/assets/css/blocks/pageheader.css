@@ -1,0 +1,14 @@
+.pageheader {
+    @apply w-full py-12 flex items-center justify-center text-center text-primary flex-col;
+
+    h1 {
+        @apply text-4xl font-semibold;
+    }
+    p {
+        @apply opacity-60;
+    }
+
+    a {
+        @apply bg-primary py-1 px-3 hover:bg-primary/85 text-background transition ease-in-out duration-150 rounded-md mt-8;
+    }
+}

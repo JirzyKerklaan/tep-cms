@@ -1,0 +1,7 @@
+.header {
+    @apply w-full;
+
+    .inner {
+        @apply py-4 text-center font-tep text-sm text-secondary font-semibold;
+    }
+}

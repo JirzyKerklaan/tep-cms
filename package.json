@@ -7,8 +7,8 @@
     "build": "tsc",
     "start": "node public/dist/server.js",
     "dev": "concurrently \"nodemon\" \"npm run watch-css\"",
-    "watch-css": "npx @tailwindcss/cli -i ./src/assets/app.css -o ./public/css/style.css --watch",
-    "prod": "npm run build && npx @tailwindcss/cli -i ./src/assets/app.css -o ./public/css/style.css"
+    "watch-css": "npx @tailwindcss/cli -i ./src/assets/css/app.css -o ./public/css/style.css --watch",
+    "prod": "npm run build && npx @tailwindcss/cli -i ./src/assets/css/app.css -o ./public/css/style.css"
   },
   "dependencies": {
     "@tailwindcss/cli": "^4.3.0",

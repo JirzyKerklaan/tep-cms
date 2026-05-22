@@ -9,15 +9,8 @@
       "block": "pageheader",
       "fields": {
         "blocks": [
-          { "block": "text", "fields": { "text": "<h1>Hello world</h1>" } },
-          { "block": "image", "fields": { "src": "/assets/uploads/uploadstest.webp", "alt": "alt" } }
+          { "block": "text", "fields": { "text": "<h1>Welcome</h1><p>We are TEP, a CMS for all your websites</p>" } }
         ]
-      }
-    },
-    {
-      "block": "upload",
-      "fields": {
-        "blocks": []
       }
     }
   ]
