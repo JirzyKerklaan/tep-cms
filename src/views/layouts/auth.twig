@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}{{ title }}{% endblock %} - {{ site_name }}</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="auth">
+        <div class="auth-container">
+            <div class="auth-inner">
+
+                <div class="auth-content">
+
+                    <div class="auth-header">
+                        <img
+                                src="/assets/base/tep-cms.png"
+                                class="w-32 "
+                        />
+
+                        {% if error %}
+                            <p style="color: red;">{{ error }}</p>
+                        {% endif %}
+                    </div>
+
+                    {% block body %}{% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

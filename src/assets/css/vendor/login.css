@@ -1,0 +1,56 @@
+.auth {
+    @apply w-screen min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-800 px-4 sm:px-6 lg:px-8;
+}
+
+.auth-container {
+    @apply relative py-3 sm:max-w-xs min-w-sm sm:mx-auto;
+}
+
+.auth-inner {
+    @apply min-h-96 px-8 py-6 mt-4 text-left bg-white dark:bg-gray-900 rounded-xl shadow-lg;
+}
+
+.auth-content {
+    @apply flex flex-col justify-center items-center h-full select-none;
+}
+
+.auth-content > form {
+    @apply w-full;
+}
+
+.auth-header {
+    @apply flex flex-col items-center justify-center gap-2 mb-8;
+}
+
+
+.auth-title {
+    @apply m-0 text-[16px] font-semibold dark:text-white;
+}
+
+.auth-subtitle {
+    @apply m-0 text-xs max-w-[90%] text-center text-[#8B8E98];
+}
+
+.auth-form-group {
+    @apply w-full flex flex-col gap-2;
+}
+
+.auth-label {
+    @apply font-semibold text-xs text-gray-400;
+}
+
+.auth-input {
+    @apply border rounded-lg px-3 py-2 mb-5 text-sm w-full outline-none dark:border-gray-500 dark:bg-gray-900 dark:text-white;
+}
+
+.auth-button-wrapper {
+    @apply flex flex-col gap-1 mt-3 w-full;
+}
+
+.login-button, .register-button {
+    @apply py-1 px-2 bg-blue-500 hover:bg-blue-700 focus:ring-offset-blue-200 rounded-md text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg cursor-pointer select-none;
+}
+
+.register-button {
+    @apply bg-secondary hover:bg-secondary/80;
+}

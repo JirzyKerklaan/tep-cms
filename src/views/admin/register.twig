@@ -1,23 +1,49 @@
-{% extends "layouts/admin.twig" %}
+{% extends "layouts/auth.twig" %}
 
 {% block body %}
-<h1>Register</h1>
+  <form action="/admin/register" method="POST">
+    <div class="auth-form-group">
+      <label class="auth-label">Email</label>
 
-{% if error %}
-  <p style="color: red;">{{ error }}></p>
-{% endif %}
+      <input
+          class="auth-input"
+          type="email"
+          name="email"
+          value="{{ email }}"
+          required
+      />
+    </div>
 
-<form action="/admin/register" method="POST">
-  <label>Email:</label><br>
-  <input type="email" name="email" value="{{ email }}" required><br>
+    <div class="auth-form-group">
+      <label class="auth-label">Username</label>
 
-  <label>Username:</label><br>
-  <input type="text" name="username" value="{{ username }}" required><br>
+      <input
+          class="auth-input"
+          type="text"
+          name="username"
+          value="{{ username }}"
+          required
+      />
+    </div>
 
-  <label>Password:</label><br>
-  <input type="password" name="password" required><br><br>
+    <div class="auth-form-group">
+      <label class="auth-label">Password</label>
 
-  <button type="submit">Login</button>
-</form>
+      <input
+          type="password"
+          name="password"
+          required
+          class="auth-input"
+      />
+    </div>
 
+    <div class="auth-button-wrapper">
+      <a href="/admin/login" class="register-button">
+        Already have an account
+      </a>
+      <button type="submit" class="login-button">
+        Create account
+      </button>
+    </div>
+  </form>
 {% endblock %}

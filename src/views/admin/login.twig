@@ -1,24 +1,37 @@
-{% extends "layouts/admin.twig" %}
+{% extends "layouts/auth.twig" %}
 
 {% block body %}
-<h1>Login</h1>
+  <form action="/admin/login" method="POST">
+    <div class="auth-form-group">
+      <label class="auth-label">Username</label>
 
-{% if error %}
-  <p style="color: red;">{{ error }}</p>
-{% endif %}
+      <input
+          class="auth-input"
+          type="text"
+          name="username"
+          value="{{ username }}"
+          required
+      />
+    </div>
 
-<form action="/admin/login" method="POST">
-  <label>Username:</label><br>
-  <input type="text" name="username" value="{{ username }}" required><br>
+    <div class="auth-form-group">
+      <label class="auth-label">Password</label>
 
-  <label>Password:</label><br>
-  <input type="password" name="password" required><br><br>
+      <input
+           type="password"
+           name="password"
+           required
+           class="auth-input"
+      />
+    </div>
 
-  <button type="submit">Login</button>
-
-  <p>
-    Don't have an account yet?
-    Click <a href="{{ route('admin.register') }}">here</a> to create one!
-  </p>
-</form>
+    <div class="auth-button-wrapper">
+      <a href="/admin/register" class="register-button">
+        Create account
+      </a>
+      <button class="login-button">
+        Login
+      </button>
+    </div>
+  </form>
 {% endblock %}
