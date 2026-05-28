@@ -51,20 +51,21 @@
 
 ```bash
 tep-cms/
-├── content/
-│   ├── collections/      # All collections (pages, blogs etc.)
-│   ├── globals/          # Global site settings (header, footer settings etc.)
-│   ├── navigation/       # Navigation menu's
-│   └── schemas/          # Collections & globals schemas
 ├── core/
-│   ├── interfaces/       # Interface exports
 │   ├── admin/
-│   │   ├── controllers/  # admin route controllers.
-│   │   ├── helpers/      # admin route helpers.
-│   │   └── services/     # admin controller services.
-│   ├── middlewares/      # Global middleware
-│   ├── services/         # Route services
-│   └── validation/       # Validation system
+│   │   ├── controllers/  # Admin controllers 
+│   │   ├── helpers/      # Admin helpers
+│   │   ├── middlewares/  # Admin middlewares
+│   │   ├── routes/       # Admin routes
+│   │   └── services/     # Admin services
+│   ├── interfaces/       # TS Interfaces
+│   ├── navigation/       # Navigation helper
+│   ├── plugins/          # Plugin manager
+│   ├── requests/         # Requests helper
+│   ├── services/         # Core services
+│   ├── types/            # TS Types
+│   ├── utils/            # Core utils
+│   └── validation/       # Validation helper
 ├── public/
 │   ├── assets/
 │   │   ├── base/         # Static theme images, icons, etc.
@@ -72,19 +73,14 @@ tep-cms/
 │   ├── css/              # Compiled styling
 │   └── dist/             # Compiled typescript
 ├── src/
-│   ├── assets/           # CSS & JS files
-│   ├── blocks/           # Page_builder blocks & components
-│   ├── plugins/          # Installed plugins
-│   ├── requests/         # Request validators
-│   ├── routes/           # System routing
-│   ├── templates/
-│   │   ├── layouts/      # Page layouts
-│   │   ├── admin/        # /admin views
-│   │   └── views/        # Public views
-│   ├── types/            # Package definitions
-│   └── utils/            # Utility functions
-├ config.ts
-└ server.ts
+│   ├── assets/           # CSS & JS
+│   ├── content/          # Content files
+│   ├── plugins/          # Plugin library
+│   ├── views/            # Twig files
+│   └── server.ts
+├── storage/
+├── config.example.ts
+└── config.ts
 ```
 
 <h2 id="tips">🧪 Development Tips</h2>
