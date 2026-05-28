@@ -36,8 +36,9 @@ export class Service<T extends BaseEntity> {
     }
 
     async getAll(): Promise<string[]> {
-        const files = await fs.readdir(this.baseDir);
+        let files = await fs.readdir(this.baseDir);
         const results: string[] = [];
+        files = files.filter(file => !file.startsWith('.'));
         for (const file of files) {
             results.push(file);
         }

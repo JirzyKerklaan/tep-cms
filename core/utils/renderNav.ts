@@ -1,6 +1,6 @@
 import navigationData from '../navigation';
-import { NavLink } from "../../core/interfaces/NavLink";
-import { NavigationGroup } from "../../core/interfaces/NavGroup";
+import { NavLink } from "../interfaces/NavLink";
+import { NavigationGroup } from "../interfaces/NavGroup";
 
 export function renderNav(name: string): string {
   const nav: NavigationGroup | undefined = navigationData[name];

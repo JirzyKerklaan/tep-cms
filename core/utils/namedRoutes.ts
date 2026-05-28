@@ -1,4 +1,4 @@
-import {RouteDefinition} from "../../core/interfaces/RouteDefinition";
+import {RouteDefinition} from "../interfaces/RouteDefinition";
 
 const routes: Record<string, RouteDefinition> = {
 

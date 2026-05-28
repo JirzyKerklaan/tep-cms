@@ -1,8 +1,8 @@
 import express, {Request, Response} from 'express';
-import entryService from "../../core/admin/services/entryService";
-import config from "../../src/config";
-import collectionService from "../../core/admin/services/collectionService";
-import {HasValidToken} from "../../core/middlewares/hasValidToken";
+import entryService from "../services/entryService";
+import config from "../../../config";
+import collectionService from "../services/collectionService";
+import {HasValidToken} from "../middlewares/hasValidToken";
 
 const router = express.Router();
 

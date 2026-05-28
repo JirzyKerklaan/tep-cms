@@ -2,10 +2,10 @@ import fs from 'fs-extra';
 import path from 'path';
 import { Service } from './service';
 import { Entry } from '../../interfaces/Entry';
-import VersioningService from './versioningService';
-import PluginManager from "../plugins/pluginManager";
+import VersioningService from '../../services/versioningService';
+import PluginManager from "../../plugins/pluginManager";
 
-const COLLECTIONS_DIR = path.join(process.cwd(), 'content', 'collections');
+const COLLECTIONS_DIR = path.join(process.cwd(), 'src', 'content', 'collections');
 fs.ensureDirSync(COLLECTIONS_DIR);
 
 class EntryService extends Service<Entry> {

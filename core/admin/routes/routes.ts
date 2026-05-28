@@ -1,16 +1,16 @@
 import express, { Request, Response, NextFunction } from 'express';
 import path from 'path';
 import fs from 'fs';
-import {IndexEntry} from "../../core/interfaces/IndexEntry";
-import { searchContent } from '../../core/services/contentIndex';
-import { Page } from '../../core/interfaces/Page';
-import { Entry } from '../../core/interfaces/Entry';
-import {handleRedirects} from "../../core/middlewares/handleRedirects";
+import {IndexEntry} from "../../interfaces/IndexEntry";
+import { searchContent } from '../../services/contentIndex';
+import { Page } from '../../interfaces/Page';
+import { Entry } from '../../interfaces/Entry';
+import {handleRedirects} from "../middlewares/handleRedirects";
 
 const router = express.Router();
 router.use(handleRedirects);
 
-const collectionsDir = path.join(process.cwd(), 'content', 'collections');
+const collectionsDir = path.join(process.cwd(), 'src', 'content', 'collections');
 
 const allDirs = fs.readdirSync(collectionsDir, { withFileTypes: true })
   .filter(dirent => dirent.isDirectory())
@@ -19,14 +19,14 @@ const allDirs = fs.readdirSync(collectionsDir, { withFileTypes: true })
 const collections = allDirs.filter(name => name !== 'pages');
 
 function loadEntry(collection: string, slug: string): Entry | null {
-  const filePath = path.join(process.cwd(), `/content/collections/${collection}/${slug}.json`);
+  const filePath = path.join(process.cwd(), `/src/content/collections/${collection}/${slug}.json`);
   if (!fs.existsSync(filePath)) return null;
   const raw = fs.readFileSync(filePath, 'utf-8');
   return JSON.parse(raw);
 }
 
 function loadPage(slug: string): Page | null {
-  const filePath = path.join(process.cwd(), `/content/collections/pages/${slug}.json`);
+  const filePath = path.join(process.cwd(), `/src/content/collections/pages/${slug}.json`);
   if (!fs.existsSync(filePath)) return null;
   const raw = fs.readFileSync(filePath, 'utf-8');
   return JSON.parse(raw);
@@ -35,7 +35,7 @@ function loadPage(slug: string): Page | null {
 router.get('/', (req, res) => {
   const homepage = loadPage('home');
   if (!homepage) {
-    res.status(404).send('Homepage not found');
+    res.status(404).redirect('Homepage not found');
     return;
   }
 

@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 import { Controller } from './controller';
 import entryService from '../services/entryService';
-import { VersioningService } from '../services/versioningService';
-import { ERROR_CODES } from '../../../src/utils/errors';
+import { VersioningService } from '../../services/versioningService';
+import { ERROR_CODES } from '../../utils/errors';
 import path from "path";
 
 class EntryController extends Controller {
@@ -13,15 +13,15 @@ class EntryController extends Controller {
     list = async (req: Request, res: Response): Promise<void> => {
         try {
             const entries = await entryService.getAll();
-            res.render(`${this.viewFolder}/list`, { layout: 'layouts/admin', user: req.session.user, entries });
+            res.render(`${this.viewFolder}/list`, { layout: 'admin/layouts/admin', user: req.session.user, entries });
         } catch {
-            res.render(`${this.viewFolder}/list`, { layout: 'layouts/admin', user: req.session.user, error: ERROR_CODES["TEP460"] });
+            res.render(`${this.viewFolder}/list`, { layout: 'admin/layouts/admin', user: req.session.user, error: ERROR_CODES["TEP460"] });
         }
     }
 
     newForm = (req: Request, res: Response): void => {
         res.render(`${this.viewFolder}/new`, {
-            layout: 'layouts/admin',
+            layout: 'admin/layouts/admin',
             title: 'Create Entry',
             collection: req.params.collection
         });
@@ -35,7 +35,7 @@ class EntryController extends Controller {
             res.redirect(`/admin/collections/${collection}`);
         } catch {
             res.status(500).render(`${this.viewFolder}/new`, {
-                layout: 'layouts/admin',
+                layout: 'admin/layouts/admin',
                 title: 'Create Entry',
                 error: 'Failed to create entry file.',
             });        }
@@ -45,7 +45,7 @@ class EntryController extends Controller {
         const id = req.params.id;
         const collectionName = req.params.collection;
         const versioningService = new VersioningService({
-            baseDir: path.join(process.cwd(), 'content', 'collections'),
+            baseDir: path.join(process.cwd(), 'src', 'content', 'collections'),
             maxVersions: 5,
         });
         const olderVersions = await versioningService.getVersions(<string>collectionName, <string>id);
@@ -55,12 +55,12 @@ class EntryController extends Controller {
         try {
             const entry = await entryService.getById(<string>collectionName, <string>id);
             if (!entry) {
-                res.render(`${this.viewFolder}/edit`, { layout: 'layouts/admin', user: req.session.user, error: ERROR_CODES["TEP461"] });
+                res.render(`${this.viewFolder}/edit`, { layout: 'admin/layouts/admin', user: req.session.user, error: ERROR_CODES["TEP461"] });
                 return;
             }
-            res.render(`${this.viewFolder}/edit`, { layout: 'layouts/admin', user: req.session.user, entry, olderVersions, error: ERROR_CODES["TEP200"] });
+            res.render(`${this.viewFolder}/edit`, { layout: 'admin/layouts/admin', user: req.session.user, entry, olderVersions, error: ERROR_CODES["TEP200"] });
         } catch {
-            res.render(`${this.viewFolder}/edit`, { layout: 'layouts/admin', user: req.session.user, error: ERROR_CODES["TEP462"] });
+            res.render(`${this.viewFolder}/edit`, { layout: 'admin/layouts/admin', user: req.session.user, error: ERROR_CODES["TEP462"] });
         }
     }
 
@@ -74,7 +74,7 @@ class EntryController extends Controller {
             await entryService.update(<string>id, data);
             res.redirect('/admin/entries');
         } catch {
-            res.render(`${this.viewFolder}/edit`, { layout: 'layouts/admin', user: req.session.user, entry: { id, ...data }, error: ERROR_CODES["TEP462"] });
+            res.render(`${this.viewFolder}/edit`, { layout: 'admin/layouts/admin', user: req.session.user, entry: { id, ...data }, error: ERROR_CODES["TEP462"] });
         }
     }
 }

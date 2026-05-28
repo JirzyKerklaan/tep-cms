@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import { Redirect } from "../interfaces/Redirect";
-import {redirectService} from "../services/redirectService";
+import { Redirect } from "../../interfaces/Redirect";
+import {redirectService} from "../../services/redirectService";
 
 export async function handleRedirects(req: Request, res: Response, next: NextFunction) {
     const redirects: Redirect[] =

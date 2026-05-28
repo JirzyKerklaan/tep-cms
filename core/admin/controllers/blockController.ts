@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import { Controller } from './controller';
 import blockService from '../services/blockService';
-import { ERROR_CODES } from '../../../src/utils/errors';
+import { ERROR_CODES } from '../../utils/errors';
 import {Field} from "../../interfaces/Field";
 
 class BlockController extends Controller {
@@ -11,7 +11,7 @@ class BlockController extends Controller {
   }
 
   newForm = (req: Request, res: Response): void => {
-    res.render(`${this.viewFolder}/new`, { layout: 'layouts/admin', title: 'Create Block' });
+    res.render(`${this.viewFolder}/new`, { layout: 'admin/layouts/admin', title: 'Create Block' });
   };
 
   create = async (req: Request, res: Response): Promise<void> => {
@@ -40,7 +40,7 @@ class BlockController extends Controller {
       return;
     }
 
-    res.render(`${this.viewFolder}/edit`, { layout: 'layouts/admin', title: 'Edit Block', block });
+    res.render(`${this.viewFolder}/edit`, { layout: 'admin/layouts/admin', title: 'Edit Block', block });
   };
 
   update = async (req: Request, res: Response): Promise<void> => {
@@ -67,7 +67,7 @@ class BlockController extends Controller {
   list = async (req: Request, res: Response): Promise<void> => {
     try {
       const blocks = await blockService.getAll();
-      res.render(`${this.viewFolder}/list`, { layout: 'layouts/admin', user: req.session.user, blocks });
+      res.render(`${this.viewFolder}/list`, { layout: 'admin/layouts/admin', user: req.session.user, blocks });
     } catch {
       res.status(500).send(ERROR_CODES["TEP450"]);
     }

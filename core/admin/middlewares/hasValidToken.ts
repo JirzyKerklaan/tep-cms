@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import config from '../../src/config';
-import {ERROR_CODES} from "../../src/utils/errors";
+import config from '../../../config';
+import {ERROR_CODES} from "../../utils/errors";
 
 /**
  * Middleware to validate the API key.
