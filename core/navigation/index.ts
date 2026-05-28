@@ -1,8 +1,8 @@
 import fs from 'fs';
 import path from 'path';
-import { NavigationGroup } from "../../core/interfaces/NavGroup";
+import { NavigationGroup } from "../interfaces/NavGroup";
 
-const navPath = path.join(process.cwd(), '/content/navigation');
+const navPath = path.join(process.cwd(), 'src', '/content/navigation');
 
 const navigationData: Record<string, NavigationGroup> = {};
 

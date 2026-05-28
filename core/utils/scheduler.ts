@@ -1,5 +1,5 @@
 import cron from 'node-cron';
-import { getScheduled, publishScheduled } from '../../core/services/schedulerService'
+import { getScheduled, publishScheduled } from '../services/schedulerService'
 
 export async function startScheduler() {
     cron.schedule('* * * * *', async () => {

@@ -3,7 +3,7 @@ import { promises as fs } from 'fs';
 import path from 'path';
 
 class RedirectService {
-    private basePath = path.join(process.cwd(), 'content');
+    private basePath = path.join(process.cwd(), 'src', 'content');
 
     async getById<T = unknown>(collection: string, id: string): Promise<T> {
         const filePath = path.join(this.basePath, collection, `${id}.json`);

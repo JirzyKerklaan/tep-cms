@@ -1,11 +1,11 @@
 import { Service } from './service';
 import fs from 'fs-extra';
 import path from 'path';
-import { ERROR_CODES } from '../../../src/utils/errors';
+import { ERROR_CODES } from '../../utils/errors';
 import {Collection} from "../../interfaces/Collection";
 
-const COLLECTIONS_DIR = path.join(process.cwd(), 'content', 'collections');
-const SCHEMAS_DIR = path.join(process.cwd(), 'content', 'schemas', 'collections');
+const COLLECTIONS_DIR = path.join(process.cwd(), 'src', 'content', 'collections');
+const SCHEMAS_DIR = path.join(process.cwd(), 'src', 'content', 'schemas', 'collections');
 
 fs.ensureDirSync(COLLECTIONS_DIR);
 fs.ensureDirSync(SCHEMAS_DIR);

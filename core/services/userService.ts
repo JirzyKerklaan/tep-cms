@@ -3,7 +3,7 @@ import path from 'path';
 import bcrypt from 'bcrypt';
 import {User} from "../interfaces/User";
 
-const USERS_DIR = path.join(process.cwd(), 'content/users');
+const USERS_DIR = path.join(process.cwd(), 'src', 'content', 'users');
 
 let users: User[] = [];
 

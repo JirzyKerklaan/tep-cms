@@ -1,7 +1,7 @@
 import express from 'express';
-import { upload, convertToWebp } from '../utils/uploadHandler';
-import config from '../config';
-import {ERROR_CODES} from "../utils/errors";
+import { upload, convertToWebp } from '../../utils/uploadHandler';
+import config from '../../../config';
+import {ERROR_CODES} from "../../utils/errors";
 
 const router = express.Router();
 

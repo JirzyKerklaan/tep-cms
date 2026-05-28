@@ -1,15 +1,15 @@
 import express, { Request, Response } from 'express';
-import { collectionController, blockController, entryController } from '../../core/admin/controllers';
-import {createPassword, findEmail, findUsername, loadUsers, verifyPassword} from '../../core/services/userService';
-import { ERROR_CODES, ErrorCode } from '../utils/errors';
+import { collectionController, blockController, entryController } from '../controllers';
+import {createPassword, findEmail, findUsername, loadUsers, verifyPassword} from '../../services/userService';
+import { ERROR_CODES, ErrorCode } from '../../utils/errors';
 import fs from 'fs-extra';
 import path from "path";
-import {isAuthenticated} from '../../core/middlewares/isAuthenticated';
+import {isAuthenticated} from '../middlewares/isAuthenticated';
 
 const router = express.Router();
 
 router.get('/login', (req: Request, res: Response) => {
-  res.render('admin/login', {
+  res.render('admin/pages/login', {
     error: ERROR_CODES["TEP200"],
     username: ''
   });
@@ -22,7 +22,7 @@ router.get('/login', (req: Request, res: Response) => {
 
     const user = findUsername(username);
     if (!user) {
-      res.status(401).render('admin/login', {
+      res.status(401).render('admin/pages/login', {
         error: ERROR_CODES["TEP111"],
         username,
       });
@@ -31,7 +31,7 @@ router.get('/login', (req: Request, res: Response) => {
 
     const passwordValid = await verifyPassword(user, password);
     if (!passwordValid) {
-      res.status(401).render('admin/login', {
+      res.status(401).render('admin/pages/login', {
         error: ERROR_CODES["TEP111"],
         username,
       });
@@ -57,7 +57,7 @@ router.get('/logout', (req: Request, res: Response) => {
 // -------------------- //
 
 router.get('/register', (req: Request, res: Response) => {
-  res.render('admin/register', {
+  res.render('pages/register', {
     error: ERROR_CODES["TEP200"],
     email: '',
     username: ''
@@ -81,12 +81,12 @@ router.post('/register', async (req: Request, res: Response) => {
   }
 
   if (errorCode) {
-    res.status(401).render('admin/register', { error: ERROR_CODES[errorCode], username, email });
+    res.status(401).render('pages/register', { error: ERROR_CODES[errorCode], username, email });
     return;
   }
 
   try {
-    const userPath = path.join(process.cwd(), 'content', 'users');
+    const userPath = path.join(process.cwd(), 'src', 'content', 'users');
 
     if (!fs.existsSync(userPath)) {
       fs.mkdirSync(userPath, {recursive: true});
@@ -108,7 +108,7 @@ router.post('/register', async (req: Request, res: Response) => {
 
     fs.writeFileSync(filePath, JSON.stringify(userData, null, 2), 'utf8');
   } catch {
-    res.status(401).render('admin/register', { error: ERROR_CODES["TEP450"] });
+    res.status(401).render('pages/register', { error: ERROR_CODES["TEP450"] });
     return;
   }
 
@@ -121,7 +121,7 @@ router.post('/register', async (req: Request, res: Response) => {
 router.use(isAuthenticated);
 
 router.get('/', (req: Request, res: Response) => {
-  res.render('admin/dashboard', { layout: 'layouts/admin', user: req.session.user });
+  res.render('admin/pages/dashboard', { layout: 'admin/layouts/admin', user: req.session.user });
 });
 
 // --------- Collections ----------- //
@@ -163,7 +163,7 @@ router.get('/blocks', blockController.list);
 // --------- CatchAll ----------- //
 
 router.use('*', (req, res) => {
-  res.status(404).render('admin/404', { layout: 'layouts/admin', user: req.session.user });
+  res.status(404).render('pages/404', { layout: 'admin/layouts/admin', user: req.session.user });
 });
 
 // -------------------- //

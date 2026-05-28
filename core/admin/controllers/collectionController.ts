@@ -4,7 +4,7 @@ import collectionService from '../services/collectionService';
 import fs from 'fs-extra';
 import path from 'path';
 import { getDefaultFields } from '../helpers/defaultFieldsHelper';
-import { ERROR_CODES } from '../../../src/utils/errors';
+import { ERROR_CODES } from '../../utils/errors';
 
 class CollectionController extends Controller {
     constructor() {
@@ -14,9 +14,9 @@ class CollectionController extends Controller {
     list = async (req: Request, res: Response): Promise<void> => {
         try {
             const collections = await collectionService.getAll();
-            res.render(`${this.viewFolder}/list`, { layout: 'layouts/admin', user: req.session.user, collections });
+            res.render(`${this.viewFolder}/list`, { layout: 'admin/layouts/admin', user: req.session.user, collections });
         } catch {
-            res.render(`${this.viewFolder}/list`, { layout: 'layouts/admin', user: req.session.user, error: ERROR_CODES["TEP460"] });
+            res.render(`${this.viewFolder}/list`, { layout: 'admin/layouts/admin', user: req.session.user, error: ERROR_CODES["TEP460"] });
         }
     }
 
@@ -28,7 +28,7 @@ class CollectionController extends Controller {
             .map(file => path.basename(file, '.twig'));
 
         res.render(`${this.viewFolder}/new`, {
-            layout: 'layouts/admin',
+            layout: 'admin/layouts/admin',
             title: 'Create Collection',
             blocks,
         });
@@ -44,7 +44,7 @@ class CollectionController extends Controller {
             created_at: new Date().toISOString()
         };
 
-        const schemaPath = path.join(process.cwd(), 'content', 'schemas', 'collections', `${name}.schema.json`);
+        const schemaPath = path.join(process.cwd(), 'src', 'content', 'schemas', 'collections', `${name}.schema.json`);
         await fs.outputJson(schemaPath, schema, { spaces: 2 });
 
         const blockData = [];
@@ -65,7 +65,7 @@ class CollectionController extends Controller {
             scheduledAt: req.body.scheduledAt || null,
         };
 
-        const standardPath = path.join(process.cwd(), 'content', 'collections', name, 'standard.json');
+        const standardPath = path.join(process.cwd(), 'src', 'content', 'collections', name, 'standard.json');
         await fs.outputJson(standardPath, standard, { spaces: 2 });
 
         res.redirect('/admin/collections');
@@ -76,12 +76,12 @@ class CollectionController extends Controller {
         try {
             const collection = await collectionService.getById(<string>id);
             if (!collection) {
-                res.render(`${this.viewFolder}/edit`, { layout: 'layouts/admin', user: req.session.user, error: ERROR_CODES["TEP461"] });
+                res.render(`${this.viewFolder}/edit`, { layout: 'admin/layouts/admin', user: req.session.user, error: ERROR_CODES["TEP461"] });
                 return;
             }
-            res.render(`${this.viewFolder}/edit`, { layout: 'layouts/admin', user: req.session.user, collection, error: ERROR_CODES["TEP200"] });
+            res.render(`${this.viewFolder}/edit`, { layout: 'admin/layouts/admin', user: req.session.user, collection, error: ERROR_CODES["TEP200"] });
         } catch {
-            res.render(`${this.viewFolder}/edit`, { layout: 'layouts/admin', user: req.session.user, error: ERROR_CODES["TEP462"] });
+            res.render(`${this.viewFolder}/edit`, { layout: 'admin/layouts/admin', user: req.session.user, error: ERROR_CODES["TEP462"] });
         }
     }
 
@@ -95,7 +95,7 @@ class CollectionController extends Controller {
             await collectionService.update(<string>id, data);
             res.redirect('/admin/collections');
         } catch {
-            res.render(`${this.viewFolder}/edit`, { layout: 'layouts/admin', user: req.session.user, collection: { id, ...data }, error: ERROR_CODES["TEP462"] });
+            res.render(`${this.viewFolder}/edit`, { layout: 'admin/layouts/admin', user: req.session.user, collection: { id, ...data }, error: ERROR_CODES["TEP462"] });
         }
     }
 }

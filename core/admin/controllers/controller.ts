@@ -13,19 +13,19 @@ export abstract class Controller implements IController {
     }
 
     newForm(req: Request, res: Response): void {
-        res.render(`${this.viewFolder}/new`, { layout: 'layouts/admin', title: `Create ${this.modelName}` });
+        res.render(`${this.viewFolder}/new`, { layout: 'admin/layouts/admin', title: `Create ${this.modelName}` });
     }
 
     editForm(req: Request, res: Response): void {
         const id = req.params.id;
-        res.render(`${this.viewFolder}/edit`, { layout: 'layouts/admin', id });
+        res.render(`${this.viewFolder}/edit`, { layout: 'admin/layouts/admin', id });
     }
 
     delete(req: Request, res: Response): void {
         try {
             const id = req.params.id;
-            const folderPath = path.join(process.cwd(), 'content', this.modelName, <string>id);
-            const schemaPath = path.join(process.cwd(), 'content', 'schemas', this.modelName, `${id}.schema.json`);
+            const folderPath = path.join(process.cwd(), 'src', 'content', this.modelName, <string>id);
+            const schemaPath = path.join(process.cwd(), 'src', 'content', 'schemas', this.modelName, `${id}.schema.json`);
 
             fs.remove(folderPath);
             fs.remove(schemaPath);

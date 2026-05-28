@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "ES2020",
     "module": "commonjs",
-    "outDir": "./public/dist",
+    "outDir": "public/dist",
     "rootDir": ".",
     "strict": true,
     "esModuleInterop": true,
@@ -10,7 +10,11 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "typeRoots": [
-      "./src/types", "./node_modules/@types"]
+      "./core/types",
+      "./node_modules/@types"
+    ]
   },
-  "include": ["src"]
+  "include": [
+    "./src"
+  ]
 }
