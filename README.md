@@ -47,7 +47,7 @@
     ```
 
 
-<h2 id="file-structure">File Structure</h2>
+<h2 id="file-structure">📁 File Structure</h2>
 
 ```bash
 tep-cms/
