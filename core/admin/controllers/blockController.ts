@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 import { v4 as uuidv4 } from 'uuid';
-import { Controller } from './controller';
-import blockService from '../services/blockService';
-import { ERROR_CODES } from '../../utils/errors';
-import {Field} from "../../interfaces/Field";
+import { Controller } from '@core/admin/controllers/controller';
+import blockService from '@core/admin/services/blockService';
+import { ERROR_CODES } from '@core/utils/errors';
+import {Field} from "@core/interfaces/Field";
 
 class BlockController extends Controller {
   constructor() {

@@ -1,7 +1,7 @@
 import fs from 'fs/promises';
 import path from 'path';
 import bcrypt from 'bcrypt';
-import {User} from "../interfaces/User";
+import {User} from "@core/interfaces/User";
 
 const USERS_DIR = path.join(process.cwd(), 'src', 'content', 'users');
 

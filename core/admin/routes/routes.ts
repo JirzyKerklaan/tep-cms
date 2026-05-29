@@ -1,11 +1,11 @@
 import express, { Request, Response, NextFunction } from 'express';
 import path from 'path';
 import fs from 'fs';
-import {IndexEntry} from "../../interfaces/IndexEntry";
-import { searchContent } from '../../services/contentIndex';
-import { Page } from '../../interfaces/Page';
-import { Entry } from '../../interfaces/Entry';
-import {handleRedirects} from "../middlewares/handleRedirects";
+import {IndexEntry} from "@core/interfaces/IndexEntry";
+import { searchContent } from '@core/services/contentIndex';
+import { Page } from '@core/interfaces/Page';
+import { Entry } from '@core/interfaces/Entry';
+import {handleRedirects} from "@core/admin/middlewares/handleRedirects";
 
 const router = express.Router();
 router.use(handleRedirects);

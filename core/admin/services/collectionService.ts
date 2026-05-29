@@ -1,8 +1,8 @@
-import { Service } from './service';
+import { Service } from '@core/admin/services/service';
 import fs from 'fs-extra';
 import path from 'path';
-import { ERROR_CODES } from '../../utils/errors';
-import {Collection} from "../../interfaces/Collection";
+import { ERROR_CODES } from '@core/utils/errors';
+import {Collection} from "@core/interfaces/Collection";
 
 const COLLECTIONS_DIR = path.join(process.cwd(), 'src', 'content', 'collections');
 const SCHEMAS_DIR = path.join(process.cwd(), 'src', 'content', 'schemas', 'collections');

@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import routes from './routes';
-import upload from './upload';
-import search from './search';
-import adminRoutes from './admin';
-import apiRoutes from './api';
+import routes from '@core/admin/routes/routes';
+import upload from '@core/admin/routes/upload';
+import search from '@core/admin/routes/search';
+import adminRoutes from '@core/admin/routes/admin';
+import apiRoutes from '@core/admin/routes/api';
 
 const router = Router();
 

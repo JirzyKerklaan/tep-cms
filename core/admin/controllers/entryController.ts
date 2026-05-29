@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
-import { Controller } from './controller';
-import entryService from '../services/entryService';
-import { VersioningService } from '../../services/versioningService';
-import { ERROR_CODES } from '../../utils/errors';
+import { Controller } from '@core/admin/controllers/controller';
+import entryService from '@core/admin/services/entryService';
+import { VersioningService } from '@core/services/versioningService';
+import { ERROR_CODES } from '@core/utils/errors';
 import path from "path";
 
 class EntryController extends Controller {

@@ -1,6 +1,6 @@
 // pluginManager.ts
-import {Entry} from "../interfaces/Entry";
-import {Plugin} from "../interfaces/Plugin";
+import {Entry} from "@core/interfaces/Entry";
+import {Plugin} from "@core/interfaces/Plugin";
 
 class PluginManager {
     private plugins: Plugin[] = [];

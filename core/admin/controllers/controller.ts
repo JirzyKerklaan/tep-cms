@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import fs from 'fs-extra';
 import path from 'path';
-import {IController} from "../../interfaces/IController";
+import {IController} from "@core/interfaces/IController";
 
 export abstract class Controller implements IController {
     protected viewFolder: string;

@@ -12,9 +12,14 @@
     "typeRoots": [
       "./core/types",
       "./node_modules/@types"
-    ]
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@core/*": ["core/*"],
+      "@src/*": ["src/*"]
+    }
   },
   "include": [
-    "./src"
+    "**/*.ts"
   ]
 }

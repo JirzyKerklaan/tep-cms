@@ -1,6 +1,6 @@
-import collectionService from "../admin/services/collectionService";
-import entryService from "../admin/services/entryService";
-import { Entry } from "../interfaces/Entry";
+import collectionService from "@core/admin/services/collectionService";
+import entryService from "@core/admin/services/entryService";
+import { Entry } from "@core/interfaces/Entry";
 
 export async function getScheduled() {
     const collections = await collectionService.getAllWithEntryCount();

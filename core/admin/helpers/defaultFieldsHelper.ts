@@ -1,4 +1,4 @@
-import {Field} from "../../interfaces/Field";
+import {Field} from "@core/interfaces/Field";
 
 export function getDefaultFields(schemaFields: Field[]): Record<string, string | unknown[] | null> {
   const defaultData: Record<string, string | unknown[] | null> = {};
