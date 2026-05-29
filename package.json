@@ -44,8 +44,8 @@
     "@types/node": "^24.12.4",
     "@types/nodemon": "^1.19.6",
     "@types/uuid": "^10.0.0",
-    "@typescript-eslint/eslint-plugin": "^8.59.4",
-    "@typescript-eslint/parser": "^8.59.4",
+    "@typescript-eslint/eslint-plugin": "^8.60.0",
+    "@typescript-eslint/parser": "^8.60.0",
     "concurrently": "^9.2.0",
     "eslint": "^10.4.0",
     "globals": "^17.6.0",
@@ -54,6 +54,6 @@
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.8.3",
-    "typescript-eslint": "^8.59.4"
+    "typescript-eslint": "^8.60.0"
   }
 }
