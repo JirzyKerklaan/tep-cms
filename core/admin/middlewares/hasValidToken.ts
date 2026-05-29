@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import config from 'config';
+import config from "@root/config";
 import {ERROR_CODES} from "@core/utils/errors";
 
 /**

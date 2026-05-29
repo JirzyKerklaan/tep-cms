@@ -1,7 +1,7 @@
 import chokidar from 'chokidar';
 import app from '@core/app';
 import { buildContentIndex } from '@core/services/contentIndex';
-import config from "config";
+import config from "@root/config";
 
 const PORT = config.server.PORT || 3000;
 
@@ -9,7 +9,7 @@ const PORT = config.server.PORT || 3000;
   await buildContentIndex();
   console.log('🔍 Content index built');
 
-  chokidar.watch('@src/content/**/**/*').on('change', async () => {
+  chokidar.watch('./src/content/**/**/*').on('change', async () => {
     await buildContentIndex();
     console.log('🔄 Content index updated');
   });

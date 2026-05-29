@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import config from 'config';
+import config from "@root/config";
 import navigationData from '@core/navigation';
 import { renderNav } from '@core/utils/renderNav';
 
