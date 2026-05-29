@@ -1,6 +1,6 @@
 import express, {Request, Response} from 'express';
 import entryService from "@core/admin/services/entryService";
-import config from "config";
+import config from "@root/config";
 import collectionService from "@core/admin/services/collectionService";
 import {HasValidToken} from "@core/admin/middlewares/hasValidToken";
 

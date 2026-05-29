@@ -9,7 +9,7 @@ const PORT = config.server.PORT || 3000;
   await buildContentIndex();
   console.log('🔍 Content index built');
 
-  chokidar.watch('./src/content/**/**/*').on('change', async () => {
+  chokidar.watch('./src/content/collections/**/*').on('change', async () => {
     await buildContentIndex();
     console.log('🔄 Content index updated');
   });
