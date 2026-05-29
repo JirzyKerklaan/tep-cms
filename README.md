@@ -53,11 +53,11 @@
 tep-cms/
 ├── core/
 │   ├── admin/
-│   │   ├── controllers/  # Admin controllers 
-│   │   ├── helpers/      # Admin helpers
-│   │   ├── middlewares/  # Admin middlewares
-│   │   ├── routes/       # Admin routes
-│   │   └── services/     # Admin services
+│   │   ├── controllers/  # Controllers 
+│   │   ├── helpers/      # Helpers
+│   │   ├── middlewares/  # Middlewares
+│   │   ├── routes/       # Routes
+│   │   └── services/     # Services
 │   ├── interfaces/       # TS Interfaces
 │   ├── navigation/       # Navigation helper
 │   ├── plugins/          # Plugin manager
