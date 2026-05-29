@@ -57,7 +57,7 @@ router.get('/logout', (req: Request, res: Response) => {
 // -------------------- //
 
 router.get('/register', (req: Request, res: Response) => {
-  res.render('pages/register', {
+  res.render('admin/pages/register', {
     error: ERROR_CODES["TEP200"],
     email: '',
     username: ''
@@ -81,7 +81,7 @@ router.post('/register', async (req: Request, res: Response) => {
   }
 
   if (errorCode) {
-    res.status(401).render('pages/register', { error: ERROR_CODES[errorCode], username, email });
+    res.status(401).render('admin/pages/register', { error: ERROR_CODES[errorCode], username, email });
     return;
   }
 
@@ -108,7 +108,7 @@ router.post('/register', async (req: Request, res: Response) => {
 
     fs.writeFileSync(filePath, JSON.stringify(userData, null, 2), 'utf8');
   } catch {
-    res.status(401).render('pages/register', { error: ERROR_CODES["TEP450"] });
+    res.status(401).render('admin/pages/register', { error: ERROR_CODES["TEP450"] });
     return;
   }
 
