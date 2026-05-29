@@ -1,9 +1,9 @@
 import fs from 'fs-extra';
 import path from 'path';
-import { Service } from './service';
-import { Entry } from '../../interfaces/Entry';
-import VersioningService from '../../services/versioningService';
-import PluginManager from "../../plugins/pluginManager";
+import { Service } from '@core/admin/services/service';
+import { Entry } from '@core/interfaces/Entry';
+import VersioningService from '@core/services/versioningService';
+import PluginManager from "@core/plugins/pluginManager";
 
 const COLLECTIONS_DIR = path.join(process.cwd(), 'src', 'content', 'collections');
 fs.ensureDirSync(COLLECTIONS_DIR);

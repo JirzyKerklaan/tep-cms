@@ -1,3 +1,3 @@
-// import PluginManager from "../../core/manager/plugins/pluginManager";
+// import PluginManager from "@core/plugins/pluginManager";
 //
 // PluginManager.register();

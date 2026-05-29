@@ -1,6 +1,6 @@
 import fs from 'fs-extra';
 import path from 'path';
-import { BaseEntity } from '../../interfaces/BaseEntity';
+import { BaseEntity } from '@core/interfaces/BaseEntity';
 
 export class Service<T extends BaseEntity> {
     protected baseDir: string;

@@ -1,4 +1,4 @@
-import {Entry} from "./Entry";
+import {Entry} from "@core/interfaces/Entry";
 
 type EntryHook = (
     collection: string,

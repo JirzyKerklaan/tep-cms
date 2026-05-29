@@ -1,6 +1,6 @@
-import {CustomMessages} from "../interfaces/CustomMessages";
-import {ValidationRules} from "../interfaces/ValidationRules";
-import { ruleRegistry } from "./rules";
+import {CustomMessages} from "@core/interfaces/CustomMessages";
+import {ValidationRules} from "@core/interfaces/ValidationRules";
+import { ruleRegistry } from "@core/validation/rules";
 
 export class Validator<T extends Record<string, unknown> = Record<string, unknown>> {
     private data: T;

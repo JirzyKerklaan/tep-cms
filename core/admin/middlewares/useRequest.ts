@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { BaseRequest } from '../../requests/request';
+import { BaseRequest } from '@core/requests/request';
 
 export function useRequest<
     TData extends Record<string, unknown>,

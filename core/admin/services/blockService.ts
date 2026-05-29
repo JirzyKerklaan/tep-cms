@@ -1,8 +1,8 @@
-import { Service } from './service';
-import { generateBlockTemplate } from '../helpers/blockTemplateHelper';
+import { Service } from '@core/admin/services/service';
+import { generateBlockTemplate } from '@core/admin/helpers/blockTemplateHelper';
 import fs from 'fs-extra';
 import path from 'path';
-import {BlockInput} from "../../interfaces/BlockInput";
+import {BlockInput} from "@core/interfaces/BlockInput";
 
 export type BlockType = 'page_builder' | 'component';
 

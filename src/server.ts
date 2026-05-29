@@ -1,7 +1,7 @@
 import chokidar from 'chokidar';
-import app from '../core/app';
-import { buildContentIndex } from '../core/services/contentIndex';
-import config from "../config";
+import app from '@core/app';
+import { buildContentIndex } from '@core/services/contentIndex';
+import config from "@root/config";
 
 const PORT = config.server.PORT || 3000;
 

@@ -1,4 +1,4 @@
-import { Validator } from '../validation';
+import { Validator } from '@core/validation';
 
 export abstract class BaseRequest<T extends Record<string, unknown>> {
     protected data!: T;

@@ -1,3 +1,5 @@
+// TODO: Transform to TWIG structure
+
 export function generateBlockTemplate(type: string, normalizedBlock: string, blockName: string): string {
   if (type === 'page_builder') {
     return `<div class="block block__${normalizedBlock}">

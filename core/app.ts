@@ -1,14 +1,13 @@
 import express from 'express';
 import path from 'path';
 import { RateLimiter, rateLimitMiddleware } from '@the-node-forge/api-rate-limit';
-import { sessionMiddleware } from './admin/middlewares/session';
-import { globalLocals } from './admin/middlewares/globalLocales';
-import router from './admin/routes';
-import {startScheduler} from "./utils/scheduler";
+import { sessionMiddleware } from '@core/admin/middlewares/session';
+import { globalLocals } from '@core/admin/middlewares/globalLocales';
+import router from '@core/admin/routes';
+import {startScheduler} from "@core/utils/scheduler";
 import favicon from 'serve-favicon';
-
-import "../src/plugins";
-import {route} from "./utils/namedRoutes";
+import {route} from "@core/utils/namedRoutes";
+import "@src/plugins";
 
 const app = express();
 startScheduler();

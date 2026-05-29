@@ -1,9 +1,9 @@
 import fs from 'fs/promises';
 import path from 'path';
 import lunr from 'lunr';
-import {IndexEntry} from "../interfaces/IndexEntry";
-import {LunrBuilder} from "../interfaces/LunrBuilder";
-import {LunrResult} from "../interfaces/LunrResult";
+import {IndexEntry} from "@core/interfaces/IndexEntry";
+import {LunrBuilder} from "@core/interfaces/LunrBuilder";
+import {LunrResult} from "@core/interfaces/LunrResult";
 
 const BASE_DIRS = [
   path.join(process.cwd(), 'content/collections'),

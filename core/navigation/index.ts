@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { NavigationGroup } from "../interfaces/NavGroup";
+import { NavigationGroup } from "@core/interfaces/NavGroup";
 
 const navPath = path.join(process.cwd(), 'src', '/content/navigation');
 

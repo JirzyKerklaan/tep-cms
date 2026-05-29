@@ -1,4 +1,4 @@
-import {RuleDefinition} from "../interfaces/RuleDefinition";
+import {RuleDefinition} from "@core/interfaces/RuleDefinition";
 
 export const ruleRegistry: Record<string, RuleDefinition> = {
     required: {

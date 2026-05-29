@@ -1,10 +1,10 @@
 import express, { Request, Response } from 'express';
-import { collectionController, blockController, entryController } from '../controllers';
-import {createPassword, findEmail, findUsername, loadUsers, verifyPassword} from '../../services/userService';
-import { ERROR_CODES, ErrorCode } from '../../utils/errors';
+import { collectionController, blockController, entryController } from '@core/admin/controllers';
+import {createPassword, findEmail, findUsername, loadUsers, verifyPassword} from '@core/services/userService';
+import { ERROR_CODES, ErrorCode } from '@core/utils/errors';
 import fs from 'fs-extra';
 import path from "path";
-import {isAuthenticated} from '../middlewares/isAuthenticated';
+import {isAuthenticated} from '@core/admin/middlewares/isAuthenticated';
 
 const router = express.Router();
 

@@ -1,4 +1,4 @@
-import {IndexEntry} from "./IndexEntry";
+import {IndexEntry} from "@core/interfaces/IndexEntry";
 
 export interface LunrBuilder {
     ref(field: string): void;
