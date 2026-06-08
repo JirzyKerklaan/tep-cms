@@ -13,6 +13,7 @@ export default {
   },
   convertToWebp: false,
   server: {
+    HOST: 'http://tep.test',
     PORT: 3000,
   },
 };
