@@ -1,4 +1,3 @@
-// pluginManager.ts
 import {Entry} from "@core/interfaces/Entry";
 import {Plugin} from "@core/interfaces/Plugin";
 

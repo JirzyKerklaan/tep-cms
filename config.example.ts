@@ -13,6 +13,7 @@ export default {
   },
   convertToWebp: false,
   server: {
+    HOST: null,
     PORT: 3000,
   },
 };

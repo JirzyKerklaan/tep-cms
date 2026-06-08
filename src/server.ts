@@ -4,6 +4,7 @@ import { buildContentIndex } from '@core/services/contentIndex';
 import config from "@root/config";
 
 const PORT = config.server.PORT || 3000;
+const HOSTNAME = config.server.HOST || 'http://tep.test';
 
 (async () => {
   await buildContentIndex();
@@ -14,7 +15,7 @@ const PORT = config.server.PORT || 3000;
     console.log('🔄 Content index updated');
   });
 
-  app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
+  app.listen(PORT, HOSTNAME, () => {
+    console.log(`Server running at ${HOSTNAME}:${PORT}`);
   });
 })();
