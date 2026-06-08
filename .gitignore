@@ -1,45 +1,4 @@
-# Node.js dependencies
 /node_modules
-
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# Runtime data
-pids
-*.pid
-*.seed
-*.pid.lock
-
-# Optional npm cache directory
-.npm
-
-# Optional eslint cache
-.eslintcache
-
-# dotenv environment variables file
-.env
-.env.local
-.env.*.local
-src/config.ts
-
-# Mac system files
-.DS_Store
-
-# VSCode settings
-.vscode/
-
-# Sass cache
-.sass-cache
-
-# Output CSS files if you want to exclude generated CSS
-# Uncomment if you want to ignore built CSS
+/config.ts
 /public/css
-/public/dist
-
-# Others
-.idea/
-*.swp
+/public/assets/uploads
