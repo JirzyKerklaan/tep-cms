@@ -1,7 +1,6 @@
 import { Service } from '@core/admin/services/service';
 import fs from 'fs-extra';
 import path from 'path';
-import { ERROR_CODES } from '@core/utils/errors';
 import {Collection} from "@core/interfaces/Collection";
 
 const COLLECTIONS_DIR = path.join(process.cwd(), 'src', 'content', 'collections');
@@ -15,23 +14,22 @@ class CollectionService extends Service<Collection> {
         super(COLLECTIONS_DIR);
     }
 
-    create = async (data: Partial<Collection>): Promise<Collection> => {
-        if (!data.name) throw new Error(ERROR_CODES["TEP465"]);
+    create = async (collection: Collection): Promise<boolean> => {
+        try {
+            const schema = {
+                name: collection.name,
+                blocks: collection.blocks,
+                created_at: new Date().toISOString()
+            }
 
-        const id = Date.now().toString();
-        const newCollection: Collection = { id, name: data.name };
-        await this.save(newCollection);
+            const schemaPath = path.join(SCHEMAS_DIR, `${collection.name}.schema.json`);
+            await fs.outputJson(schemaPath, schema, { spaces: 2 });
 
-        const folderPath = path.join(COLLECTIONS_DIR, newCollection.name);
-        await fs.mkdir(folderPath, { recursive: true });
-
-        const schemaContent = JSON.stringify({ schema: newCollection.name }, null, 2);
-        await fs.writeFile(path.join(SCHEMAS_DIR, `${newCollection.name}.schema.json`), schemaContent, 'utf-8');
-
-        const fileContent = JSON.stringify({ title: `First ${newCollection.name}` }, null, 2);
-        await fs.writeFile(path.join(folderPath, 'standard.json'), fileContent, 'utf-8');
-
-        return newCollection;
+            return true;
+        } catch (error) {
+            console.log(error)
+            return false;
+        }
     };
 
     getAllWithEntryCount = async (): Promise<{ name: string; count: number }[]> => {

@@ -5,6 +5,8 @@ import fs from 'fs-extra';
 import path from 'path';
 import { getDefaultFields } from '@core/admin/helpers/defaultFieldsHelper';
 import { ERROR_CODES } from '@core/utils/errors';
+import {Collection} from "@core/interfaces/Collection";
+import {route} from "@core/utils/namedRoutes";
 
 class CollectionController extends Controller {
     constructor() {
@@ -35,40 +37,19 @@ class CollectionController extends Controller {
     };
 
     create = async (req: Request, res: Response): Promise<void> => {
-        const { name, blocks } = req.body;
-        const selectedBlocks = Array.isArray(blocks) ? blocks : [blocks];
-
-        const schema = {
-            name,
-            page_builder: selectedBlocks,
-            created_at: new Date().toISOString()
+        const collection: Collection = {
+            id: req.body.id,
+            name: req.body.name,
+            blocks: req.body.blocks,
         };
 
-        const schemaPath = path.join(process.cwd(), 'src', 'content', 'schemas', 'collections', `${name}.schema.json`);
-        await fs.outputJson(schemaPath, schema, { spaces: 2 });
+        const createdCollection = await collectionService.create(collection);
 
-        const blockData = [];
-        for (const block of selectedBlocks) {
-            const blockSchemaPath = path.join(process.cwd(), 'src', 'blocks', 'schemas', 'page_builder', `${block}.schema.json`);
-            if (await fs.pathExists(blockSchemaPath)) {
-                const blockSchema = await fs.readJson(blockSchemaPath);
-                const defaultFields = getDefaultFields(blockSchema.fields || []);
-                blockData.push({ block, fields: defaultFields });
-            }
+        if (createdCollection) {
+            res.redirect(route('admin.collections'));
+        } else {
+            res.redirect(route('admin.collections.new'))
         }
-
-        const standard = {
-            title: '',
-            slug: '',
-            content: '',
-            page_builder: blockData,
-            scheduledAt: req.body.scheduledAt || null,
-        };
-
-        const standardPath = path.join(process.cwd(), 'src', 'content', 'collections', name, 'standard.json');
-        await fs.outputJson(standardPath, standard, { spaces: 2 });
-
-        res.redirect('/admin/collections');
     }
 
     editForm = async (req: Request, res: Response): Promise<void> => {
