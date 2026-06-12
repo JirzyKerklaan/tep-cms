@@ -1,6 +1,9 @@
 import fs from 'fs-extra';
 import path from 'path';
 import { BaseEntity } from '@core/interfaces/BaseEntity';
+import {Collection} from "@core/interfaces/Collection";
+import {Entry} from "@core/interfaces/Entry";
+import {BlockInput} from "@core/interfaces/BlockInput";
 
 export class Service<T extends BaseEntity> {
     protected baseDir: string;
@@ -21,11 +24,11 @@ export class Service<T extends BaseEntity> {
         return fs.readJson(file) as Promise<T>;
     }
 
-    async update(id: string, data: Partial<T>, fileName?: string): Promise<void> {
-        const existing = await this.getById(id, fileName);
-        if (!existing) throw new Error(`Entity ${id} not found`);
-        const updated = { ...existing, ...data };
-        await this.save(updated as T, fileName);
+    async update(item: Collection|Entry|BlockInput ): Promise<void> {
+        const existing = await this.getById(item.id, item.name);
+        if (!existing) throw new Error(`Entity ${item.id} not found`);
+        const updated = { ...existing, ...item };
+        await this.save(updated as T, item.name);
     }
 
     async delete(id: string, fileName?: string): Promise<void> {

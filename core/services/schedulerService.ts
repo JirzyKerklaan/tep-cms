@@ -27,6 +27,6 @@ export async function publishScheduled(entry: Entry, collectionName: string): Pr
         const now = new Date();
         await entryService.cronUpdate(collectionName, entry.slug, { published_at: now });
     } catch (err) {
-        console.error(`Failed to publish entry "${entry.title}":`, err);
+        console.error(`Failed to publish entry "${entry.name}":`, err);
     }
 }

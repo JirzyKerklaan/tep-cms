@@ -4,6 +4,7 @@ import { Controller } from '@core/admin/controllers/controller';
 import blockService from '@core/admin/services/blockService';
 import { ERROR_CODES } from '@core/utils/errors';
 import {Field} from "@core/interfaces/Field";
+import {BlockInput} from "@core/interfaces/BlockInput";
 
 class BlockController extends Controller {
   constructor() {
@@ -44,13 +45,14 @@ class BlockController extends Controller {
   };
 
   update = async (req: Request, res: Response): Promise<void> => {
-    const { block, fields, type } = req.body;
+    const block: BlockInput = {
+      id: req.body.id,
+      block: req.body.block,
+      type: req.body.type,
+      fields: JSON.parse(req.body.fields),
+    };
 
-    await blockService.update(<string>req.params.id, {
-      block,
-      type,
-      fields: JSON.parse(fields),
-    });
+    await blockService.update(block);
 
     res.redirect('/admin/blocks');
   };

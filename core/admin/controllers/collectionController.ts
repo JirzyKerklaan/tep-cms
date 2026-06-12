@@ -67,16 +67,17 @@ class CollectionController extends Controller {
     }
 
     update = async (req: Request, res: Response): Promise<void> => {
-        const id = req.params.id;
-        const data = {
-            ...req.body,
-            scheduledAt: req.body.scheduledAt || null
+        const collection: Collection = {
+            id: req.body.id,
+            name: req.body.name,
+            blocks: req.body.blocks,
         };
+
         try {
-            await collectionService.update(<string>id, data);
+            await collectionService.update(collection);
             res.redirect('/admin/collections');
         } catch {
-            res.render(`${this.viewFolder}/edit`, { layout: 'admin/layouts/admin', user: req.session.user, collection: { id, ...data }, error: ERROR_CODES["TEP462"] });
+            res.render(`${this.viewFolder}/edit`, { layout: 'admin/layouts/admin', user: req.session.user, collection: collection, error: ERROR_CODES["TEP462"] });
         }
     }
 }

@@ -4,6 +4,7 @@ import entryService from '@core/admin/services/entryService';
 import { VersioningService } from '@core/services/versioningService';
 import { ERROR_CODES } from '@core/utils/errors';
 import path from "path";
+import {Entry} from "@core/interfaces/Entry";
 
 class EntryController extends Controller {
     constructor() {
@@ -65,16 +66,18 @@ class EntryController extends Controller {
     }
 
     update = async (req: Request, res: Response): Promise<void> => {
-        const id = req.params.id;
-        const data = {
-            ...req.body,
-            scheduledAt: req.body.scheduledAt || null
-        };
+        const entry: Entry = {
+            id: req.body.id,
+            name: req.body.name,
+            slug: req.body.slug,
+            published_at: req.body.published_at,
+            scheduled_at: req.body.scheduledAt || null
+        }
         try {
-            await entryService.update(<string>id, data);
+            await entryService.update(entry);
             res.redirect('/admin/entries');
         } catch {
-            res.render(`${this.viewFolder}/edit`, { layout: 'admin/layouts/admin', user: req.session.user, entry: { id, ...data }, error: ERROR_CODES["TEP462"] });
+            res.render(`${this.viewFolder}/edit`, { layout: 'admin/layouts/admin', user: req.session.user, entry: entry, error: ERROR_CODES["TEP462"] });
         }
     }
 }
