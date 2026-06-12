@@ -3,7 +3,6 @@ import { Controller } from '@core/admin/controllers/controller';
 import collectionService from '@core/admin/services/collectionService';
 import fs from 'fs-extra';
 import path from 'path';
-import { getDefaultFields } from '@core/admin/helpers/defaultFieldsHelper';
 import { ERROR_CODES } from '@core/utils/errors';
 import {Collection} from "@core/interfaces/Collection";
 import {route} from "@core/utils/namedRoutes";
