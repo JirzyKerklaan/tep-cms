@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { collectionController, blockController, entryController } from '@core/admin/controllers';
+import { blockController, collectionController, entryController } from '@core/admin/controllers';
 import {createPassword, findEmail, findUsername, loadUsers, verifyPassword} from '@core/services/userService';
 import { ERROR_CODES, ErrorCode } from '@core/utils/errors';
 import fs from 'fs-extra';
@@ -118,7 +118,7 @@ router.post('/register', async (req: Request, res: Response) => {
 
 // -------------------- //
 
-router.use(isAuthenticated);
+// router.use(isAuthenticated);
 
 router.get('/', (req: Request, res: Response) => {
   res.render('admin/pages/dashboard', { layout: 'admin/layouts/admin', user: req.session.user });
@@ -126,44 +126,28 @@ router.get('/', (req: Request, res: Response) => {
 
 // --------- Collections ----------- //
 
-router.get('/collections/new', collectionController.newForm);
-router.post('/collections/new', collectionController.create);
-
-router.get('/collections/edit/:id', collectionController.editForm);
-router.post('/collections/edit/:id', collectionController.update);
-
-router.post('/collections/delete/:id', collectionController.delete);
-
 router.get('/collections', collectionController.list);
 
 // --------- Entries ----------- //
-
-router.get('/collections/:collection/new', entryController.newForm);
-router.post('/collections/:collection/new', entryController.create);
-
-router.get('/collections/:collection/edit/:id', entryController.editForm);
-router.post('/collections/:collection/edit/:id', entryController.update);
-
-router.post('/collections/:collection/delete/:id', entryController.delete);
 
 router.get('/collections/:collection', entryController.list);
 
 // --------- Blocks ----------- //
 
-router.get('/blocks/new', blockController.newForm);
-router.post('/blocks/new', blockController.create);
-
-router.get('/blocks/edit/:id', blockController.editForm);
-router.post('/blocks/edit/:id', blockController.update);
-
-router.post('/blocks/delete/:id', blockController.delete);
-
+// router.get('/blocks/new', blockController.newForm);
+// router.post('/blocks/new', blockController.create);
+//
+// router.get('/blocks/edit/:id', blockController.editForm);
+// router.post('/blocks/edit/:id', blockController.update);
+//
+// router.post('/blocks/delete/:id', blockController.delete);
+//
 router.get('/blocks', blockController.list);
 
 // --------- CatchAll ----------- //
 
 router.use('*', (req, res) => {
-  res.status(404).render('pages/404', { layout: 'admin/layouts/admin', user: req.session.user });
+  res.status(404).render('views/404', { layout: 'admin/layouts/admin', user: req.session.user });
 });
 
 // -------------------- //

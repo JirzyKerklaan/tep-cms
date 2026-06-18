@@ -12,32 +12,32 @@ export abstract class Controller implements IController {
         this.modelName = modelName;
     }
 
-    newForm(req: Request, res: Response): void {
-        res.render(`${this.viewFolder}/new`, { layout: 'admin/layouts/admin', title: `Create ${this.modelName}` });
-    }
-
-    editForm(req: Request, res: Response): void {
-        const id = req.params.id;
-        res.render(`${this.viewFolder}/edit`, { layout: 'admin/layouts/admin', id });
-    }
-
-    delete(req: Request, res: Response): void {
-        try {
-            const id = req.params.id;
-            const folderPath = path.join(process.cwd(), 'src', 'content', this.modelName, <string>id);
-            const schemaPath = path.join(process.cwd(), 'src', 'content', 'schemas', this.modelName, `${id}.schema.json`);
-
-            fs.remove(folderPath);
-            fs.remove(schemaPath);
-
-            res.redirect(`/admin/${this.modelName}`);
-        } catch {
-            res.redirect(`/admin/${this.modelName}`);
-        }
-    }
+    // newForm(req: Request, res: Response): void {
+    //     res.render(`${this.viewFolder}/new`, { layout: 'admin/layouts/admin', title: `Create ${this.modelName}` });
+    // }
+    //
+    // editForm(req: Request, res: Response): void {
+    //     const id = req.params.id;
+    //     res.render(`${this.viewFolder}/edit`, { layout: 'admin/layouts/admin', id });
+    // }
+    //
+    // delete(req: Request, res: Response): void {
+    //     try {
+    //         const id = req.params.id;
+    //         const folderPath = path.join(process.cwd(), 'src', 'content', this.modelName, <string>id);
+    //         const schemaPath = path.join(process.cwd(), 'src', 'content', 'schemas', this.modelName, `${id}.schema.json`);
+    //
+    //         fs.remove(folderPath);
+    //         fs.remove(schemaPath);
+    //
+    //         res.redirect(`/admin/${this.modelName}`);
+    //     } catch {
+    //         res.redirect(`/admin/${this.modelName}`);
+    //     }
+    // }
 
     // Abstract methods — must be implemented in subclasses
     abstract list(req: Request, res: Response): Promise<void>;
-    abstract create(req: Request, res: Response): Promise<void>;
-    abstract update(req: Request, res: Response): Promise<void>;
+    // abstract create(req: Request, res: Response): Promise<void>;
+    // abstract update(req: Request, res: Response): Promise<void>;
 }

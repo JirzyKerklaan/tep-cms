@@ -8,7 +8,7 @@ import apiRoutes from '@core/admin/routes/api';
 const router = Router();
 
 router.use('/', routes)
-router.use('/api', apiRoutes);
+// router.use('/api', apiRoutes);
 router.use('/admin', adminRoutes);
 router.use('/', upload);
 router.use('/', search);
