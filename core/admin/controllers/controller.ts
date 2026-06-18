@@ -11,7 +11,7 @@ export abstract class Controller implements IController {
     }
 
     createForm = (req: Request, res: Response): void => {
-        res.render(`${this.viewFolder}/create`, { layout: 'admin/layouts/admin',  title: `Create ${this.modelName}` });
+        res.render(`${this.viewFolder}/create`);
     };
 
     editForm = (req: Request<{ collection: string }>, res: Response): void => {

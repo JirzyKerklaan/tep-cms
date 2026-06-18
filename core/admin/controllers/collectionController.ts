@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import { Controller } from '@core/admin/controllers/controller';
 import { ERROR_CODES } from '@core/utils/errors';
 import collectionService from "@core/admin/services/collectionService";
-import entryService from "@core/admin/services/entryService";
 import blockService from "@core/admin/services/blockService";
 import {v4 as uuidv4} from "uuid";
 
@@ -36,6 +35,11 @@ class CollectionController extends Controller {
         } catch {
             res.render(`${this.viewFolder}/create`, { layout: 'admin/layouts/admin', user: req.session.user, error: ERROR_CODES['TEP464'] });
         }
+    };
+
+    editForm = async (req: Request, res: Response): Promise<void> => {
+        const blocks = await blockService.getAll();
+        res.render(`${this.viewFolder}/edit`, { blocks });
     };
 
     edit = async (req: Request, res: Response): Promise<void> => {

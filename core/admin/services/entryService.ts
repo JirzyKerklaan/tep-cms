@@ -2,6 +2,8 @@ import {Entry} from "@core/interfaces/Entry";
 import {Service} from "@core/admin/services/service";
 import fs from 'fs-extra';
 import path from 'path';
+import {Collection} from "@core/interfaces/Collection";
+import standardPage from "@core/definitions/standardPage";
 
 const DIR = path.join(process.cwd(), 'src', 'content', 'collections');
 fs.ensureDirSync(DIR);
@@ -40,7 +42,13 @@ export class EntryService extends Service<Entry> {
         const file = path.join(this.baseDir, collection, `${entry}.json`);
         if (!(await fs.pathExists(file))) return null;
         return fs.readJson(file) as Promise<Entry>;
-    }
+    };
+
+    async create(collection: string, entry: Entry): Promise<Entry> {
+        await fs.writeJson(path.join(this.baseDir, collection, `${entry.slug}.json`), entry, { spaces: 2 });
+
+        return entry;
+    };
 }
 
 export default new EntryService();

@@ -139,8 +139,6 @@ router.post('/collections/:collection/edit', collectionController.edit)
 // --------- Entries ----------- //
 router.get('/collections/:collection', entryController.list)
 
-router.get('/collections/:collection/:entry', entryController.view)
-
 router.get('/collections/:collection/create', entryController.createForm)
 router.post('/collections/:collection/create', entryController.create)
 
@@ -148,6 +146,8 @@ router.get('/collections/:collection/:entry/edit', entryController.editForm)
 router.post('/collections/:collection/:entry/edit', entryController.edit)
 
 // router.get('/collections/:collection/:entry/delete', entryController.delete)
+
+router.get('/collections/:collection/:entry', entryController.view)
 
 // --------- Blocks ----------- //
 
