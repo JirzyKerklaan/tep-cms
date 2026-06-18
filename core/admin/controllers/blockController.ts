@@ -9,8 +9,8 @@ class BlockController extends Controller {
   }
 
   list = async (req: Request, res: Response): Promise<void> => {
-    const blocks = await blockService.getAll();
     try {
+      const blocks = await blockService.getAll();
       res.render(`${this.viewFolder}/list`, { layout: 'admin/layouts/admin', user: req.session.user, blocks });
     } catch {
       res.status(500).send(ERROR_CODES["TEP450"]);
