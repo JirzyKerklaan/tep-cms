@@ -5,6 +5,7 @@ import { ERROR_CODES, ErrorCode } from '@core/utils/errors';
 import fs from 'fs-extra';
 import path from "path";
 import {isAuthenticated} from '@core/admin/middlewares/isAuthenticated';
+import collectionService from "@core/admin/services/collectionService";
 
 const router = express.Router();
 
@@ -125,24 +126,31 @@ router.get('/', (req: Request, res: Response) => {
 });
 
 // --------- Collections ----------- //
+router.get('/collections', collectionController.list)
 
-router.get('/collections', collectionController.list);
+router.get('/collections/create', collectionController.createForm)
+router.post('/collections/create', collectionController.create)
+
+router.get('/collections/:collection/edit', collectionController.editForm)
+router.post('/collections/:collection/edit', collectionController.edit)
+
+// router.get('/collections/:collection/delete', collectionController.delete)
 
 // --------- Entries ----------- //
+router.get('/collections/:collection', entryController.list)
 
-router.get('/collections/:collection', entryController.list);
+router.get('/collections/:collection/:entry', entryController.view)
+
+router.get('/collections/:collection/create', entryController.createForm)
+router.post('/collections/:collection/create', entryController.create)
+
+router.get('/collections/:collection/:entry/edit', entryController.editForm)
+router.post('/collections/:collection/:entry/edit', entryController.edit)
+
+// router.get('/collections/:collection/:entry/delete', entryController.delete)
 
 // --------- Blocks ----------- //
 
-// router.get('/blocks/new', blockController.newForm);
-// router.post('/blocks/new', blockController.create);
-//
-// router.get('/blocks/edit/:id', blockController.editForm);
-// router.post('/blocks/edit/:id', blockController.update);
-//
-// router.post('/blocks/delete/:id', blockController.delete);
-//
-router.get('/blocks', blockController.list);
 
 // --------- CatchAll ----------- //
 

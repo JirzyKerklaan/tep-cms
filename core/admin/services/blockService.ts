@@ -3,13 +3,26 @@ import fs from 'fs-extra';
 import path from 'path';
 import {Block} from "@core/interfaces/Block";
 
-const COLLECTIONS_DIR = path.join(process.cwd(), 'src', 'content', 'blocks', 'schemas');
-fs.ensureDirSync(COLLECTIONS_DIR);
+const DIR = path.join(process.cwd(), 'src', 'content', 'blocks');
+fs.ensureDirSync(DIR);
 
 export class BlockService extends Service<Block> {
     constructor() {
-        super(COLLECTIONS_DIR);
+        super(DIR);
     }
+
+    async getAll(): Promise<string[]> {
+        let files = await fs.readdir(this.baseDir);
+        const results: string[] = [];
+
+        files = files.filter(file => !file.startsWith('.'));
+
+        for (const file of files) {
+            results.push(path.parse(file).name);
+        }
+
+        return results;
+    };
 }
 
 export default new BlockService();

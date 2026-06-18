@@ -55,7 +55,7 @@ export const ERROR_CODES = {
     TEP461: 'Collection could not be found',
     TEP462: 'Failed to update collection',
     TEP463: 'Failed to delete collection',
-    TEP464: 'Collection already exists',
+    TEP464: 'Failed to create collection',
     TEP465: 'Collection name is required',
     TEP470: 'Failed to fetch blocks',
     TEP471: 'Block could not be found',
