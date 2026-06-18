@@ -11,7 +11,7 @@
     "prod": "npm run build && npx @tailwindcss/cli -i ./src/assets/css/app.css -o ./public/css/style.css"
   },
   "dependencies": {
-    "@tailwindcss/cli": "^4.3.0",
+    "@tailwindcss/cli": "^4.3.1",
     "@the-node-forge/api-rate-limit": "^1.0.8",
     "bcrypt": "^6.0.0",
     "chokidar": "^4.0.3",
@@ -21,11 +21,11 @@
     "fs": "^0.0.1-security",
     "fs-extra": "^11.3.5",
     "lunr": "^2.3.9",
-    "multer": "^2.1.1",
-    "node-cron": "^4.2.1",
+    "multer": "^2.2.0",
+    "node-cron": "^4.4.1",
     "path": "^0.12.7",
     "serve-favicon": "^2.5.1",
-    "sharp": "^0.34.3",
+    "sharp": "^0.35.1",
     "tailwindcss": "^4.3.0",
     "twig": "^3.0.0",
     "uuid": "^11.1.1"
@@ -41,19 +41,19 @@
     "@types/fs-extra": "^11.0.4",
     "@types/lunr": "^2.3.7",
     "@types/multer": "^2.1.0",
-    "@types/node": "^24.13.0",
+    "@types/node": "^24.13.2",
     "@types/nodemon": "^1.19.6",
     "@types/uuid": "^10.0.0",
-    "@typescript-eslint/eslint-plugin": "^8.60.1",
-    "@typescript-eslint/parser": "^8.60.1",
-    "concurrently": "^9.2.0",
-    "eslint": "^10.4.1",
+    "@typescript-eslint/eslint-plugin": "^8.61.1",
+    "@typescript-eslint/parser": "^8.61.1",
+    "concurrently": "^9.2.3",
+    "eslint": "^10.5.0",
     "globals": "^17.6.0",
     "jiti": "^2.7.0",
     "nodemon": "^3.1.10",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.8.3",
-    "typescript-eslint": "^8.60.1"
+    "typescript-eslint": "^8.61.1"
   }
 }
