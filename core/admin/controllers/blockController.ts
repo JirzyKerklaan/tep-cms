@@ -1,8 +1,6 @@
 import { Request, Response } from 'express';
 import { Controller } from '@core/admin/controllers/controller';
-import { ERROR_CODES } from '@core/utils/errors';
 import blockService from "@core/admin/services/blockService";
-import collectionService from "@core/admin/services/collectionService";
 
 class BlockController extends Controller {
   constructor() {
@@ -11,10 +9,9 @@ class BlockController extends Controller {
 
   list = async (req: Request, res: Response): Promise<void> => {
       try {
-          const blocks = await blockService.getAll();
-          res.render(`${this.viewFolder}/list`, { layout: 'admin/layouts/admin', user: req.session.user, blocks });
+          const blocks = await blockService.getAll('blocks');
+          res.render(`${this.viewFolder}/list`, { blocks });
       } catch {
-          res.status(500).send(ERROR_CODES["TEP450"]);
       }
   };
 
@@ -22,7 +19,6 @@ class BlockController extends Controller {
       try {
 
         } catch {
-           res.render(`${this.viewFolder}/create`, { layout: 'admin/layouts/admin', user: req.session.user, error: ERROR_CODES['TEP464'] });
         }
   };
 
@@ -30,7 +26,6 @@ class BlockController extends Controller {
       try {
 
       } catch {
-         res.render(`${this.viewFolder}/create`, { layout: 'admin/layouts/admin', user: req.session.user, error: ERROR_CODES['TEP464'] });
       }
   }
 }

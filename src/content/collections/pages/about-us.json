@@ -1,0 +1,17 @@
+{
+  "id": "1",
+  "name": "About us",
+  "slug": "about-us",
+  "published_at": "2026-01-21T13:41:00.038Z",
+  "scheduled_at": "2025-11-01T10:00:00Z",
+  "page_builder": [
+    {
+      "block": "pageheader",
+      "fields": {
+        "title": "About TEP",
+        "subtitle": "Get to know us!",
+        "image": { "src": ".img.png", "alt":  "Alt text" }
+      }
+    }
+  ]
+}

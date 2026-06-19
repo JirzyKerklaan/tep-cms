@@ -1,11 +1,10 @@
 import express, { Request, Response } from 'express';
-import { blockController, collectionController, entryController } from '@core/admin/controllers';
+import { collectionController, entryController } from '@core/admin/controllers';
 import {createPassword, findEmail, findUsername, loadUsers, verifyPassword} from '@core/services/userService';
 import { ERROR_CODES, ErrorCode } from '@core/utils/errors';
 import fs from 'fs-extra';
 import path from "path";
 import {isAuthenticated} from '@core/admin/middlewares/isAuthenticated';
-import collectionService from "@core/admin/services/collectionService";
 
 const router = express.Router();
 
@@ -109,7 +108,7 @@ router.post('/register', async (req: Request, res: Response) => {
 
     fs.writeFileSync(filePath, JSON.stringify(userData, null, 2), 'utf8');
   } catch {
-    res.status(401).render('admin/pages/register', { error: ERROR_CODES["TEP450"] });
+    res.status(401).render('admin/pages/register');
     return;
   }
 
@@ -122,7 +121,7 @@ router.post('/register', async (req: Request, res: Response) => {
 // router.use(isAuthenticated);
 
 router.get('/', (req: Request, res: Response) => {
-  res.render('admin/pages/dashboard', { layout: 'admin/layouts/admin', user: req.session.user });
+  res.render('admin/pages/dashboard', { user: req.session.user });
 });
 
 // --------- Collections ----------- //
@@ -155,7 +154,7 @@ router.get('/collections/:collection/:entry', entryController.view)
 // --------- CatchAll ----------- //
 
 router.use('*', (req, res) => {
-  res.status(404).render('views/404', { layout: 'admin/layouts/admin', user: req.session.user });
+  res.status(404).render('views/404', { user: req.session.user });
 });
 
 // -------------------- //

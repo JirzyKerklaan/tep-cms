@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import { Controller } from '@core/admin/controllers/controller';
-import { ERROR_CODES } from '@core/utils/errors';
 import collectionService from "@core/admin/services/collectionService";
 import blockService from "@core/admin/services/blockService";
 import {v4 as uuidv4} from "uuid";
@@ -13,14 +12,13 @@ class CollectionController extends Controller {
     list = async (req: Request, res: Response): Promise<void> => {
         try {
             const collections = await collectionService.getAll();
-            res.render(`${this.viewFolder}/list`, { layout: 'admin/layouts/admin', user: req.session.user, collections });
+            res.render(`${this.viewFolder}/list`, { collections });
         } catch {
-            res.render(`${this.viewFolder}/list`, { layout: 'admin/layouts/admin', user: req.session.user, error: ERROR_CODES["TEP460"] });
         }
     };
 
     createForm = async (req: Request, res: Response): Promise<void> => {
-        const blocks = await blockService.getAll();
+        const blocks = await blockService.getAll('page_builder');
         res.render(`${this.viewFolder}/create`, { blocks });
     };
 
@@ -31,22 +29,21 @@ class CollectionController extends Controller {
                 name: req.body.name,
                 blocks: req.body.blocks
             });
-            res.render(`${this.viewFolder}/view`, { layout: 'admin/layouts/admin', user: req.session.user, collection });
+            res.render(`${this.viewFolder}/view`, { collection });
         } catch {
-            res.render(`${this.viewFolder}/create`, { layout: 'admin/layouts/admin', user: req.session.user, error: ERROR_CODES['TEP464'] });
         }
     };
 
-    editForm = async (req: Request, res: Response): Promise<void> => {
-        const blocks = await blockService.getAll();
-        res.render(`${this.viewFolder}/edit`, { blocks });
+    editForm = async (req: Request<{collection: string}>, res: Response): Promise<void> => {
+        const collection = await collectionService.getById(req.params.collection)
+        const blocks = await blockService.getAll('page_builder');
+        res.render(`${this.viewFolder}/edit`, { collection, blocks });
     };
 
     edit = async (req: Request, res: Response): Promise<void> => {
         try {
 
         } catch {
-            res.render(`${this.viewFolder}/create`, { layout: 'admin/layouts/admin', user: req.session.user, error: ERROR_CODES['TEP464'] });
         }
     }
 }

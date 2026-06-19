@@ -1,6 +1,6 @@
 {
   "id": 3,
-  "title": "Search",
+  "name": "Search",
   "slug": "search",
   "template": "search",
   "published_at": "2025-10-28T14:30:00.046Z",

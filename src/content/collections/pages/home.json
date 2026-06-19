@@ -1,6 +1,6 @@
 {
-  "id": 1,
-  "title": "Homepage",
+  "id": "1",
+  "name": "Homepage",
   "slug": "",
   "published_at": "2025-10-28T14:27:00Z",
   "scheduled_at": "2025-10-28T14:27:00Z",
@@ -8,9 +8,9 @@
     {
       "block": "pageheader",
       "fields": {
-        "blocks": [
-          { "block": "text", "fields": { "text": "<h1>Welcome</h1><p>We are TEP, a CMS for all your websites</p>" } }
-        ]
+        "title": "We are TEP",
+        "subtitle": "A CMS for any website",
+        "image": { "src": ".img.png", "alt":  "Alt text" }
       }
     }
   ]

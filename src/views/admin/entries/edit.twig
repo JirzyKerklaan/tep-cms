@@ -5,12 +5,24 @@
         <p style="color: red;">{{ error }}</p>
     {% endif %}
 
-    <p>edit</p>
+    <h1>Editing {{ entry.name }}</h1>
 
-    <select name="restore_version">
-        <option value="">Choose a previous version</option>
-        {% for version in olderVersions %}
-            <option value="{{ version }}">{{ version }}</option>
-        {% endfor %}
-    </select>
+    <form action="{{ route('admin.entries.create') }}" method="POST">
+        <div>
+            <label for="name">Entry name:</label>
+            <input type="text" id="name" name="name" value="{{ entry.name ?? '' }}" required />
+
+            <label for="name">Entry slug:</label>
+            <input type="text" id="slug" name="slug" value="{{ entry.slug ?? '' }}" required />
+        </div>
+
+        <select name="restore_version">
+            <option value="">Choose a previous version</option>
+            {% for version in olderVersions %}
+                <option value="{{ version }}">{{ version }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit">Create Entry</button>
+    </form>
 {% endblock %}

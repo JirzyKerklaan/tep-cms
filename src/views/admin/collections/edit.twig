@@ -1,9 +1,32 @@
 {% extends "../layouts/admin.twig" %}
 
 {% block body %}
-    {% if error %}
-        <p style="color: red;">{{ error }}</p>
-    {% else %}
-    <p>edit</p>
-    {% endif %}
+    <h1>Editing {{ collection.name }}</h1>
+
+    <form action="{{  route('admin.collections.create') }}" method="POST">
+        <div>
+            <label for="name">Collection Name:</label>
+            <input type="text" id="name" name="name" value="{{ collection.name ?? '' }}" required />
+        </div>
+
+        <div>
+            <label>Include Page Builder Blocks:</label>
+            {% if blocks and blocks.length %}
+                {% for block in blocks %}
+                    <div>
+                        <input type="checkbox" id="{{ block.slug }}" name="blocks" value="{{ block.slug }}" />
+                        <label for="{{ block.slug }}">{{ block.name }}</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="{{ block.slug }}-2" name="blocks" value="{{ block.slug }}" />
+                        <label for="{{ block.slug }}-2">{{ block.name }}-2</label>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No blocks found.</p>
+            {% endif %}
+        </div>
+
+        <button type="submit">Create Collection</button>
+    </form>
 {% endblock %}

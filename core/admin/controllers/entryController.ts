@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import { Controller } from '@core/admin/controllers/controller';
 import EntryService from '@core/admin/services/entryService';
-import { ERROR_CODES } from '@core/utils/errors';
 import entryService from "@core/admin/services/entryService";
 import {v4 as uuidv4} from "uuid";
 import blockService from "@core/admin/services/blockService";
@@ -14,15 +13,19 @@ class EntryController extends Controller {
     list = async (req: Request<{ collection: string }>, res: Response): Promise<void> => {
         try {
             const entries = await EntryService.getAll(req.params.collection);
-            res.render(`${this.viewFolder}/list`, { layout: 'admin/layouts/admin', user: req.session.user, entries, collection: req.params.collection });
+            res.render(`${this.viewFolder}/list`, { entries, collection: req.params.collection });
         } catch {
-            res.render(`${this.viewFolder}/list`, { layout: 'admin/layouts/admin', user: req.session.user, error: ERROR_CODES["TEP460"] });
         }
+    };
+
+    createForm = async (req: Request, res: Response): Promise<void> => {
+        const blocks = await blockService.getAll('page_builder');
+        res.render(`${this.viewFolder}/create`, { blocks });
     };
 
     create = async (req: Request<{ collection: string }>, res: Response): Promise<void> => {
         try {
-            const entry = await entryService.create('pages', {
+            const entry = await entryService.create(req.params.collection, {
                 id: uuidv4(),
                 name: req.body.name,
                 slug: req.body.slug,
@@ -32,24 +35,39 @@ class EntryController extends Controller {
             });
             res.render(`${this.viewFolder}/view`, { entry });
         } catch {
-            res.render(`${this.viewFolder}/create`, { layout: 'admin/layouts/admin', user: req.session.user, error: ERROR_CODES['TEP464'] });
         }
     };
 
-    edit = async (req: Request, res: Response): Promise<void> => {
-        try {
+    editForm = async (req: Request<{collection: string, entry: string}>, res: Response): Promise<void> => {
+        const entry = await entryService.getById(req.params.collection, req.params.entry)
+        const blocks = await blockService.getAll('page_builder');
 
+        res.render(`${this.viewFolder}/edit`, {
+            entry: entry,
+            blocks: blocks
+        });
+    };
+
+    edit = async (req: Request<{collection: string}>, res: Response): Promise<void> => {
+        try {
+            const entry = await entryService.edit(req.params.collection, {
+                id: uuidv4(),
+                name: req.body.name,
+                slug: req.body.slug,
+                content: req.body.content,
+                published_at: req.body.published_at,
+                scheduled_at: req.body.scheduled_at,
+            });
+            res.render(`${this.viewFolder}/view`, { entry });
         } catch {
-            res.render(`${this.viewFolder}/edit`, { layout: 'admin/layouts/admin', user: req.session.user, error: ERROR_CODES['TEP464'] });
         }
     }
 
     view = async (req: Request<{collection: string, entry: string}>, res: Response): Promise<void> => {
         try {
             const entry = await entryService.getById(req.params.collection, req.params.entry)
-            res.render(`${this.viewFolder}/view`, { layout: 'admin/layouts/admin', user: req.session.user, entry });
+            res.render(`${this.viewFolder}/view`, { collection: req.params.collection, entry });
         } catch {
-            res.render(`${this.viewFolder}/list`, { layout: 'admin/layouts/admin', user: req.session.user, error: ERROR_CODES["TEP460"] });
         }
     };
 }

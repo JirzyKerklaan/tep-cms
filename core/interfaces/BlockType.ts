@@ -1,1 +1,0 @@
-export type BlockType = 'page_builder' | 'component';

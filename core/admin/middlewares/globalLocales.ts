@@ -8,5 +8,6 @@ export function globalLocals(req: Request, res: Response, next: NextFunction) {
   res.locals.title = 'Default title';
   res.locals.navigation = navigationData;
   res.locals.nav = renderNav;
+  res.locals.user = req.session?.user;
   next();
 }

@@ -2,8 +2,6 @@ import {Entry} from "@core/interfaces/Entry";
 import {Service} from "@core/admin/services/service";
 import fs from 'fs-extra';
 import path from 'path';
-import {Collection} from "@core/interfaces/Collection";
-import standardPage from "@core/definitions/standardPage";
 
 const DIR = path.join(process.cwd(), 'src', 'content', 'collections');
 fs.ensureDirSync(DIR);
@@ -38,13 +36,23 @@ export class EntryService extends Service<Entry> {
         return results;
     };
 
-    async getById(collection: string, entry: string): Promise<Entry | null> {
-        const file = path.join(this.baseDir, collection, `${entry}.json`);
-        if (!(await fs.pathExists(file))) return null;
-        return fs.readJson(file) as Promise<Entry>;
+    async getById(collection: string, entry: string): Promise<Entry> {
+        const fileContents = await fs.promises.readFile(
+            path.join(this.baseDir, collection, `${entry}.json`),
+            'utf-8'
+        )
+        if (!fileContents) { throw new Error(`Block ${entry} could not be found.`) }
+
+        return JSON.parse(fileContents);
     };
 
     async create(collection: string, entry: Entry): Promise<Entry> {
+        await fs.writeJson(path.join(this.baseDir, collection, `${entry.slug}.json`), entry, { spaces: 2 });
+
+        return entry;
+    };
+
+    async edit(collection: string, entry: Entry): Promise<Entry> {
         await fs.writeJson(path.join(this.baseDir, collection, `${entry.slug}.json`), entry, { spaces: 2 });
 
         return entry;

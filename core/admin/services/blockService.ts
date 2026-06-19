@@ -2,8 +2,9 @@ import {Service} from "@core/admin/services/service";
 import fs from 'fs-extra';
 import path from 'path';
 import {Block} from "@core/interfaces/Block";
+import {BlockType} from "@core/interfaces/types/BlockType";
 
-const DIR = path.join(process.cwd(), 'src', 'content', 'blocks');
+const DIR = path.join(process.cwd(), 'src', 'content', 'schemas');
 fs.ensureDirSync(DIR);
 
 export class BlockService extends Service<Block> {
@@ -11,17 +12,31 @@ export class BlockService extends Service<Block> {
         super(DIR);
     }
 
-    async getAll(): Promise<string[]> {
-        let files = await fs.readdir(this.baseDir);
-        const results: string[] = [];
+    async getAll(type: BlockType): Promise<Block[]> {
+        let files = await fs.readdir(path.join(this.baseDir, type));
 
         files = files.filter(file => !file.startsWith('.'));
 
-        for (const file of files) {
-            results.push(path.parse(file).name);
-        }
+        return Promise.all(
+            files.map(async file => {
+                const fileContents = await fs.promises.readFile(
+                    path.join(this.baseDir, type, file),
+                    'utf-8'
+                );
 
-        return results;
+                return JSON.parse(fileContents) as Block;
+            })
+        );
+    }
+
+    async getById(blockSlug: Block|string, type: string): Promise<Block> {
+        const fileContents = await fs.promises.readFile(
+            path.join(this.baseDir, type, `${blockSlug}.json`),
+            'utf-8'
+        );
+        if (!fileContents) { throw new Error(`Block ${blockSlug} could not be found.`) }
+
+        return JSON.parse(fileContents);
     };
 }
 
