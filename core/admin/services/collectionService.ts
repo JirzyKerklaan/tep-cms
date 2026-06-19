@@ -17,17 +17,12 @@ export class CollectionService extends Service<Collection> {
     }
 
     async getAll(): Promise<string[]> {
-        let files = await fs.readdir(this.baseDir);
-        const results: string[] = [];
+        const files = await fs.readdir(this.baseDir);
 
-        files = files.filter(file => !file.startsWith('.'));
-
-        for (const file of files) {
-            results.push(path.parse(file).name);
-        }
-
-        return results;
-    };
+        return files
+            .filter(file => !file.startsWith('.'))
+            .map(file => path.parse(file).name);
+    }
 
     async getById(collection: string): Promise<Entry> {
         const fileContents = await fs.promises.readFile(

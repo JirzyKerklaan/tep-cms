@@ -24,7 +24,7 @@ export class BlockService extends Service<Block> {
                     'utf-8'
                 );
 
-                return JSON.parse(fileContents) as Block;
+                return JSON.parse(fileContents);
             })
         );
     }

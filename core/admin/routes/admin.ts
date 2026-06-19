@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { collectionController, entryController } from '@core/admin/controllers';
+import { blockController, collectionController, entryController } from '@core/admin/controllers';
 import {createPassword, findEmail, findUsername, loadUsers, verifyPassword} from '@core/services/userService';
 import { ERROR_CODES, ErrorCode } from '@core/utils/errors';
 import fs from 'fs-extra';
@@ -149,7 +149,15 @@ router.post('/collections/:collection/:entry/edit', entryController.edit)
 router.get('/collections/:collection/:entry', entryController.view)
 
 // --------- Blocks ----------- //
+router.get('/blocks', blockController.list)
 
+router.get('/blocks/create', blockController.createForm)
+router.post('/blocks/create', blockController.create)
+
+router.get('/blocks/:block/edit', blockController.editForm)
+router.post('/blocks/:block/edit', blockController.edit)
+
+// router.get('/collections/:blocks/delete', blockController.delete)
 
 // --------- CatchAll ----------- //
 

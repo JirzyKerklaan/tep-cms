@@ -6,9 +6,9 @@ import {LunrBuilder} from "@core/interfaces/LunrBuilder";
 import {LunrResult} from "@core/interfaces/LunrResult";
 
 const BASE_DIRS = [
-  path.join(process.cwd(), 'content/collections'),
-  path.join(process.cwd(), 'content/globals'),
-  path.join(process.cwd(), 'content/navigation'),
+  path.join(process.cwd(), 'content', 'collections'),
+  path.join(process.cwd(), 'content', 'globals'),
+  path.join(process.cwd(), 'content', 'navigation'),
 ];
 
 let index: IndexEntry[] = [];

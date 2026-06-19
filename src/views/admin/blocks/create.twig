@@ -1,3 +1,6 @@
+{% extends "../layouts/admin.twig" %}
+
+{% block body %}
 <form action="/admin/blocks/new" method="POST">
   <label>Block Type</label>
   <select name="type" required>
@@ -83,3 +86,4 @@
     document.getElementById("fieldDefault").value = "";
   }
 </script>
+{% endblock %}

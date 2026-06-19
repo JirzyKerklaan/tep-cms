@@ -58,7 +58,25 @@ const routes: Record<string, KeyValue> = {
     'admin.entries.delete': {
         key: 'admin.entries.delete',
         value: (collection: string, entry: string) => `/admin/collections/${collection}/${entry}/delete`,
-    }
+    },
+
+    // Admin - Blocks
+    'admin.blocks': {
+        key: 'admin.blocks',
+        value: '/admin/blocks'
+    },
+    'admin.blocks.create': {
+        key: 'admin.blocks.create',
+        value: '/admin/blocks/create'
+    },
+    'admin.blocks.edit': {
+        key: 'admin.blocks.edit',
+        value: (block: string) => `/admin/blocks/${block}/edit`
+    },
+    'admin.blocks.delete': {
+        key: 'admin.blocks.delete',
+        value: (block: string) => `/admin/blocks/${block}/delete`
+    },
 };
 
 export function route(

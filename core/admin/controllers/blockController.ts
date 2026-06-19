@@ -15,13 +15,23 @@ class BlockController extends Controller {
       }
   };
 
+    createForm = async (req: Request, res: Response): Promise<void> => {
+        const blocks = await blockService.getAll('blocks');
+        res.render(`${this.viewFolder}/create`, { blocks });
+    };
+
   create = async (req: Request, res: Response): Promise<void> => {
       try {
 
-        } catch {
-        }
+      } catch {
+      }
   };
 
+    editForm = async (req: Request<{block: string}>, res: Response): Promise<void> => {
+        const block = await blockService.getById(req.params.block, 'page_builder')
+        const blocks = await blockService.getAll('blocks');
+        res.render(`${this.viewFolder}/edit`, { block, blocks });
+    };
   edit = async (req: Request, res: Response): Promise<void> => {
       try {
 
