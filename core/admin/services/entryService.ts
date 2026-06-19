@@ -11,30 +11,31 @@ export class EntryService extends Service<Entry> {
         super(DIR);
     }
 
-    async getAll(subDir: string|null = null): Promise<string[]> {
+    async getAll(subDir: string | null = null): Promise<Entry[]> {
         const DIR = subDir
             ? path.join(this.baseDir, subDir)
             : this.baseDir;
 
         let files = await fs.readdir(DIR);
-        const results: string[] = [];
 
-        files = files.filter(file => !file.startsWith('.'));
+        files = files.filter(file =>
+            !file.startsWith('.') &&
+            path.extname(file) === '.json'
+        );
+
+        const results: Entry[] = [];
 
         for (const file of files) {
-            if (file.startsWith('.')) {
-                continue;
-            }
+            const fileContents = await fs.promises.readFile(
+                path.join(DIR, file),
+                'utf-8'
+            );
 
-            const stat = await fs.stat(path.join(DIR, file));
-
-            if (stat.isFile() && path.extname(file) === '.json') {
-                const filename = path.parse(file).name
-                results.push(filename);
-            }
+            results.push(JSON.parse(fileContents));
         }
+
         return results;
-    };
+    }
 
     async getById(collection: string, entry: string): Promise<Entry> {
         const fileContents = await fs.promises.readFile(

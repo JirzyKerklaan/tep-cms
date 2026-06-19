@@ -12,8 +12,9 @@ class EntryController extends Controller {
 
     list = async (req: Request<{ collection: string }>, res: Response): Promise<void> => {
         try {
+            console.log(req.params.collection)
             const entries = await EntryService.getAll(req.params.collection);
-            res.render(`${this.viewFolder}/list`, { entries, collection: req.params.collection });
+            res.render(`${this.viewFolder}/list`, { collection: req.params.collection, entries });
         } catch {
         }
     };

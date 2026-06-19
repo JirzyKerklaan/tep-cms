@@ -62,6 +62,10 @@ export class CollectionService extends Service<Collection> {
 
         return collection;
     }
+
+    async edit(collection: Collection): Promise<Collection> {
+        return collection;
+    }
 }
 
 export default new CollectionService();

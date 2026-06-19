@@ -1,6 +1,6 @@
 {
-  "id": 1,
-  "title": "Standaard",
+  "id": "1",
+  "name": "Standaard",
   "slug": "standard",
   "content": "Welcome to the standard page. Customize this content as needed.",
   "published_at": "2025-10-28T14:30:00.040Z",
@@ -9,23 +9,9 @@
     {
       "block": "pageheader",
       "fields": {
-        "title": "Welcome to Our Site",
-        "subtitle": "Your subtitle goes here",
-        "blocks": [
-          {
-            "block": "text",
-            "fields": {
-              "text": "<p>This is a nested text block inside the header.</p>"
-            }
-          },
-          {
-            "block": "image",
-            "fields": {
-              "src": "/images/example.jpg",
-              "alt": "Example Image"
-            }
-          }
-        ]
+        "title": "We are TEP",
+        "subtitle": "A CMS for any website",
+        "image": { "src": ".img.png", "alt":  "Alt text" }
       }
     }
   ]

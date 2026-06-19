@@ -6,8 +6,8 @@
 
     {% for entry in entries %}
         <li>
-            <a href="{{ route('admin.entries.view', collection, entry) }}">
-                {{ entry }}
+            <a href="{{ route('admin.entries.view', collection, entry.slug) }}">
+                {{ entry.name }}
             </a>
         </li>
     {% endfor %}

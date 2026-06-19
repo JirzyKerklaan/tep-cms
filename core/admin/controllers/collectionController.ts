@@ -22,7 +22,7 @@ class CollectionController extends Controller {
         res.render(`${this.viewFolder}/create`, { blocks });
     };
 
-    create = async (req: Request<{name: string, blocks: string[]}>, res: Response): Promise<void> => {
+    create = async (req: Request<{name: string}>, res: Response): Promise<void> => {
         try {
             const collection = await collectionService.create({
                 id: uuidv4(),
@@ -40,12 +40,18 @@ class CollectionController extends Controller {
         res.render(`${this.viewFolder}/edit`, { collection, blocks });
     };
 
-    edit = async (req: Request, res: Response): Promise<void> => {
+    edit = async (req: Request<{name: string}>, res: Response): Promise<void> => {
         try {
+            await collectionService.edit({
+                id: uuidv4(),
+                name: req.body.name,
+                blocks: req.body.blocks
+            });
 
+            res.render(`${this.viewFolder}/list`);
         } catch {
         }
-    }
+    };
 }
 
 export default new CollectionController();

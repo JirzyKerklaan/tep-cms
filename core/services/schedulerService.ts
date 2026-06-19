@@ -1,21 +1,21 @@
 import collectionService from "@core/admin/services/collectionService";
 import entryService from "@core/admin/services/entryService";
 import { Entry } from "@core/interfaces/Entry";
+import {ScheduledEntries} from "@core/interfaces/ScheduledEntries";
 
-export async function getScheduled() {
-    const collections = await collectionService.getAllWithEntryCount();
+export async function getScheduled(): Promise<ScheduledEntries[]> {
+    const collections = await collectionService.getAll();
 
     return Promise.all(
         collections.map(async (collection) => {
-            const collectionEntries: Entry[] = await entryService.getAllFromCollection(collection.name);
+            const collectionEntries: Entry[] = await entryService.getAll(collection);
 
             const scheduledEntries = collectionEntries.filter(
                 (entry) => entry.published_at === null && entry.scheduled_at !== null
             );
 
             return {
-                name: collection.name,
-                count: scheduledEntries.length,
+                name: collection,
                 entries: scheduledEntries,
             };
         })
@@ -24,8 +24,10 @@ export async function getScheduled() {
 
 export async function publishScheduled(entry: Entry, collectionName: string): Promise<void> {
     try {
-        const now = new Date();
-        await entryService.cronUpdate(collectionName, entry.slug, { published_at: now });
+        await entryService.edit(collectionName, {
+            ...entry,
+            published_at: new Date(),
+        });
     } catch (err) {
         console.error(`Failed to publish entry "${entry.name}":`, err);
     }

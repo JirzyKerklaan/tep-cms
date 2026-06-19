@@ -4,7 +4,7 @@ import {createPassword, findEmail, findUsername, loadUsers, verifyPassword} from
 import { ERROR_CODES, ErrorCode } from '@core/utils/errors';
 import fs from 'fs-extra';
 import path from "path";
-import {isAuthenticated} from '@core/admin/middlewares/isAuthenticated';
+// import {isAuthenticated} from '@core/admin/middlewares/isAuthenticated';
 
 const router = express.Router();
 

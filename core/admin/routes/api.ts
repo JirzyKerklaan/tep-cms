@@ -20,13 +20,14 @@ router.get('/collections', async (req: Request, res: Response) => {
     const entries = await collectionService.getAll();
     res.json({data: entries});
 });
-router.get('/:collection', async (req: Request, res: Response) => {
-    const entries = await entryService.getAllFromCollection(<string>req.params.collection);
+router.get('/:collection', async (req: Request<{collection: string}>, res: Response) => {
+    const entries = await entryService.getAll(req.params.collection);
+
     res.json({data: entries});
 });
 
-router.get('/:collection/:entry', async (req: Request, res: Response) => {
-    const entry = await entryService.getById(<string>req.params.collection, <string>req.params.entry);
+router.get('/:collection/:entry', async (req: Request<{collection: string, entry: string}>, res: Response) => {
+    const entry = await entryService.getById(req.params.collection, req.params.entry);
     res.json({data: entry});
 });
 
