@@ -7,13 +7,16 @@
 
     <h1>Editing {{ entry.name }}</h1>
 
-    <form action="{{ route('admin.entries.create') }}" method="POST">
+    <form action="{{ route('admin.entries.edit', collection, entry.slug) }}" method="POST">
         <div>
             <label for="name">Entry name:</label>
-            <input type="text" id="name" name="name" value="{{ entry.name ?? '' }}" required />
+            <input type="text" id="name" name="name" value="{{ entry.name }}" required />
 
-            <label for="name">Entry slug:</label>
-            <input type="text" id="slug" name="slug" value="{{ entry.slug ?? '' }}" required />
+            <label for="slug">Entry slug:</label>
+            <input type="text" id="slug" name="slug" value="{{ entry.slug }}" required />
+
+            <label for="content">Entry content:</label>
+            <textarea id="content" name="content">{{ entry.content|trim }}</textarea>
         </div>
 
         <select name="restore_version">
@@ -23,6 +26,9 @@
             {% endfor %}
         </select>
 
-        <button type="submit">Create Entry</button>
+        <input type="hidden" name="id" value="{{ entry.id }}">
+        <input type="hidden" name="published_at" value="{{ entry.published_at ?? '' }}">
+        <input type="hidden" name="scheduled_at" value="{{ entry.scheduled_at ?? '' }}">
+        <button type="submit">Edit Entry</button>
     </form>
 {% endblock %}

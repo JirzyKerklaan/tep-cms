@@ -1,14 +1,13 @@
 import { promises as fs } from 'fs';
 import path from 'path';
+import {loadFile} from "@core/admin/helpers/fileLoader";
 
 class RedirectService {
     private basePath = path.join(process.cwd(), 'src', 'content');
 
     async getById<T = unknown>(collection: string, id: string): Promise<T> {
-        const filePath = path.join(this.basePath, collection, `${id}.json`);
-
         try {
-            const file = await fs.readFile(filePath, 'utf-8');
+            const file = await loadFile(path.join(this.basePath, collection, `${id}.json`));
             return JSON.parse(file) as T;
         } catch (error) {
             throw new Error(

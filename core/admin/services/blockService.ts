@@ -3,6 +3,7 @@ import fs from 'fs-extra';
 import path from 'path';
 import {Block} from "@core/interfaces/Block";
 import {BlockType} from "@core/interfaces/types/BlockType";
+import {loadFile} from "@core/admin/helpers/fileLoader";
 
 const DIR = path.join(process.cwd(), 'src', 'content', 'schemas');
 fs.ensureDirSync(DIR);
@@ -19,10 +20,7 @@ export class BlockService extends Service<Block> {
 
         return Promise.all(
             files.map(async file => {
-                const fileContents = await fs.promises.readFile(
-                    path.join(this.baseDir, type, file),
-                    'utf-8'
-                );
+                const fileContents = await loadFile(path.join(this.baseDir, type, file));
 
                 return JSON.parse(fileContents);
             })
@@ -30,10 +28,7 @@ export class BlockService extends Service<Block> {
     }
 
     async getById(blockSlug: Block|string, type: string): Promise<Block> {
-        const fileContents = await fs.promises.readFile(
-            path.join(this.baseDir, type, `${blockSlug}.json`),
-            'utf-8'
-        );
+        const fileContents = await loadFile(path.join(this.baseDir, type, `${blockSlug}.json`));
         if (!fileContents) { throw new Error(`Block ${blockSlug} could not be found.`) }
 
         return JSON.parse(fileContents);

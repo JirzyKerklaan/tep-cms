@@ -7,6 +7,7 @@ import {Block} from "@core/interfaces/Block";
 import blockService from "@core/admin/services/blockService";
 import slugify from "slugify";
 import {Entry} from "@core/interfaces/Entry";
+import {loadFile} from "@core/admin/helpers/fileLoader";
 
 const DIR = path.join(process.cwd(), 'src', 'content', 'collections');
 fs.ensureDirSync(DIR);
@@ -25,10 +26,7 @@ export class CollectionService extends Service<Collection> {
     }
 
     async getById(collection: string): Promise<Entry> {
-        const fileContents = await fs.promises.readFile(
-            path.join(this.contentDir, 'schemas', 'collections', `${collection}.schema.json`),
-            'utf-8'
-        )
+        const fileContents = await loadFile(path.join(this.contentDir, 'schemas', 'collections', `${collection}.schema.json`));
         if (!fileContents) { throw new Error(`Collection ${collection} could not be found.`) }
 
         return JSON.parse(fileContents);

@@ -4,6 +4,7 @@ import EntryService from '@core/admin/services/entryService';
 import entryService from "@core/admin/services/entryService";
 import {v4 as uuidv4} from "uuid";
 import blockService from "@core/admin/services/blockService";
+import {route} from "@core/utils/namedRoutes";
 
 class EntryController extends Controller {
     constructor() {
@@ -44,6 +45,7 @@ class EntryController extends Controller {
         const blocks = await blockService.getAll('page_builder');
 
         res.render(`${this.viewFolder}/edit`, {
+            collection: req.params.collection,
             entry: entry,
             blocks: blocks
         });
@@ -52,14 +54,14 @@ class EntryController extends Controller {
     edit = async (req: Request<{collection: string}>, res: Response): Promise<void> => {
         try {
             const entry = await entryService.edit(req.params.collection, {
-                id: uuidv4(),
+                id: req.body.id,
                 name: req.body.name,
                 slug: req.body.slug,
                 content: req.body.content,
                 published_at: req.body.published_at,
                 scheduled_at: req.body.scheduled_at,
             });
-            res.render(`${this.viewFolder}/view`, { entry });
+            res.redirect(route('admin.entries.view', req.params.collection, entry.slug));
         } catch {
         }
     }
