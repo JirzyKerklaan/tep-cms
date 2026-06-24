@@ -1,6 +1,7 @@
 {% extends "layouts/main.twig" %}
 
 {% block body %}
+  {{ content }}
   {% for block in page_builder %}
     {% include 'page_builder/' ~ block.block ~ '.twig' with block.fields %}
   {% endfor %}

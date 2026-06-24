@@ -1,0 +1,16 @@
+{
+  "id": "01",
+  "name": "text",
+  "type": "string",
+  "fields": [{
+      "id": "01",
+      "name": "text",
+      "type": "string",
+      "label": "tekst"
+    }, {
+    "id": "02",
+    "name": "text",
+    "type": "string",
+    "label": "tekst-2"
+  }]
+}

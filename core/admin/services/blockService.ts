@@ -4,6 +4,7 @@ import path from 'path';
 import {Block} from "@core/interfaces/Block";
 import {BlockType} from "@core/interfaces/types/BlockType";
 import {loadFile} from "@core/admin/helpers/fileLoader";
+import standardPage from "@core/definitions/standardPage";
 
 const DIR = path.join(process.cwd(), 'src', 'content', 'schemas');
 fs.ensureDirSync(DIR);
@@ -33,6 +34,15 @@ export class BlockService extends Service<Block> {
 
         return JSON.parse(fileContents);
     };
+
+    async create(block: Block): Promise<Block> {
+        const directory = path.join(this.baseDir, block.type);
+        await fs.ensureDir(directory);
+
+        await fs.writeJson(path.join(directory, `${block.id}.json`), block, { spaces: 2 });
+
+        return block
+    }
 }
 
 export default new BlockService();

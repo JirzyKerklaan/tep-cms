@@ -1,6 +1,7 @@
 <h1>Create New Entry</h1>
 
-<form action="{{ route('admin.entries.create') }}" method="POST">
+{{ collection }}
+<form action="{{ route('admin.entries.create', collection) }}" method="POST">
   <div>
     <label for="name">Entry title:</label>
     <input type="text" id="name" name="name" required />

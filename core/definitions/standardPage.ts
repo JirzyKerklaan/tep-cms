@@ -1,9 +1,9 @@
 import { Collection } from "@core/interfaces/Collection";
 
-export default function standardPage(collection: Collection) {
+export default function standardPage(collection: Collection, uuid: string) {
     return {
-        id: 1,
-        title: "Standaard",
+        id: uuid,
+        name: "Standaard",
         slug: "standard",
         content: "Welcome to the standard page. Customize this content as needed.",
         published_at: new Date().toISOString(),

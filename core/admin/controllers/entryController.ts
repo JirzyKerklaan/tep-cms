@@ -5,6 +5,7 @@ import entryService from "@core/admin/services/entryService";
 import {v4 as uuidv4} from "uuid";
 import blockService from "@core/admin/services/blockService";
 import {route} from "@core/utils/namedRoutes";
+import {contentRegistry} from "@core/content/contentRegistry";
 
 class EntryController extends Controller {
     constructor() {
@@ -13,16 +14,15 @@ class EntryController extends Controller {
 
     list = async (req: Request<{ collection: string }>, res: Response): Promise<void> => {
         try {
-            console.log(req.params.collection)
             const entries = await EntryService.getAll(req.params.collection);
             res.render(`${this.viewFolder}/list`, { collection: req.params.collection, entries });
         } catch {
         }
     };
 
-    createForm = async (req: Request, res: Response): Promise<void> => {
+    createForm = async (req: Request<{collection: string}>, res: Response): Promise<void> => {
         const blocks = await blockService.getAll('page_builder');
-        res.render(`${this.viewFolder}/create`, { blocks });
+        res.render(`${this.viewFolder}/create`, {collection: req.params.collection, blocks });
     };
 
     create = async (req: Request<{ collection: string }>, res: Response): Promise<void> => {
@@ -32,10 +32,12 @@ class EntryController extends Controller {
                 name: req.body.name,
                 slug: req.body.slug,
                 content: req.body.content,
-                published_at: req.body.published_at,
-                scheduled_at: req.body.scheduled_at,
+                published_at: req.body.published_at ?? new Date(),
+                scheduled_at: req.body.scheduled_at ?? new Date(),
             });
-            res.render(`${this.viewFolder}/view`, { entry });
+
+            console.log(entry)
+            res.redirect(route('admin.entries.view', req.params.collection, entry.slug));
         } catch {
         }
     };
@@ -61,16 +63,19 @@ class EntryController extends Controller {
                 published_at: req.body.published_at,
                 scheduled_at: req.body.scheduled_at,
             });
-            res.redirect(route('admin.entries.view', req.params.collection, entry.slug));
+
+            res.redirect(route('admin.entries.view', req.params.collection, entry.slug ));
         } catch {
         }
     }
 
     view = async (req: Request<{collection: string, entry: string}>, res: Response): Promise<void> => {
         try {
-            const entry = await entryService.getById(req.params.collection, req.params.entry)
+            const entry = await entryService.getById(req.params.collection, req.params.entry);
+
             res.render(`${this.viewFolder}/view`, { collection: req.params.collection, entry });
         } catch {
+            res.status(404).render(`views/404`);
         }
     };
 }

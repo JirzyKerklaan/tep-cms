@@ -8,6 +8,7 @@ import blockService from "@core/admin/services/blockService";
 import slugify from "slugify";
 import {Entry} from "@core/interfaces/Entry";
 import {loadFile} from "@core/admin/helpers/fileLoader";
+import {v4 as uuidv4} from "uuid";
 
 const DIR = path.join(process.cwd(), 'src', 'content', 'collections');
 fs.ensureDirSync(DIR);
@@ -34,8 +35,8 @@ export class CollectionService extends Service<Collection> {
 
     async create(collection: Collection): Promise<Collection> {
         const collectionDir = path.join(this.baseDir, collection.name);
-        const schemaPath = path.join(this.contentDir, 'schemas', 'collections', `${slugify(collection.name)}.schema.json`);
-
+        const schemaPath = path.join(this.contentDir, 'schemas', 'collections', `${collection.slug}.schema.json`);
+        const uuid = uuidv4()
 
         const blocks: Block[] = []
         for (const blockSlug of collection.blocks) {
@@ -51,7 +52,7 @@ export class CollectionService extends Service<Collection> {
         await fs.ensureDir(collectionDir);
 
         await fs.writeJson(schemaPath, collection, { spaces: 2 }); // Create collection schema
-        await fs.writeJson(path.join(collectionDir, 'standard.json'), standardPage(collection), { spaces: 2 }); // Create collection entry
+        await fs.writeJson(path.join(collectionDir, `${uuid}.json`), standardPage(collection, uuid), { spaces: 2 }); // Create collection entry
 
         return collection;
     }

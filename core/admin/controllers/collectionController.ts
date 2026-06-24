@@ -3,6 +3,8 @@ import { Controller } from '@core/admin/controllers/controller';
 import collectionService from "@core/admin/services/collectionService";
 import blockService from "@core/admin/services/blockService";
 import {v4 as uuidv4} from "uuid";
+import {route} from "@core/utils/namedRoutes";
+import slugify from "slugify";
 
 class CollectionController extends Controller {
     constructor() {
@@ -26,10 +28,11 @@ class CollectionController extends Controller {
         try {
             const collection = await collectionService.create({
                 id: uuidv4(),
+                slug: slugify(req.body.name),
                 name: req.body.name,
                 blocks: req.body.blocks
             });
-            res.render(`${this.viewFolder}/view`, { collection });
+            res.redirect(route('admin.entries', collection.slug));
         } catch {
         }
     };
@@ -44,6 +47,7 @@ class CollectionController extends Controller {
         try {
             await collectionService.edit({
                 id: uuidv4(),
+                slug: slugify(req.body.name),
                 name: req.body.name,
                 blocks: req.body.blocks
             });

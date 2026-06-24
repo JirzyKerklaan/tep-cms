@@ -10,10 +10,6 @@ export abstract class Controller implements IController {
         this.modelName = modelName;
     }
 
-    createForm = (req: Request, res: Response): void => {
-        res.render(`${this.viewFolder}/create`);
-    };
-
     // editForm = (req: Request<{ collection: string, }>, res: Response): void => {
     //     const collection = req.params.collection;
     //     res.render(`${this.viewFolder}/edit`, { collection });

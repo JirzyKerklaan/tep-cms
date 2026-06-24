@@ -6,5 +6,5 @@ export interface Entry extends BaseEntity {
     content?: string;
     published_at?: Date;
     scheduled_at?: Date;
-    page_builder?: PageBuilderBlock[];
+    // page_builder?: PageBuilderBlock[];
 }

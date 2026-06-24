@@ -1,6 +1,10 @@
 import { Request, Response } from 'express';
 import { Controller } from '@core/admin/controllers/controller';
 import blockService from "@core/admin/services/blockService";
+import collectionService from "@core/admin/services/collectionService";
+import {v4 as uuidv4} from "uuid";
+import {route} from "@core/utils/namedRoutes";
+import slugify from "slugify";
 
 class BlockController extends Controller {
   constructor() {
@@ -22,7 +26,14 @@ class BlockController extends Controller {
 
   create = async (req: Request, res: Response): Promise<void> => {
       try {
+          await blockService.create({
+              id: uuidv4(),
+              name: req.body.name,
+              type: req.body.type,
+              fields: JSON.parse(req.body.fieldsJson)
+          });
 
+          res.redirect(route('admin.blocks'));
       } catch {
       }
   };
@@ -30,6 +41,7 @@ class BlockController extends Controller {
     editForm = async (req: Request<{block: string}>, res: Response): Promise<void> => {
         const block = await blockService.getById(req.params.block, 'page_builder')
         const blocks = await blockService.getAll('blocks');
+
         res.render(`${this.viewFolder}/edit`, { block, blocks });
     };
   edit = async (req: Request, res: Response): Promise<void> => {

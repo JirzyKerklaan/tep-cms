@@ -8,8 +8,8 @@
     <p>list</p>
     {% for block in blocks %}
         <li>
-            <a href="{{ route('admin.blocks.edit', block) }}">
-                {{ block }}
+            <a href="{{ route('admin.blocks.edit', block.id) }}">
+                {{ block.name }}
             </a>
         </li>
     {% endfor %}

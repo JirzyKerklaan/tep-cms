@@ -6,6 +6,7 @@ import { searchContent } from '@core/services/contentIndex';
 import { Page } from '@core/interfaces/Page';
 import { Entry } from '@core/interfaces/Entry';
 import {handleRedirects} from "@core/admin/middlewares/handleRedirects";
+import {contentRegistry} from "@core/content/contentRegistry";
 
 const router = express.Router();
 router.use(handleRedirects);
@@ -19,14 +20,16 @@ const allDirs = fs.readdirSync(collectionsDir, { withFileTypes: true })
 const collections = allDirs.filter(name => name !== 'pages');
 
 function loadEntry(collection: string, slug: string): Entry | null {
-  const filePath = path.join(process.cwd(), `/src/content/collections/${collection}/${slug}.json`);
+  const id = contentRegistry.getBySlug(slug);
+  const filePath = path.join(process.cwd(), `/src/content/collections/${collection}/${id}.json`);
   if (!fs.existsSync(filePath)) return null;
   const raw = fs.readFileSync(filePath, 'utf-8');
   return JSON.parse(raw);
 }
 
 function loadPage(slug: string): Page | null {
-  const filePath = path.join(process.cwd(), `/src/content/collections/pages/${slug}.json`);
+  const id = contentRegistry.getBySlug(slug);
+  const filePath = path.join(process.cwd(), `/src/content/collections/pages/${id}.json`);
   if (!fs.existsSync(filePath)) return null;
   const raw = fs.readFileSync(filePath, 'utf-8');
   return JSON.parse(raw);
@@ -35,7 +38,7 @@ function loadPage(slug: string): Page | null {
 router.get('/', (req, res) => {
   const homepage = loadPage('home');
   if (!homepage) {
-    res.status(404).redirect('Homepage not found');
+    res.status(404).render('views/404');
     return;
   }
 

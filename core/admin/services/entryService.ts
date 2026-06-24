@@ -3,6 +3,7 @@ import {Service} from "@core/admin/services/service";
 import fs from 'fs-extra';
 import path from 'path';
 import {loadFile} from "@core/admin/helpers/fileLoader";
+import {contentRegistry} from "@core/content/contentRegistry";
 
 const DIR = path.join(process.cwd(), 'src', 'content', 'collections');
 fs.ensureDirSync(DIR);
@@ -35,22 +36,30 @@ export class EntryService extends Service<Entry> {
         return results;
     }
 
-    async getById(collection: string, entry: string): Promise<Entry> {
-        const fileContents = await loadFile(path.join(this.baseDir, collection, `${entry}.json`));
-        if (!fileContents) { throw new Error(`Block ${entry} could not be found.`) }
-
-        return JSON.parse(fileContents);
+    async getById(collection: string, entry: string|undefined): Promise<Entry> {
+        if (entry === undefined) {
+            throw new Error(`Entry ${entry} could not be found`);
+        }
+        const id = contentRegistry.getBySlug(entry);
+        console.log(id)
+        console.log(path.join(this.baseDir, collection, `${id}.json`));
+        return JSON.parse(await loadFile(path.join(this.baseDir, collection, `${id}.json`)));
     };
 
     async create(collection: string, entry: Entry): Promise<Entry> {
         await fs.writeJson(path.join(this.baseDir, collection, `${entry.id}.json`), entry, { spaces: 2 });
 
-
         return entry;
     };
 
     async edit(collection: string, entry: Entry): Promise<Entry> {
-        const initialEntry = await this.getById(collection, entry.slug);
+        const initialEntry = await this.getById(collection, contentRegistry.getById(entry.id));
+
+        await fs.promises.rename(
+            path.join(this.baseDir, collection, `${initialEntry.slug}.json`),
+            path.join(this.baseDir, collection, `${entry.slug}.json`)
+        );
+
         const editedEntry = { ...initialEntry, ...entry }
         await fs.writeJson(path.join(this.baseDir, collection, `${entry.slug}.json`), editedEntry, { spaces: 2 });
 
