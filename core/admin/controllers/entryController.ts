@@ -5,7 +5,6 @@ import entryService from "@core/admin/services/entryService";
 import {v4 as uuidv4} from "uuid";
 import blockService from "@core/admin/services/blockService";
 import {route} from "@core/utils/namedRoutes";
-import {contentRegistry} from "@core/content/contentRegistry";
 
 class EntryController extends Controller {
     constructor() {
@@ -78,6 +77,16 @@ class EntryController extends Controller {
             res.status(404).render(`views/404`);
         }
     };
+
+    delete = async (req: Request<{collection: string, entry: string}>, res: Response): Promise<void> => {
+        try {
+            await entryService.delete(req.params.collection, req.params.entry);
+
+            res.redirect(route('admin.entries', req.params.collection))
+        } catch {
+            res.status(404).render(`views/404`);
+        }
+    }
 }
 
 export default new EntryController();

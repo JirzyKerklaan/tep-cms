@@ -10,11 +10,6 @@ export abstract class Controller implements IController {
         this.modelName = modelName;
     }
 
-    // editForm = (req: Request<{ collection: string, }>, res: Response): void => {
-    //     const collection = req.params.collection;
-    //     res.render(`${this.viewFolder}/edit`, { collection });
-    // };
-
     // Abstract methods — must be implemented in subclasses
     abstract list(req: Request, res: Response): Promise<void>;
     abstract create(req: Request, res: Response): Promise<void>;

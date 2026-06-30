@@ -17,10 +17,6 @@
                         <input type="checkbox" id="{{ block.slug }}" name="blocks" value="{{ block.slug }}" />
                         <label for="{{ block.slug }}">{{ block.name }}</label>
                     </div>
-                    <div>
-                        <input type="checkbox" id="{{ block.slug }}-2" name="blocks" value="{{ block.slug }}" />
-                        <label for="{{ block.slug }}-2">{{ block.name }}-2</label>
-                    </div>
                 {% endfor %}
             {% else %}
                 <p>No blocks found.</p>

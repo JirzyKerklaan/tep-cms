@@ -8,7 +8,7 @@ import {contentRegistry} from "@core/content/contentRegistry";
 const DIR = path.join(process.cwd(), 'src', 'content', 'collections');
 fs.ensureDirSync(DIR);
 
-export class EntryService extends Service<Entry> {
+export class EntryService extends Service {
     constructor() {
         super(DIR);
     }
@@ -41,8 +41,6 @@ export class EntryService extends Service<Entry> {
             throw new Error(`Entry ${entry} could not be found`);
         }
         const id = contentRegistry.getBySlug(entry);
-        console.log(id)
-        console.log(path.join(this.baseDir, collection, `${id}.json`));
         return JSON.parse(await loadFile(path.join(this.baseDir, collection, `${id}.json`)));
     };
 
@@ -55,16 +53,17 @@ export class EntryService extends Service<Entry> {
     async edit(collection: string, entry: Entry): Promise<Entry> {
         const initialEntry = await this.getById(collection, contentRegistry.getById(entry.id));
 
-        await fs.promises.rename(
-            path.join(this.baseDir, collection, `${initialEntry.slug}.json`),
-            path.join(this.baseDir, collection, `${entry.slug}.json`)
-        );
-
         const editedEntry = { ...initialEntry, ...entry }
-        await fs.writeJson(path.join(this.baseDir, collection, `${entry.slug}.json`), editedEntry, { spaces: 2 });
+        await fs.writeJson(path.join(this.baseDir, collection, `${entry.id}.json`), editedEntry, { spaces: 2 });
 
         return entry;
     };
+
+    async delete(collection: string, entrySlug: string): Promise<void> {
+        const id = contentRegistry.getBySlug(entrySlug)
+
+        fs.unlink(path.join(this.baseDir, collection, `${id}.json`))
+    }
 }
 
 export default new EntryService();

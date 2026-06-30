@@ -10,7 +10,7 @@ import {route} from "@core/utils/namedRoutes";
 import "@src/plugins";
 
 const app = express();
-// startScheduler();
+startScheduler();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

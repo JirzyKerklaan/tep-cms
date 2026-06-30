@@ -8,6 +8,7 @@
     <h1>Viewing {{ entry.name }}</h1>
 
     <a href="{{ route('admin.entries.edit', collection, entry.slug) }}">Edit {{ entry.name }}</a>
+    <a href="{{ route('admin.entries.delete', collection, entry.slug) }}">Delete {{ entry.name }}</a>
 
     <div>
         <p><b>Entry name:</b></p>

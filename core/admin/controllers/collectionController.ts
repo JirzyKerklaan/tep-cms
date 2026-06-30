@@ -56,6 +56,16 @@ class CollectionController extends Controller {
         } catch {
         }
     };
+
+    delete = async (req: Request<{collection: string, entry: string}>, res: Response): Promise<void> => {
+        try {
+            await collectionService.delete(req.params.collection);
+
+            res.redirect(route('admin.collections'))
+        } catch {
+            res.status(404).render(`views/404`);
+        }
+    }
 }
 
 export default new CollectionController();

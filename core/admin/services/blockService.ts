@@ -4,12 +4,11 @@ import path from 'path';
 import {Block} from "@core/interfaces/Block";
 import {BlockType} from "@core/interfaces/types/BlockType";
 import {loadFile} from "@core/admin/helpers/fileLoader";
-import standardPage from "@core/definitions/standardPage";
 
 const DIR = path.join(process.cwd(), 'src', 'content', 'schemas');
 fs.ensureDirSync(DIR);
 
-export class BlockService extends Service<Block> {
+export class BlockService extends Service {
     constructor() {
         super(DIR);
     }

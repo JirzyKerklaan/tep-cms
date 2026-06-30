@@ -1,10 +1,8 @@
 import { Request, Response } from 'express';
 import { Controller } from '@core/admin/controllers/controller';
 import blockService from "@core/admin/services/blockService";
-import collectionService from "@core/admin/services/collectionService";
 import {v4 as uuidv4} from "uuid";
 import {route} from "@core/utils/namedRoutes";
-import slugify from "slugify";
 
 class BlockController extends Controller {
   constructor() {

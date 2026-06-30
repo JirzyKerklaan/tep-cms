@@ -5,7 +5,6 @@ import {Collection} from "@core/interfaces/Collection";
 import standardPage from "@core/definitions/standardPage";
 import {Block} from "@core/interfaces/Block";
 import blockService from "@core/admin/services/blockService";
-import slugify from "slugify";
 import {Entry} from "@core/interfaces/Entry";
 import {loadFile} from "@core/admin/helpers/fileLoader";
 import {v4 as uuidv4} from "uuid";
@@ -13,7 +12,7 @@ import {v4 as uuidv4} from "uuid";
 const DIR = path.join(process.cwd(), 'src', 'content', 'collections');
 fs.ensureDirSync(DIR);
 
-export class CollectionService extends Service<Collection> {
+export class CollectionService extends Service {
     constructor() {
         super(DIR);
     }
@@ -59,6 +58,11 @@ export class CollectionService extends Service<Collection> {
 
     async edit(collection: Collection): Promise<Collection> {
         return collection;
+    }
+
+    async delete(collection: string): Promise<void> {
+        await fs.rm(path.join(this.baseDir, collection), { recursive: true, force: true });
+        await fs.unlink(path.join(this.contentDir, 'schemas', 'collections', `${collection}.schema.json`))
     }
 }
 

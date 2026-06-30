@@ -41,23 +41,23 @@ const routes: Record<string, KeyValue> = {
     // Admin - Entries
     'admin.entries': {
         key: 'admin.entries',
-        value: (collection: string) => `/admin/collections/${collection}`,
+        value: (collection: string) => `/admin/collections/${collection}/entries`,
     },
     'admin.entries.create': {
         key: 'admin.entries.create',
-        value: (collection: string) => `/admin/collections/${collection}/create`,
+        value: (collection: string) => `/admin/collections/${collection}/entries/create`,
     },
     'admin.entries.view': {
         key: 'admin.entries.view',
-        value: (collection: string, entry: string) => `/admin/collections/${collection}/${entry}`,
+        value: (collection: string, entry: string) => `/admin/collections/${collection}/entries/${entry}`,
     },
     'admin.entries.edit': {
         key: 'admin.entries.edit',
-        value: (collection: string, entry: string) => `/admin/collections/${collection}/${entry}/edit`,
+        value: (collection: string, entry: string) => `/admin/collections/${collection}/entries/${entry}/edit`,
     },
     'admin.entries.delete': {
         key: 'admin.entries.delete',
-        value: (collection: string, entry: string) => `/admin/collections/${collection}/${entry}/delete`,
+        value: (collection: string, entry: string) => `/admin/collections/${collection}/entries/${entry}/delete`,
     },
 
     // Admin - Blocks
