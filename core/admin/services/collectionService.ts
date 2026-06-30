@@ -1,58 +1,62 @@
-import { Service } from '@core/admin/services/service';
-import fs from 'fs-extra';
+import {Service} from "@core/admin/services/service";
 import path from 'path';
-import { ERROR_CODES } from '@core/utils/errors';
 import {Collection} from "@core/interfaces/Collection";
+import standardPage from "@core/definitions/standardPage";
+import blockService from "@core/admin/services/blockService";
+import {v4 as uuidv4} from "uuid";
 
-const COLLECTIONS_DIR = path.join(process.cwd(), 'src', 'content', 'collections');
-const SCHEMAS_DIR = path.join(process.cwd(), 'src', 'content', 'schemas', 'collections');
+const DIR = path.join(process.cwd(), 'src', 'content', 'collections');
 
-fs.ensureDirSync(COLLECTIONS_DIR);
-fs.ensureDirSync(SCHEMAS_DIR);
-
-class CollectionService extends Service<Collection> {
+export class CollectionService extends Service {
     constructor() {
-        super(COLLECTIONS_DIR);
+        super(DIR);
     }
 
-    create = async (data: Partial<Collection>): Promise<Collection> => {
-        if (!data.name) throw new Error(ERROR_CODES["TEP465"]);
+    async getAll(): Promise<string[]> {
+        const files = await this.listFiles(this.baseDir);
+        return files.map(file => path.parse(file).name);
+    }
 
-        const id = Date.now().toString();
-        const newCollection: Collection = { id, name: data.name };
-        await this.save(newCollection);
+    async getById(collection: string): Promise<Collection> {
+        return this.readJson<Collection>(this.resolveSchema('collections', `${collection}.schema.json`));
+    }
 
-        const folderPath = path.join(COLLECTIONS_DIR, newCollection.name);
-        await fs.mkdir(folderPath, { recursive: true });
+    async create(collection: Collection): Promise<Collection> {
+        const schemaPath = this.resolveSchema('collections', `${collection.slug}.schema.json`)
 
-        const schemaContent = JSON.stringify({ schema: newCollection.name }, null, 2);
-        await fs.writeFile(path.join(SCHEMAS_DIR, `${newCollection.name}.schema.json`), schemaContent, 'utf-8');
-
-        const fileContent = JSON.stringify({ title: `First ${newCollection.name}` }, null, 2);
-        await fs.writeFile(path.join(folderPath, 'standard.json'), fileContent, 'utf-8');
-
-        return newCollection;
-    };
-
-    getAllWithEntryCount = async (): Promise<{ name: string; count: number }[]> => {
-        const collections = await fs.readdir(COLLECTIONS_DIR);
-        const results: { name: string; count: number }[] = [];
-
-        for (const folderName of collections) {
-            const folderPath = path.join(COLLECTIONS_DIR, folderName);
-            const stat = await fs.stat(folderPath);
-            if (stat.isDirectory()) {
-                const files = await fs.readdir(folderPath);
-                const jsonFiles = files.filter(f => f.endsWith('.json'));
-                results.push({
-                    name: folderName,
-                    count: jsonFiles.length,
-                });
-            }
+        if (await this.exists(schemaPath)) {
+            throw new Error(`Collection '${collection.name}' already exists`);
         }
 
-        return results;
-    };
+        const uuid = uuidv4();
+
+        collection.blocks = await Promise.all(
+            collection.blocks.map(slug =>
+                blockService.getById(slug, "page_builder")
+            )
+        );
+
+        await this.writeJson(schemaPath, collection);
+
+        await this.writeJson(this.resolve(collection.name, `${uuid}.json`), standardPage(collection, uuid));
+
+        return collection;
+    }
+
+    async edit(collection: Collection): Promise<Collection> {
+        const current = await this.getById(collection.slug)
+
+        const edited = {...current, ...collection};
+
+        await this.writeJson(this.resolveSchema('collections', `${collection.slug}.schema.json`), edited);
+
+        return collection;
+    }
+
+    async delete(collection: string): Promise<void> {
+        await this.remove(this.resolve(collection));
+        await this.remove(this.resolveSchema('collections', `${collection}.schema.json`));
+    }
 }
 
 export default new CollectionService();

@@ -1,6 +1,4 @@
-import {BaseEntity} from "@core/interfaces/BaseEntity";
-
-export interface Field extends BaseEntity {
+export interface Field {
     name: string;
     type: string;
     label: string;

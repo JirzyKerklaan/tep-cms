@@ -4,11 +4,12 @@ import lunr from 'lunr';
 import {IndexEntry} from "@core/interfaces/IndexEntry";
 import {LunrBuilder} from "@core/interfaces/LunrBuilder";
 import {LunrResult} from "@core/interfaces/LunrResult";
+import {loadFile} from "@core/admin/helpers/fileLoader";
 
 const BASE_DIRS = [
-  path.join(process.cwd(), 'content/collections'),
-  path.join(process.cwd(), 'content/globals'),
-  path.join(process.cwd(), 'content/navigation'),
+  path.join(process.cwd(), 'content', 'collections'),
+  path.join(process.cwd(), 'content', 'globals'),
+  path.join(process.cwd(), 'content', 'navigation'),
 ];
 
 let index: IndexEntry[] = [];
@@ -28,10 +29,10 @@ export async function buildContentIndex(): Promise<void> {
     }
 
     for (const filePath of jsonFiles) {
-      const slug = path.basename(filePath, '.json');
 
       try {
-        const jsonRaw = await fs.readFile(filePath, 'utf-8');
+        const slug = path.basename(filePath, '.json');
+        const jsonRaw = await loadFile(filePath);
         const data = JSON.parse(jsonRaw);
 
         result.push({

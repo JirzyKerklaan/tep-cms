@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
-import fs from 'fs-extra';
-import path from 'path';
 import {IController} from "@core/interfaces/IController";
+import {route} from "@core/utils/namedRoutes";
 
 export abstract class Controller implements IController {
     protected viewFolder: string;
@@ -12,32 +11,25 @@ export abstract class Controller implements IController {
         this.modelName = modelName;
     }
 
-    newForm(req: Request, res: Response): void {
-        res.render(`${this.viewFolder}/new`, { layout: 'admin/layouts/admin', title: `Create ${this.modelName}` });
-    }
-
-    editForm(req: Request, res: Response): void {
-        const id = req.params.id;
-        res.render(`${this.viewFolder}/edit`, { layout: 'admin/layouts/admin', id });
-    }
-
-    delete(req: Request, res: Response): void {
-        try {
-            const id = req.params.id;
-            const folderPath = path.join(process.cwd(), 'src', 'content', this.modelName, <string>id);
-            const schemaPath = path.join(process.cwd(), 'src', 'content', 'schemas', this.modelName, `${id}.schema.json`);
-
-            fs.remove(folderPath);
-            fs.remove(schemaPath);
-
-            res.redirect(`/admin/${this.modelName}`);
-        } catch {
-            res.redirect(`/admin/${this.modelName}`);
-        }
-    }
-
     // Abstract methods — must be implemented in subclasses
     abstract list(req: Request, res: Response): Promise<void>;
     abstract create(req: Request, res: Response): Promise<void>;
-    abstract update(req: Request, res: Response): Promise<void>;
+    abstract edit(req: Request, res: Response): Promise<void>;
+
+    // Rendering & Redirection methods - used in subclasses
+    protected render(
+        res: Response,
+        view: string,
+        data: object = {}
+    ) {
+        res.render(`${this.viewFolder}/${view}`, data);
+    }
+
+    protected redirect(res: Response, routeName: string, ...params: string[]) {
+        res.redirect(route(routeName, ...params));
+    }
+
+    protected notFound(res: Response) {
+        res.status(404).render("views/404");
+    }
 }

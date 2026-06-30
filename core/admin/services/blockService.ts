@@ -1,50 +1,44 @@
-import { Service } from '@core/admin/services/service';
-import { generateBlockTemplate } from '@core/admin/helpers/blockTemplateHelper';
-import fs from 'fs-extra';
+import {Service} from "@core/admin/services/service";
 import path from 'path';
-import {BlockInput} from "@core/interfaces/BlockInput";
+import {Block} from "@core/interfaces/Block";
+import {BlockType} from "@core/interfaces/types/BlockType";
 
-export type BlockType = 'page_builder' | 'component';
+const DIR = path.join(process.cwd(), 'src', 'content', 'schemas');
 
-const BLOCKS_DIR = path.join(process.cwd(), 'src/blocks');
-const SCHEMAS_DIR = path.join(BLOCKS_DIR, 'schemas');
+export class BlockService extends Service {
+    constructor() {
+        super(DIR);
+    }
 
-fs.ensureDirSync(BLOCKS_DIR);
-fs.ensureDirSync(SCHEMAS_DIR);
+    async getAll(type: BlockType): Promise<Block[]> {
+        const files = await this.listFiles(this.resolve(type));
 
-function normalizeName(name: string) {
-  return name.toLowerCase().replace(/\s+/g, '-');
-}
+        return Promise.all(
+            files.map(file =>
+                this.readJson<Block>(this.resolve(type, file))
+            )
+        );
+    }
 
-class BlockService extends Service<BlockInput> {
-  constructor() {
-    super(BLOCKS_DIR);
-  }
+    async getById(blockSlug: Block|string, type: BlockType): Promise<Block> {
+        return this.readJson<Block>(this.resolve(type, `${blockSlug}.json`));
+    };
 
-  save = async ({ block, type, fields }: BlockInput) => {
-    const normalizedBlock = normalizeName(block);
-    const blockPath = path.join(BLOCKS_DIR, type, `${normalizedBlock}.twig`);
-    const schemaPath = path.join(SCHEMAS_DIR, type, `${normalizedBlock}.schema.json`);
+    async create(block: Block): Promise<Block> {
+        await this.writeJson(this.resolve(block.type, `${block.id}.json`), block)
 
-    const templateContent = generateBlockTemplate(type, normalizedBlock, block);
+        return block
+    }
 
-    if (!(await fs.pathExists(blockPath))) await fs.outputFile(blockPath, templateContent);
+    async edit(block: Block, type: BlockType): Promise<Block> {
+        const current = await this.getById(block.id, type)
 
-    const schema = { title: block, fields };
-    await fs.outputJson(schemaPath, schema, { spaces: 2 });
-  };
+        const edited = {...current, ...block};
 
-  delete = async (id: string) => {
-    const block = await this.getById(id);
-    if (!block) return;
+        await this.writeJson(this.resolve(type, block.id), edited);
 
-    const normalizedBlock = normalizeName(block.block);
-    const blockPath = path.join(BLOCKS_DIR, block.type, `${normalizedBlock}.twig`);
-    const schemaPath = path.join(SCHEMAS_DIR, block.type, `${normalizedBlock}.schema.json`);
-
-    if (await fs.pathExists(blockPath)) await fs.remove(blockPath);
-    if (await fs.pathExists(schemaPath)) await fs.remove(schemaPath);
-  };
+        return edited
+    }
 }
 
 export default new BlockService();

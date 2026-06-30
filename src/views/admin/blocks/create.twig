@@ -1,12 +1,15 @@
-<form action="/admin/blocks/new" method="POST">
+{% extends "../layouts/admin.twig" %}
+
+{% block body %}
+<form action="{{ route('admin.blocks.create') }}" method="POST">
   <label>Block Type</label>
   <select name="type" required>
     <option value="page_builder">Page Builder</option>
-    <option value="components">Components</option>
+    <option value="blocks">Components</option>
   </select>
 
   <label>Block Name</label>
-  <input type="text" name="block" required>
+  <input type="text" name="name" required>
 
   <h3>Fields</h3>
   <div id="fields"></div>
@@ -83,3 +86,4 @@
     document.getElementById("fieldDefault").value = "";
   }
 </script>
+{% endblock %}

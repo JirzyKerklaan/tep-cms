@@ -1,81 +1,76 @@
-import { Request, Response } from 'express';
-import { Controller } from '@core/admin/controllers/controller';
+import {Request, Response} from 'express';
+import {Controller} from '@core/admin/controllers/controller';
 import entryService from '@core/admin/services/entryService';
-import { VersioningService } from '@core/services/versioningService';
-import { ERROR_CODES } from '@core/utils/errors';
-import path from "path";
+import {v4 as uuidv4} from "uuid";
+import blockService from "@core/admin/services/blockService";
 
 class EntryController extends Controller {
     constructor() {
         super('admin/entries', 'entries');
     }
 
-    list = async (req: Request, res: Response): Promise<void> => {
-        try {
-            const entries = await entryService.getAll();
-            res.render(`${this.viewFolder}/list`, { layout: 'admin/layouts/admin', user: req.session.user, entries });
-        } catch {
-            res.render(`${this.viewFolder}/list`, { layout: 'admin/layouts/admin', user: req.session.user, error: ERROR_CODES["TEP460"] });
-        }
-    }
+    list = async (req: Request<{ collection: string }>, res: Response): Promise<void> => {
+        const { collection } = req.params;
+        const entries = await entryService.getAll(collection);
 
-    newForm = (req: Request, res: Response): void => {
-        res.render(`${this.viewFolder}/new`, {
-            layout: 'admin/layouts/admin',
-            title: 'Create Entry',
-            collection: req.params.collection
-        });
+        this.render(res, 'list', {collection, entries})
     };
 
-    create = async (req: Request, res: Response): Promise<void> => {
-        const collection = req.params.collection;
+    createForm = async (req: Request<{ collection: string }>, res: Response): Promise<void> => {
+        const { collection } = req.params;
+        const blocks = await blockService.getAll('page_builder');
 
-        try {
-            entryService.saveEntry(<string>collection, req.body)
-            res.redirect(`/admin/collections/${collection}`);
-        } catch {
-            res.status(500).render(`${this.viewFolder}/new`, {
-                layout: 'admin/layouts/admin',
-                title: 'Create Entry',
-                error: 'Failed to create entry file.',
-            });        }
+        this.render(res, 'create', {collection, blocks})
     };
 
-    editForm = async (req: Request, res: Response): Promise<void> => {
-        const id = req.params.id;
-        const collectionName = req.params.collection;
-        const versioningService = new VersioningService({
-            baseDir: path.join(process.cwd(), 'src', 'content', 'collections'),
-            maxVersions: 5,
+    create = async (req: Request<{ collection: string }>, res: Response): Promise<void> => {
+        const { collection } = req.params;
+        const entry = await entryService.create(collection, {
+            id: uuidv4(),
+            name: req.body.name,
+            slug: req.body.slug,
+            content: req.body.content,
+            published_at: req.body.published_at ?? new Date(),
+            scheduled_at: req.body.scheduled_at ?? new Date(),
         });
-        const olderVersions = await versioningService.getVersions(<string>collectionName, <string>id);
 
-        console.log(olderVersions)
+        this.redirect(res, 'admin.entries.view', collection, entry.slug)
+    };
 
-        try {
-            const entry = await entryService.getById(<string>collectionName, <string>id);
-            if (!entry) {
-                res.render(`${this.viewFolder}/edit`, { layout: 'admin/layouts/admin', user: req.session.user, error: ERROR_CODES["TEP461"] });
-                return;
-            }
-            res.render(`${this.viewFolder}/edit`, { layout: 'admin/layouts/admin', user: req.session.user, entry, olderVersions, error: ERROR_CODES["TEP200"] });
-        } catch {
-            res.render(`${this.viewFolder}/edit`, { layout: 'admin/layouts/admin', user: req.session.user, error: ERROR_CODES["TEP462"] });
-        }
+    editForm = async (req: Request<{ collection: string, entry: string }>, res: Response): Promise<void> => {
+        const { collection, entry } = req.params;
+        const entryToEdit = await entryService.getById(collection, entry)
+        const blocks = await blockService.getAll('page_builder');
+
+        this.render(res, 'edit', { collection, entry: entryToEdit, blocks });
+    };
+
+    edit = async (req: Request<{ collection: string }>, res: Response): Promise<void> => {
+        const { collection } = req.params;
+        const entry = await entryService.edit(collection, {
+            id: req.body.id,
+            name: req.body.name,
+            slug: req.body.slug,
+            content: req.body.content,
+            published_at: req.body.published_at,
+            scheduled_at: req.body.scheduled_at,
+        });
+
+        this.redirect(res, 'admin.entries.view', collection, entry.slug)
     }
 
-    update = async (req: Request, res: Response): Promise<void> => {
-        const id = req.params.id;
-        const data = {
-            ...req.body,
-            scheduledAt: req.body.scheduledAt || null
-        };
-        try {
-            await entryService.update(<string>id, data);
-            res.redirect('/admin/entries');
-        } catch {
-            res.render(`${this.viewFolder}/edit`, { layout: 'admin/layouts/admin', user: req.session.user, entry: { id, ...data }, error: ERROR_CODES["TEP462"] });
-        }
+    view = async (req: Request<{ collection: string, entry: string }>, res: Response): Promise<void> => {
+        const { collection, entry } = req.params;
+        const entryToView = await entryService.getById(collection, entry);
+
+        this.render(res, 'view', {collection, entry: entryToView})
+    };
+
+    delete = async (req: Request<{ collection: string, entry: string }>, res: Response): Promise<void> => {
+        const { collection, entry } = req.params;
+        await entryService.delete(collection, entry);
+
+        this.redirect(res, 'admin.entries', collection)
     }
 }
 

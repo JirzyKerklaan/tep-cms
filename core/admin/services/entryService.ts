@@ -1,82 +1,58 @@
-import fs from 'fs-extra';
+import {Entry} from "@core/interfaces/Entry";
+import {Service} from "@core/admin/services/service";
 import path from 'path';
-import { Service } from '@core/admin/services/service';
-import { Entry } from '@core/interfaces/Entry';
-import VersioningService from '@core/services/versioningService';
-import PluginManager from "@core/plugins/pluginManager";
+import {contentRegistry} from "@core/content/contentRegistry";
 
-const COLLECTIONS_DIR = path.join(process.cwd(), 'src', 'content', 'collections');
-fs.ensureDirSync(COLLECTIONS_DIR);
+const DIR = path.join(process.cwd(), 'src', 'content', 'collections');
 
-class EntryService extends Service<Entry> {
+export class EntryService extends Service {
     constructor() {
-        super(COLLECTIONS_DIR);
+        super(DIR);
     }
 
-    saveEntry = async (collectionName: string, data: Entry): Promise<Entry> => {
-        const slug = data.slug ?? data.title.toLowerCase().replace(/\s+/g, '-');
-        const published = data.scheduled_at ? null : new Date();
-        const scheduled = data.scheduled_at ? new Date(data.scheduled_at) : null;
+    async getAll(collection?: string): Promise<Entry[]> {
+        const dir = collection
+            ? this.resolve(collection)
+            : this.baseDir;
 
-        const entryData: Entry = {
-            id: '',
-            title: data.title,
-            slug,
-            published_at: published ?? undefined,
-            scheduled_at: scheduled ?? undefined,
-        };
+        const files = await this.listFiles(dir, ".json");
 
-        await PluginManager.trigger('beforeEntryCreate', collectionName, entryData);
+        return Promise.all(
+            files.map(file =>
+                this.readJson<Entry>(path.join(dir, file))
+            )
+        );
+    }
 
-        const versioningService = new VersioningService({
-            baseDir: COLLECTIONS_DIR,
-            maxVersions: 5,
-        });
+    async getById(collection: string, entrySlug: string): Promise<Entry> {
+        const id = contentRegistry.getBySlug(entrySlug);
 
-        await versioningService.saveVersion(collectionName, slug, entryData);
-
-        await PluginManager.trigger('afterEntryCreate', collectionName, entryData);
-
-        return entryData;
+        return this.readJson<Entry>(this.resolve(collection, `${id}.json`));
     };
 
+    async create(collection: string, entry: Entry): Promise<Entry> {
+        await this.writeJson(this.resolve(collection, `${entry.id}.json`), entry);
 
-    getById = async (collectionName: string, id: string): Promise<Entry | null> => {
-        const file = path.join(this.baseDir, collectionName, `${id}.json`);
-        if (!(await fs.pathExists(file))) return null;
-        return fs.readJson(file) as Promise<Entry>;
+        return entry;
     }
 
-    async getAllFromCollection(collectionName: string): Promise<Entry[]> {
-            const collectionPath = path.join(this.baseDir, collectionName);
+    async edit(collection: string, entry: Entry): Promise<Entry> {
+        const entryToFind = contentRegistry.getById(entry.id);
 
-            if (!(await fs.pathExists(collectionPath))) return [];
+        const current = await this.getById(collection, entryToFind);
 
-            const files = await fs.readdir(collectionPath);
-            const results: Entry[] = [];
+        const edited = {...current, ...entry};
 
-            for (const file of files) {
-                if (file.endsWith('.json')) {
-                    const entity = await fs.readJson(path.join(collectionPath, file)) as Entry;
-                    results.push(entity);
-                }
-            }
+        await this.writeJson(this.resolve(collection, `${entry.id}.json`), edited);
 
-            return results;
-        };
-
-        async cronUpdate(collectionName: string, entrySlug: string, data: Partial<Entry>): Promise<void> {
-            const filePath = path.join(this.baseDir, collectionName, `${entrySlug}.json`);
-
-
-            if (!(await fs.pathExists(filePath))) {
-                throw new Error(`Entry "${entrySlug}" not found in collection "${collectionName}"`);
-            }
-
-            const existing: Entry = await fs.readJson(filePath);
-            const updated: Entry = { ...existing, ...data };
-            await fs.writeJson(filePath, updated, { spaces: 2 });
-        }
+        return edited;
     }
+
+    async delete(collection: string, entrySlug: string): Promise<void> {
+        const id = contentRegistry.getBySlug(entrySlug);
+
+        await this.remove(this.resolve(collection, `${id}.json`));
+    }
+}
 
 export default new EntryService();

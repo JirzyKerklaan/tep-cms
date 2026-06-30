@@ -1,47 +1,59 @@
 import fs from 'fs-extra';
-import path from 'path';
-import { BaseEntity } from '@core/interfaces/BaseEntity';
+import path from "path";
+import {loadFile} from "@core/admin/helpers/fileLoader";
 
-export class Service<T extends BaseEntity> {
+const CONTENT_DIR = path.join(process.cwd(), 'src', 'content');
+
+export class Service {
+    protected contentDir: string;
     protected baseDir: string;
 
     constructor(baseDir: string) {
+        this.contentDir = CONTENT_DIR;
         this.baseDir = baseDir;
         fs.ensureDirSync(baseDir);
     }
 
-    async save(entity: T, fileName?: string): Promise<void> {
-        const file = path.join(this.baseDir, fileName ?? `${entity.id}.json`);
-        await fs.writeJson(file, entity, { spaces: 2 });
+    protected async listFiles(
+        dir: string,
+        extension?: string
+    ): Promise<string[]> {
+        const files = await fs.readdir(dir);
+
+        return files.filter(file =>
+            !file.startsWith(".") &&
+            (!extension || path.extname(file) === extension)
+        );
     }
 
-    async getById(id: string, fileName?: string): Promise<T | null> {
-        const file = path.join(this.baseDir, fileName ?? `${id}.json`);
-        if (!(await fs.pathExists(file))) return null;
-        return fs.readJson(file) as Promise<T>;
-    }
+    protected async readJson<T>(file: string): Promise<T> {
+        const contents = await loadFile(file);
 
-    async update(id: string, data: Partial<T>, fileName?: string): Promise<void> {
-        const existing = await this.getById(id, fileName);
-        if (!existing) throw new Error(`Entity ${id} not found`);
-        const updated = { ...existing, ...data };
-        await this.save(updated as T, fileName);
-    }
-
-    async delete(id: string, fileName?: string): Promise<void> {
-        const file = path.join(this.baseDir, fileName ?? `${id}.json`);
-        if (await fs.pathExists(file)) {
-            await fs.remove(file);
+        if (!contents) {
+            throw new Error(`Could not load ${file}`);
         }
+
+        return JSON.parse(contents);
     }
 
-    async getAll(): Promise<string[]> {
-        let files = await fs.readdir(this.baseDir);
-        const results: string[] = [];
-        files = files.filter(file => !file.startsWith('.'));
-        for (const file of files) {
-            results.push(file);
-        }
-        return results;
+    protected async writeJson(file: string, data: unknown): Promise<void> {
+        await fs.ensureDir(path.dirname(file));
+        await fs.writeJson(file, data, {spaces: 2});
+    }
+
+    protected async exists(file: string): Promise<boolean> {
+        return fs.pathExists(file);
+    }
+
+    protected async remove(file: string): Promise<void> {
+        await fs.remove(file);
+    }
+
+    protected resolve(...parts: string[]) {
+        return path.join(this.baseDir, ...parts);
+    }
+
+    protected resolveSchema(...parts: string[]) {
+        return path.join(this.contentDir, 'schemas', ...parts);
     }
 }

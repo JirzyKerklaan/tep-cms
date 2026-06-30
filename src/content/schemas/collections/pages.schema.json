@@ -1,17 +1,5 @@
 {
-    "name": "pages",
-    "fields": [
-        {
-            "name": "title",
-            "type": "text",
-            "label": "Titel",
-            "required": true
-        },
-        {
-            "name": "slug",
-            "type": "text",
-            "label": "Slug",
-            "required": true
-        }
-    ]
+  "id": "44e6390b-1a96-4fe3-83b2-529ab4e19f19",
+  "name": "pages",
+  "blocks": []
 }

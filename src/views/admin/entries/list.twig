@@ -2,7 +2,13 @@
 
 {% block body %}
     <p>list</p>
+    <a href="{{ route('admin.entries.create', collection) }}">Add entry</a>
+
     {% for entry in entries %}
-        <li>{{ entry }}</li>
+        <li>
+            <a href="{{ route('admin.entries.view', collection, entry.slug) }}">
+                {{ entry.name }}
+            </a>
+        </li>
     {% endfor %}
 {% endblock %}

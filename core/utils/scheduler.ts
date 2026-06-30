@@ -12,8 +12,7 @@ export async function startScheduler() {
             for (const entry of collection.entries) {
                 if (!entry.scheduled_at) continue;
 
-                const scheduledDate = new Date(entry.scheduled_at);
-                if (scheduledDate <= now && entry.published_at === null) {
+                if (new Date(entry.scheduled_at) <= now && entry.published_at === null) {
                     await publishScheduled(entry, collection.name);
                 }
             }

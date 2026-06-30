@@ -1,10 +1,10 @@
 import express, { Request, Response } from 'express';
-import { collectionController, blockController, entryController } from '@core/admin/controllers';
+import { blockController, collectionController, entryController } from '@core/admin/controllers';
 import {createPassword, findEmail, findUsername, loadUsers, verifyPassword} from '@core/services/userService';
 import { ERROR_CODES, ErrorCode } from '@core/utils/errors';
 import fs from 'fs-extra';
 import path from "path";
-import {isAuthenticated} from '@core/admin/middlewares/isAuthenticated';
+// import {isAuthenticated} from '@core/admin/middlewares/isAuthenticated';
 
 const router = express.Router();
 
@@ -108,7 +108,7 @@ router.post('/register', async (req: Request, res: Response) => {
 
     fs.writeFileSync(filePath, JSON.stringify(userData, null, 2), 'utf8');
   } catch {
-    res.status(401).render('admin/pages/register', { error: ERROR_CODES["TEP450"] });
+    res.status(401).render('admin/pages/register');
     return;
   }
 
@@ -118,52 +118,51 @@ router.post('/register', async (req: Request, res: Response) => {
 
 // -------------------- //
 
-router.use(isAuthenticated);
+// router.use(isAuthenticated);
 
 router.get('/', (req: Request, res: Response) => {
-  res.render('admin/pages/dashboard', { layout: 'admin/layouts/admin', user: req.session.user });
+  res.render('admin/pages/dashboard', { user: req.session.user });
 });
 
 // --------- Collections ----------- //
+router.get('/collections', collectionController.list)
 
-router.get('/collections/new', collectionController.newForm);
-router.post('/collections/new', collectionController.create);
+router.get('/collections/create', collectionController.createForm)
+router.post('/collections/create', collectionController.create)
 
-router.get('/collections/edit/:id', collectionController.editForm);
-router.post('/collections/edit/:id', collectionController.update);
+router.get('/collections/:collection/edit', collectionController.editForm)
+router.post('/collections/:collection/edit', collectionController.edit)
 
-router.post('/collections/delete/:id', collectionController.delete);
-
-router.get('/collections', collectionController.list);
+router.get('/collections/:collection/delete', collectionController.delete)
 
 // --------- Entries ----------- //
+router.get('/collections/:collection/entries', entryController.list)
 
-router.get('/collections/:collection/new', entryController.newForm);
-router.post('/collections/:collection/new', entryController.create);
+router.get('/collections/:collection/entries/create', entryController.createForm)
+router.post('/collections/:collection/entries/create', entryController.create)
 
-router.get('/collections/:collection/edit/:id', entryController.editForm);
-router.post('/collections/:collection/edit/:id', entryController.update);
+router.get('/collections/:collection/entries/:entry/edit', entryController.editForm)
+router.post('/collections/:collection/entries/:entry/edit', entryController.edit)
 
-router.post('/collections/:collection/delete/:id', entryController.delete);
+router.get('/collections/:collection/entries/:entry/delete', entryController.delete)
 
-router.get('/collections/:collection', entryController.list);
+router.get('/collections/:collection/entries/:entry', entryController.view)
 
 // --------- Blocks ----------- //
+router.get('/blocks', blockController.list)
 
-router.get('/blocks/new', blockController.newForm);
-router.post('/blocks/new', blockController.create);
+router.get('/blocks/create', blockController.createForm)
+router.post('/blocks/create', blockController.create)
 
-router.get('/blocks/edit/:id', blockController.editForm);
-router.post('/blocks/edit/:id', blockController.update);
+router.get('/blocks/:block/edit', blockController.editForm)
+router.post('/blocks/:block/edit', blockController.edit)
 
-router.post('/blocks/delete/:id', blockController.delete);
-
-router.get('/blocks', blockController.list);
+// router.get('/collections/:blocks/delete', blockController.delete)
 
 // --------- CatchAll ----------- //
 
 router.use('*', (req, res) => {
-  res.status(404).render('pages/404', { layout: 'admin/layouts/admin', user: req.session.user });
+  res.status(404).render('views/404', { user: req.session.user });
 });
 
 // -------------------- //

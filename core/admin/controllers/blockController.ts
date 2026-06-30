@@ -1,77 +1,54 @@
-import { Request, Response } from 'express';
-import { v4 as uuidv4 } from 'uuid';
-import { Controller } from '@core/admin/controllers/controller';
-import blockService from '@core/admin/services/blockService';
-import { ERROR_CODES } from '@core/utils/errors';
-import {Field} from "@core/interfaces/Field";
+import {Request, Response} from 'express';
+import {Controller} from '@core/admin/controllers/controller';
+import blockService from "@core/admin/services/blockService";
+import {v4 as uuidv4} from "uuid";
 
 class BlockController extends Controller {
-  constructor() {
-    super('admin/blocks', 'blocks');
-  }
-
-  newForm = (req: Request, res: Response): void => {
-    res.render(`${this.viewFolder}/new`, { layout: 'admin/layouts/admin', title: 'Create Block' });
-  };
-
-  create = async (req: Request, res: Response): Promise<void> => {
-    const id = uuidv4();
-    const { block, type, fieldsJson } = req.body;
-
-    const fields: Field[] = JSON.parse(fieldsJson);
-
-    const cleanFields: Field[] = fields.map(f => ({
-      id: f.id,
-      name: f.name,
-      type: f.type,
-      label: f.label,
-      required: f.required ?? false,
-      defaultValue: f.defaultValue
-    }));
-
-    await blockService.save({ id, block, type, fields: cleanFields });
-    res.redirect('/admin/blocks');
-  };
-
-  editForm = async (req: Request, res: Response): Promise<void> => {
-    const block = await blockService.getById(<string>req.params.id);
-    if (!block) {
-      res.status(404).send(ERROR_CODES["TEP471"]);
-      return;
+    constructor() {
+        super('admin/blocks', 'blocks');
     }
 
-    res.render(`${this.viewFolder}/edit`, { layout: 'admin/layouts/admin', title: 'Edit Block', block });
-  };
+    list = async (req: Request, res: Response): Promise<void> => {
+        const blocks = await blockService.getAll('blocks');
 
-  update = async (req: Request, res: Response): Promise<void> => {
-    const { block, fields, type } = req.body;
+        this.render(res, 'list', {blocks});
+    };
 
-    await blockService.update(<string>req.params.id, {
-      block,
-      type,
-      fields: JSON.parse(fields),
-    });
+    createForm = async (req: Request, res: Response): Promise<void> => {
+        const blocks = await blockService.getAll('blocks');
 
-    res.redirect('/admin/blocks');
-  };
+        this.render(res, 'create', { blocks });
+    };
 
-  delete = async (req: Request, res: Response): Promise<void> => {
-    try {
-      await blockService.delete(<string>req.params.id);
-      res.redirect('/admin/blocks');
-    } catch {
-      res.status(500).send(ERROR_CODES["TEP450"]);
+    create = async (req: Request, res: Response): Promise<void> => {
+        await blockService.create({
+            id: uuidv4(),
+            name: req.body.name,
+            type: req.body.type,
+            fields: JSON.parse(req.body.fieldsJson)
+        });
+
+        this.redirect(res, 'admin.blocks');
+    };
+
+    editForm = async (req: Request<{ block: string }>, res: Response): Promise<void> => {
+        const { block } = req.params;
+        const blockToEdit = await blockService.getById(block, 'blocks');
+        const blocks = await blockService.getAll('blocks');
+
+        this.render(res, 'edit', {block: blockToEdit, blocks});
+    };
+
+    edit = async (req: Request, res: Response): Promise<void> => {
+        await blockService.edit({
+            id: req.body.id,
+            name: req.body.name,
+            type: req.body.type,
+            fields: JSON.parse(req.body.fieldsJson)
+        }, req.body.type);
+
+        this.redirect(res, 'admin.blocks');
     }
-  };
-
-  list = async (req: Request, res: Response): Promise<void> => {
-    try {
-      const blocks = await blockService.getAll();
-      res.render(`${this.viewFolder}/list`, { layout: 'admin/layouts/admin', user: req.session.user, blocks });
-    } catch {
-      res.status(500).send(ERROR_CODES["TEP450"]);
-    }
-  };
 }
 
 export default new BlockController();

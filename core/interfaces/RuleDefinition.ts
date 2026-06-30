@@ -1,4 +1,4 @@
-import {RuleFunction} from "@core/interfaces/RuleFunction";
+import {RuleFunction} from "@core/interfaces/types/RuleFunction";
 
 export interface RuleDefinition {
     fn: RuleFunction;
