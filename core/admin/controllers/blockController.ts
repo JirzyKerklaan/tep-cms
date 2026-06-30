@@ -33,12 +33,21 @@ class BlockController extends Controller {
 
     editForm = async (req: Request<{ block: string }>, res: Response): Promise<void> => {
         const { block } = req.params;
-        const blockToEdit = await blockService.getById(block, 'page_builder');
+        const blockToEdit = await blockService.getById(block, 'blocks');
         const blocks = await blockService.getAll('blocks');
 
         this.render(res, 'edit', {block: blockToEdit, blocks});
     };
-    edit = async (): Promise<void> => {
+
+    edit = async (req: Request, res: Response): Promise<void> => {
+        await blockService.edit({
+            id: req.body.id,
+            name: req.body.name,
+            type: req.body.type,
+            fields: JSON.parse(req.body.fieldsJson)
+        }, req.body.type);
+
+        this.redirect(res, 'admin.blocks');
     }
 }
 

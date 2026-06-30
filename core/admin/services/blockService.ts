@@ -29,6 +29,16 @@ export class BlockService extends Service {
 
         return block
     }
+
+    async edit(block: Block, type: BlockType): Promise<Block> {
+        const current = await this.getById(block.id, type)
+
+        const edited = {...current, ...block};
+
+        await this.writeJson(this.resolve(type, block.id), edited);
+
+        return edited
+    }
 }
 
 export default new BlockService();

@@ -44,12 +44,17 @@ export class CollectionService extends Service {
     }
 
     async edit(collection: Collection): Promise<Collection> {
+        const current = await this.getById(collection.slug)
+
+        const edited = {...current, ...collection};
+
+        await this.writeJson(this.resolveSchema('collections', `${collection.slug}.schema.json`), edited);
+
         return collection;
     }
 
     async delete(collection: string): Promise<void> {
         await this.remove(this.resolve(collection));
-
         await this.remove(this.resolveSchema('collections', `${collection}.schema.json`));
     }
 }

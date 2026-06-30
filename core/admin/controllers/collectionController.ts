@@ -44,7 +44,7 @@ class CollectionController extends Controller {
     edit = async (req: Request, res: Response): Promise<void> => {
         await collectionService.edit({
             id: req.body.id,
-            slug: slugify(req.body.name),
+            slug: req.body.slug,
             name: req.body.name,
             blocks: req.body.blocks
         });
