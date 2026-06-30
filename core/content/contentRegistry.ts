@@ -22,11 +22,12 @@ class ContentRegistry {
         this.idToSlug.set(id, slug);
     }
 
-    getById(id: string): string | undefined {
-        return this.idToSlug.get(id);
+    getById(id: string): string {
+        return <string>this.idToSlug.get(id)!;
     }
-    getBySlug(slug: string): string | undefined {
-        return this.slugToId.get(slug);
+
+    getBySlug(slug: string): string {
+        return <string>this.slugToId.get(slug)!;
     }
 
     // TODO: Add delete method

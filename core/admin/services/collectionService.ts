@@ -1,16 +1,11 @@
 import {Service} from "@core/admin/services/service";
-import fs from 'fs-extra';
 import path from 'path';
 import {Collection} from "@core/interfaces/Collection";
 import standardPage from "@core/definitions/standardPage";
-import {Block} from "@core/interfaces/Block";
 import blockService from "@core/admin/services/blockService";
-import {Entry} from "@core/interfaces/Entry";
-import {loadFile} from "@core/admin/helpers/fileLoader";
 import {v4 as uuidv4} from "uuid";
 
 const DIR = path.join(process.cwd(), 'src', 'content', 'collections');
-fs.ensureDirSync(DIR);
 
 export class CollectionService extends Service {
     constructor() {
@@ -18,40 +13,32 @@ export class CollectionService extends Service {
     }
 
     async getAll(): Promise<string[]> {
-        const files = await fs.readdir(this.baseDir);
-
-        return files
-            .filter(file => !file.startsWith('.'))
-            .map(file => path.parse(file).name);
+        const files = await this.listFiles(this.baseDir);
+        return files.map(file => path.parse(file).name);
     }
 
-    async getById(collection: string): Promise<Entry> {
-        const fileContents = await loadFile(path.join(this.contentDir, 'schemas', 'collections', `${collection}.schema.json`));
-        if (!fileContents) { throw new Error(`Collection ${collection} could not be found.`) }
-
-        return JSON.parse(fileContents);
-    };
+    async getById(collection: string): Promise<Collection> {
+        return this.readJson<Collection>(this.resolveSchema('collections', `${collection}.schema.json`));
+    }
 
     async create(collection: Collection): Promise<Collection> {
-        const collectionDir = path.join(this.baseDir, collection.name);
-        const schemaPath = path.join(this.contentDir, 'schemas', 'collections', `${collection.slug}.schema.json`);
-        const uuid = uuidv4()
+        const schemaPath = this.resolveSchema('collections', `${collection.slug}.schema.json`)
 
-        const blocks: Block[] = []
-        for (const blockSlug of collection.blocks) {
-            const block = await blockService.getById(blockSlug, 'page_builder');
-            blocks.push(block);
-        }
-        collection.blocks = blocks;
-
-        if (await fs.pathExists(schemaPath)) {
+        if (await this.exists(schemaPath)) {
             throw new Error(`Collection '${collection.name}' already exists`);
         }
 
-        await fs.ensureDir(collectionDir);
+        const uuid = uuidv4();
 
-        await fs.writeJson(schemaPath, collection, { spaces: 2 }); // Create collection schema
-        await fs.writeJson(path.join(collectionDir, `${uuid}.json`), standardPage(collection, uuid), { spaces: 2 }); // Create collection entry
+        collection.blocks = await Promise.all(
+            collection.blocks.map(slug =>
+                blockService.getById(slug, "page_builder")
+            )
+        );
+
+        await this.writeJson(schemaPath, collection);
+
+        await this.writeJson(this.resolve(collection.name, `${uuid}.json`), standardPage(collection, uuid));
 
         return collection;
     }
@@ -61,8 +48,9 @@ export class CollectionService extends Service {
     }
 
     async delete(collection: string): Promise<void> {
-        await fs.rm(path.join(this.baseDir, collection), { recursive: true, force: true });
-        await fs.unlink(path.join(this.contentDir, 'schemas', 'collections', `${collection}.schema.json`))
+        await this.remove(this.resolve(collection));
+
+        await this.remove(this.resolveSchema('collections', `${collection}.schema.json`));
     }
 }
 

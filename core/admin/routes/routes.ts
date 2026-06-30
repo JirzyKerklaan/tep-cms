@@ -63,7 +63,7 @@ router.get('/', (req, res) => {
 
 
 router.get('/:slug', (req: Request, res: Response, next: NextFunction) => {
-  const slug = req.params.slug;
+  const { slug } = req.params;
 
   if (collections.includes(<string>slug)) {
     next();

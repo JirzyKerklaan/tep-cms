@@ -1,9 +1,8 @@
-import { Request, Response } from 'express';
-import { Controller } from '@core/admin/controllers/controller';
+import {Request, Response} from 'express';
+import {Controller} from '@core/admin/controllers/controller';
 import collectionService from "@core/admin/services/collectionService";
 import blockService from "@core/admin/services/blockService";
 import {v4 as uuidv4} from "uuid";
-import {route} from "@core/utils/namedRoutes";
 import slugify from "slugify";
 
 class CollectionController extends Controller {
@@ -12,59 +11,52 @@ class CollectionController extends Controller {
     }
 
     list = async (req: Request, res: Response): Promise<void> => {
-        try {
-            const collections = await collectionService.getAll();
-            res.render(`${this.viewFolder}/list`, { collections });
-        } catch {
-        }
+        const collections = await collectionService.getAll();
+
+        this.render(res, 'list', {collections})
     };
 
     createForm = async (req: Request, res: Response): Promise<void> => {
         const blocks = await blockService.getAll('page_builder');
-        res.render(`${this.viewFolder}/create`, { blocks });
+
+        this.render(res, 'create', {blocks})
     };
 
-    create = async (req: Request<{name: string}>, res: Response): Promise<void> => {
-        try {
-            const collection = await collectionService.create({
-                id: uuidv4(),
-                slug: slugify(req.body.name),
-                name: req.body.name,
-                blocks: req.body.blocks
-            });
-            res.redirect(route('admin.entries', collection.slug));
-        } catch {
-        }
+    create = async (req: Request, res: Response): Promise<void> => {
+        const collection = await collectionService.create({
+            id: uuidv4(),
+            slug: slugify(req.body.name),
+            name: req.body.name,
+            blocks: req.body.blocks
+        });
+
+        this.redirect(res, 'admin.entries', collection.slug)
     };
 
-    editForm = async (req: Request<{collection: string}>, res: Response): Promise<void> => {
-        const collection = await collectionService.getById(req.params.collection)
+    editForm = async (req: Request<{ collection: string }>, res: Response): Promise<void> => {
+        const { collection } = req.params;
+        const collectionToEdit = await collectionService.getById(collection)
         const blocks = await blockService.getAll('page_builder');
-        res.render(`${this.viewFolder}/edit`, { collection, blocks });
+
+        this.render(res, 'edit', {collection: collectionToEdit, blocks})
     };
 
-    edit = async (req: Request<{name: string}>, res: Response): Promise<void> => {
-        try {
-            await collectionService.edit({
-                id: uuidv4(),
-                slug: slugify(req.body.name),
-                name: req.body.name,
-                blocks: req.body.blocks
-            });
+    edit = async (req: Request, res: Response): Promise<void> => {
+        await collectionService.edit({
+            id: req.body.id,
+            slug: slugify(req.body.name),
+            name: req.body.name,
+            blocks: req.body.blocks
+        });
 
-            res.render(`${this.viewFolder}/list`);
-        } catch {
-        }
+        this.redirect(res, 'admin.collections')
     };
 
-    delete = async (req: Request<{collection: string, entry: string}>, res: Response): Promise<void> => {
-        try {
-            await collectionService.delete(req.params.collection);
+    delete = async (req: Request<{ collection: string }>, res: Response): Promise<void> => {
+        const { collection } = req.params;
+        await collectionService.delete(collection);
 
-            res.redirect(route('admin.collections'))
-        } catch {
-            res.status(404).render(`views/404`);
-        }
+        this.redirect(res, 'admin.collections')
     }
 }
 

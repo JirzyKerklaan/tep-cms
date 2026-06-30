@@ -1,68 +1,57 @@
 import {Entry} from "@core/interfaces/Entry";
 import {Service} from "@core/admin/services/service";
-import fs from 'fs-extra';
 import path from 'path';
-import {loadFile} from "@core/admin/helpers/fileLoader";
 import {contentRegistry} from "@core/content/contentRegistry";
 
 const DIR = path.join(process.cwd(), 'src', 'content', 'collections');
-fs.ensureDirSync(DIR);
 
 export class EntryService extends Service {
     constructor() {
         super(DIR);
     }
 
-    async getAll(subDir: string | null = null): Promise<Entry[]> {
-        const DIR = subDir
-            ? path.join(this.baseDir, subDir)
+    async getAll(collection?: string): Promise<Entry[]> {
+        const dir = collection
+            ? this.resolve(collection)
             : this.baseDir;
 
-        let files = await fs.readdir(DIR);
+        const files = await this.listFiles(dir, ".json");
 
-        files = files.filter(file =>
-            !file.startsWith('.') &&
-            path.extname(file) === '.json'
+        return Promise.all(
+            files.map(file =>
+                this.readJson<Entry>(path.join(dir, file))
+            )
         );
-
-        const results: Entry[] = [];
-
-        for (const file of files) {
-            const fileContents = await loadFile(path.join(DIR, file));
-
-            results.push(JSON.parse(fileContents));
-        }
-
-        return results;
     }
 
-    async getById(collection: string, entry: string|undefined): Promise<Entry> {
-        if (entry === undefined) {
-            throw new Error(`Entry ${entry} could not be found`);
-        }
-        const id = contentRegistry.getBySlug(entry);
-        return JSON.parse(await loadFile(path.join(this.baseDir, collection, `${id}.json`)));
+    async getById(collection: string, entrySlug: string): Promise<Entry> {
+        const id = contentRegistry.getBySlug(entrySlug);
+
+        return this.readJson<Entry>(this.resolve(collection, `${id}.json`));
     };
 
     async create(collection: string, entry: Entry): Promise<Entry> {
-        await fs.writeJson(path.join(this.baseDir, collection, `${entry.id}.json`), entry, { spaces: 2 });
+        await this.writeJson(this.resolve(collection, `${entry.id}.json`), entry);
 
         return entry;
-    };
+    }
 
     async edit(collection: string, entry: Entry): Promise<Entry> {
-        const initialEntry = await this.getById(collection, contentRegistry.getById(entry.id));
+        const entryToFind = contentRegistry.getById(entry.id);
 
-        const editedEntry = { ...initialEntry, ...entry }
-        await fs.writeJson(path.join(this.baseDir, collection, `${entry.id}.json`), editedEntry, { spaces: 2 });
+        const current = await this.getById(collection, entryToFind);
 
-        return entry;
-    };
+        const edited = {...current, ...entry};
+
+        await this.writeJson(this.resolve(collection, `${entry.id}.json`), edited);
+
+        return edited;
+    }
 
     async delete(collection: string, entrySlug: string): Promise<void> {
-        const id = contentRegistry.getBySlug(entrySlug)
+        const id = contentRegistry.getBySlug(entrySlug);
 
-        fs.unlink(path.join(this.baseDir, collection, `${id}.json`))
+        await this.remove(this.resolve(collection, `${id}.json`));
     }
 }
 

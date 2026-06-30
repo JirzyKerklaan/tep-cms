@@ -1,10 +1,8 @@
-import { Request, Response } from 'express';
-import { Controller } from '@core/admin/controllers/controller';
-import EntryService from '@core/admin/services/entryService';
-import entryService from "@core/admin/services/entryService";
+import {Request, Response} from 'express';
+import {Controller} from '@core/admin/controllers/controller';
+import entryService from '@core/admin/services/entryService';
 import {v4 as uuidv4} from "uuid";
 import blockService from "@core/admin/services/blockService";
-import {route} from "@core/utils/namedRoutes";
 
 class EntryController extends Controller {
     constructor() {
@@ -12,80 +10,67 @@ class EntryController extends Controller {
     }
 
     list = async (req: Request<{ collection: string }>, res: Response): Promise<void> => {
-        try {
-            const entries = await EntryService.getAll(req.params.collection);
-            res.render(`${this.viewFolder}/list`, { collection: req.params.collection, entries });
-        } catch {
-        }
+        const { collection } = req.params;
+        const entries = await entryService.getAll(collection);
+
+        this.render(res, 'list', {collection, entries})
     };
 
-    createForm = async (req: Request<{collection: string}>, res: Response): Promise<void> => {
+    createForm = async (req: Request<{ collection: string }>, res: Response): Promise<void> => {
+        const { collection } = req.params;
         const blocks = await blockService.getAll('page_builder');
-        res.render(`${this.viewFolder}/create`, {collection: req.params.collection, blocks });
+
+        this.render(res, 'create', {collection, blocks})
     };
 
     create = async (req: Request<{ collection: string }>, res: Response): Promise<void> => {
-        try {
-            const entry = await entryService.create(req.params.collection, {
-                id: uuidv4(),
-                name: req.body.name,
-                slug: req.body.slug,
-                content: req.body.content,
-                published_at: req.body.published_at ?? new Date(),
-                scheduled_at: req.body.scheduled_at ?? new Date(),
-            });
+        const { collection } = req.params;
+        const entry = await entryService.create(collection, {
+            id: uuidv4(),
+            name: req.body.name,
+            slug: req.body.slug,
+            content: req.body.content,
+            published_at: req.body.published_at ?? new Date(),
+            scheduled_at: req.body.scheduled_at ?? new Date(),
+        });
 
-            console.log(entry)
-            res.redirect(route('admin.entries.view', req.params.collection, entry.slug));
-        } catch {
-        }
+        this.redirect(res, 'admin.entries.view', collection, entry.slug)
     };
 
-    editForm = async (req: Request<{collection: string, entry: string}>, res: Response): Promise<void> => {
-        const entry = await entryService.getById(req.params.collection, req.params.entry)
+    editForm = async (req: Request<{ collection: string, entry: string }>, res: Response): Promise<void> => {
+        const { collection, entry } = req.params;
+        const entryToEdit = await entryService.getById(collection, entry)
         const blocks = await blockService.getAll('page_builder');
 
-        res.render(`${this.viewFolder}/edit`, {
-            collection: req.params.collection,
-            entry: entry,
-            blocks: blocks
-        });
+        this.render(res, 'edit', { collection, entry: entryToEdit, blocks });
     };
 
-    edit = async (req: Request<{collection: string}>, res: Response): Promise<void> => {
-        try {
-            const entry = await entryService.edit(req.params.collection, {
-                id: req.body.id,
-                name: req.body.name,
-                slug: req.body.slug,
-                content: req.body.content,
-                published_at: req.body.published_at,
-                scheduled_at: req.body.scheduled_at,
-            });
+    edit = async (req: Request<{ collection: string }>, res: Response): Promise<void> => {
+        const { collection } = req.params;
+        const entry = await entryService.edit(collection, {
+            id: req.body.id,
+            name: req.body.name,
+            slug: req.body.slug,
+            content: req.body.content,
+            published_at: req.body.published_at,
+            scheduled_at: req.body.scheduled_at,
+        });
 
-            res.redirect(route('admin.entries.view', req.params.collection, entry.slug ));
-        } catch {
-        }
+        this.redirect(res, 'admin.entries.view', collection, entry.slug)
     }
 
-    view = async (req: Request<{collection: string, entry: string}>, res: Response): Promise<void> => {
-        try {
-            const entry = await entryService.getById(req.params.collection, req.params.entry);
+    view = async (req: Request<{ collection: string, entry: string }>, res: Response): Promise<void> => {
+        const { collection, entry } = req.params;
+        const entryToView = await entryService.getById(collection, entry);
 
-            res.render(`${this.viewFolder}/view`, { collection: req.params.collection, entry });
-        } catch {
-            res.status(404).render(`views/404`);
-        }
+        this.render(res, 'view', {collection, entry: entryToView})
     };
 
-    delete = async (req: Request<{collection: string, entry: string}>, res: Response): Promise<void> => {
-        try {
-            await entryService.delete(req.params.collection, req.params.entry);
+    delete = async (req: Request<{ collection: string, entry: string }>, res: Response): Promise<void> => {
+        const { collection, entry } = req.params;
+        await entryService.delete(collection, entry);
 
-            res.redirect(route('admin.entries', req.params.collection))
-        } catch {
-            res.status(404).render(`views/404`);
-        }
+        this.redirect(res, 'admin.entries', collection)
     }
 }
 
