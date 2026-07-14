@@ -10,7 +10,7 @@ const router = express.Router();
 
 router.get('/login', (req: Request, res: Response) => {
   res.render('admin/pages/login', {
-    error: ERROR_CODES["TEP200"],
+    error: ERROR_CODES.TEP200,
     username: ''
   });
 });
@@ -23,7 +23,7 @@ router.get('/login', (req: Request, res: Response) => {
     const user = findUsername(username);
     if (!user) {
       res.status(401).render('admin/pages/login', {
-        error: ERROR_CODES["TEP111"],
+        error: ERROR_CODES.TEP111,
         username,
       });
       return;
@@ -32,7 +32,7 @@ router.get('/login', (req: Request, res: Response) => {
     const passwordValid = await verifyPassword(user, password);
     if (!passwordValid) {
       res.status(401).render('admin/pages/login', {
-        error: ERROR_CODES["TEP111"],
+        error: ERROR_CODES.TEP111,
         username,
       });
       return;
@@ -58,7 +58,7 @@ router.get('/logout', (req: Request, res: Response) => {
 
 router.get('/register', (req: Request, res: Response) => {
   res.render('admin/pages/register', {
-    error: ERROR_CODES["TEP200"],
+    error: ERROR_CODES.TEP200,
     email: '',
     username: ''
   });

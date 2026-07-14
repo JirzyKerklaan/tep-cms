@@ -19,7 +19,7 @@ router.post('/upload', upload.array('images'), async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    res.status(500).json({ success: false, error: ERROR_CODES["TEP431"] });
+    res.status(500).json({ success: false, error: ERROR_CODES.TEP431 });
   }
 });
 

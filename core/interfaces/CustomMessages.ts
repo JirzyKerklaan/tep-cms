@@ -1,5 +1,1 @@
-export interface CustomMessages {
-    [field: string]: {
-        [rule: string]: string;
-    };
-}
+export type CustomMessages = Record<string, Record<string, string>>;

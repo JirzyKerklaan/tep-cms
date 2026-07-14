@@ -7,7 +7,7 @@ import {ERROR_CODES} from "@core/utils/errors";
  * Expects the key in the `Authorization` header as: "Bearer <key>"
  */
 export function HasValidToken(req: Request, res: Response, next: NextFunction) {
-    const authHeader = req.headers['authorization'];
+    const authHeader = req.headers.authorization;
 
     if (!authHeader) {
         res.status(401).json({ error: ERROR_CODES.TEP115 });

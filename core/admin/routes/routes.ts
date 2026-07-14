@@ -65,7 +65,7 @@ router.get('/', (req, res) => {
 router.get('/:slug', (req: Request, res: Response, next: NextFunction) => {
   const { slug } = req.params;
 
-  if (collections.includes(<string>slug)) {
+  if (collections.includes((slug as string))) {
     next();
     return;
   }
@@ -75,7 +75,7 @@ router.get('/:slug', (req: Request, res: Response, next: NextFunction) => {
     return;
   }
 
-  const page = loadPage(<string>slug);
+  const page = loadPage((slug as string));
   if (!page) {
     next();
     return;
@@ -121,8 +121,8 @@ router.get('/:slug', (req: Request, res: Response, next: NextFunction) => {
 router.get('/:collection/:slug', (req: Request, res: Response, next: NextFunction) => {
   const { collection, slug } = req.params;
 
-  if (collections.includes(<string>collection)) {
-    const entry = loadEntry(<string>collection, <string>slug);
+  if (collections.includes((collection as string))) {
+    const entry = loadEntry((collection as string), (slug as string));
     if (!entry) {
       res.status(404).send('Not found');
       return;
@@ -148,12 +148,12 @@ router.get('/:collection/:slug', (req: Request, res: Response, next: NextFunctio
 router.get('/:parent/:slug', (req: Request, res: Response, next: NextFunction) => {
   const { parent, slug } = req.params;
 
-  if (collections.includes(<string>parent)) {
+  if (collections.includes((parent as string))) {
     next();
     return;
   }
 
-  const page = loadPage(<string>slug);
+  const page = loadPage((slug as string));
   if (!page) {
     next();
     return;
