@@ -1,4 +1,5 @@
 import { Validator } from '@core/validation';
+import {ValidationError} from "@core/errors/validationError";
 
 export abstract class BaseRequest<T extends Record<string, unknown>> {
     protected data!: T;
@@ -15,7 +16,7 @@ export abstract class BaseRequest<T extends Record<string, unknown>> {
 
         if (!validator.passes()) {
             this.errors = validator.errors;
-            throw { validation: this.errors };
+            throw new ValidationError(this.errors);
         }
 
         this.data = raw;

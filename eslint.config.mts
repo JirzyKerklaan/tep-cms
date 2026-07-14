@@ -8,9 +8,7 @@ export default defineConfig([
     languageOptions: {
       globals: globals.browser,
       parserOptions: {
-        projectService: {
-          allowDefaultProject: ["eslint.config.mts"],
-        },
+        projectService: true,
         tsconfigRootDir: process.cwd(),
       }
     },

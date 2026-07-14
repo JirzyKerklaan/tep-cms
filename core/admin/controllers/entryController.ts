@@ -3,6 +3,8 @@ import {Controller} from '@core/admin/controllers/controller';
 import entryService from '@core/admin/services/entryService';
 import {v4 as uuidv4} from "uuid";
 import blockService from "@core/admin/services/blockService";
+import {CreateEntryRequest} from "@core/requests/entries/createEntryRequest";
+import {EditEntryRequest} from "@core/requests/entries/editEntryRequest";
 
 class EntryController extends Controller {
     constructor() {
@@ -23,9 +25,11 @@ class EntryController extends Controller {
         this.render(res, 'create', {collection, blocks})
     };
 
-    create = async (req: Request<{ collection: string }>, res: Response): Promise<void> => {
-        const { collection } = req.params;
-        const entry = await entryService.create(collection, {
+    create = async (
+        req: Request<object, object, CreateEntryRequest>,
+        res: Response
+    ): Promise<void> => {
+        const entry = await entryService.create(req.body.collection, {
             id: uuidv4(),
             name: req.body.name,
             slug: req.body.slug,
@@ -34,7 +38,7 @@ class EntryController extends Controller {
             scheduled_at: req.body.scheduled_at ?? new Date(),
         });
 
-        this.redirect(res, 'admin.entries.view', collection, entry.slug)
+        this.redirect(res, 'admin.entries.view', req.body.collection, entry.slug)
     };
 
     editForm = async (req: Request<{ collection: string, entry: string }>, res: Response): Promise<void> => {
@@ -45,9 +49,11 @@ class EntryController extends Controller {
         this.render(res, 'edit', { collection, entry: entryToEdit, blocks });
     };
 
-    edit = async (req: Request<{ collection: string }>, res: Response): Promise<void> => {
-        const { collection } = req.params;
-        const entry = await entryService.edit(collection, {
+    edit = async (
+        req: Request<object, object, EditEntryRequest>,
+        res: Response
+    ): Promise<void> => {
+        const entry = await entryService.edit(req.body.collection, {
             id: req.body.id,
             name: req.body.name,
             slug: req.body.slug,
@@ -56,7 +62,7 @@ class EntryController extends Controller {
             scheduled_at: req.body.scheduled_at,
         });
 
-        this.redirect(res, 'admin.entries.view', collection, entry.slug)
+        this.redirect(res, 'admin.entries.view', req.body.collection, entry.slug)
     }
 
     view = async (req: Request<{ collection: string, entry: string }>, res: Response): Promise<void> => {

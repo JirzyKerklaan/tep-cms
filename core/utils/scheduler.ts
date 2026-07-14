@@ -1,7 +1,7 @@
 import cron from 'node-cron';
 import { getScheduled, publishScheduled } from '@core/services/schedulerService'
 
-export async function startScheduler() {
+export function startScheduler() {
     cron.schedule('* * * * *', async () => {
         const scheduledCollections = await getScheduled();
         const now = new Date();
