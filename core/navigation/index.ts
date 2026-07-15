@@ -13,8 +13,8 @@ function loadNavigation() {
     if (file.endsWith('.json')) {
       const navName = path.basename(file, '.json');
       const raw = fs.readFileSync(path.join(navPath, file), 'utf-8');
-      const parsed: NavigationGroup = JSON.parse(raw);
-      navigationData[navName] = parsed;
+      const parsedUnknown: unknown = JSON.parse(raw);
+      navigationData[navName] = parsedUnknown as NavigationGroup;
     }
   });
 }

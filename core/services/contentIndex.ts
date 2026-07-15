@@ -13,6 +13,7 @@ const BASE_DIRS = [
 ];
 
 let index: IndexEntry[] = [];
+// eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
 let lunrIndex: ReturnType<typeof lunr> | null = null;
 
 export async function buildContentIndex(): Promise<void> {
@@ -33,17 +34,18 @@ export async function buildContentIndex(): Promise<void> {
       try {
         const slug = path.basename(filePath, '.json');
         const jsonRaw = await loadFile(filePath);
-        const data = JSON.parse(jsonRaw);
+        const data = JSON.parse(jsonRaw) as IndexEntry;
 
         result.push({
+          id: data.id,
+          name: data.name || slug,
           slug,
-          title: data.title || slug,
           content: JSON.stringify(data),
           type,
           path: filePath,
         });
       } catch {
-        continue;
+
       }
     }
   }
@@ -71,9 +73,11 @@ async function recursivelyFindJsonFiles(dir: string): Promise<string[]> {
 }
 
 function buildLunrIndex() {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-call
   lunrIndex = lunr(function (this: LunrBuilder) {
-    this.ref('slug');
-    this.field('title');
+    this.ref('id');
+    this.field('slug');
+    this.field('name');
     this.field('content');
     this.field('type');
     this.field('slug');
@@ -85,6 +89,7 @@ function buildLunrIndex() {
 export function searchContent(query: string): IndexEntry[] {
   if (!lunrIndex) return [];
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
   const results: LunrResult[] = lunrIndex.search(query);
 
   const matched: (IndexEntry | undefined)[] = results.map(result =>

@@ -32,7 +32,7 @@ export class CollectionService extends Service {
 
         collection.blocks = await Promise.all(
             collection.blocks.map(slug =>
-                blockService.getById(slug, "page_builder")
+                blockService.getById(slug as string, "page_builder")
             )
         );
 

@@ -7,6 +7,8 @@ import { Page } from '@core/interfaces/Page';
 import { Entry } from '@core/interfaces/Entry';
 import {handleRedirects} from "@core/admin/middlewares/handleRedirects";
 import {contentRegistry} from "@core/content/contentRegistry";
+import {CollectionEntryRequest} from "@core/requests/routes/collectionEntryRequest";
+import {EntryRequest} from "@core/requests/routes/entryRequest";
 
 const router = express.Router();
 router.use(handleRedirects);
@@ -24,7 +26,7 @@ function loadEntry(collection: string, slug: string): Entry | null {
   const filePath = path.join(process.cwd(), `/src/content/collections/${collection}/${id}.json`);
   if (!fs.existsSync(filePath)) return null;
   const raw = fs.readFileSync(filePath, 'utf-8');
-  return JSON.parse(raw);
+  return JSON.parse(raw) as Entry;
 }
 
 function loadPage(slug: string): Page | null {
@@ -32,7 +34,7 @@ function loadPage(slug: string): Page | null {
   const filePath = path.join(process.cwd(), `/src/content/collections/pages/${id}.json`);
   if (!fs.existsSync(filePath)) return null;
   const raw = fs.readFileSync(filePath, 'utf-8');
-  return JSON.parse(raw);
+  return JSON.parse(raw) as Page;
 }
 
 router.get('/', (req, res) => {
@@ -42,9 +44,7 @@ router.get('/', (req, res) => {
     return;
   }
 
-  const viewsDir = req.app.get('views');
-  const viewsPath = Array.isArray(viewsDir) ? viewsDir[0] : viewsDir;
-
+  const viewsPath: string = resolveViewsPath(req.app.get('views') as string | string[]);
   let viewToRender = 'standard';
 
   if (homepage.template) {
@@ -62,10 +62,10 @@ router.get('/', (req, res) => {
 });
 
 
-router.get('/:slug', (req: Request, res: Response, next: NextFunction) => {
+router.get('/:slug', (req: Request<EntryRequest>, res: Response, next: NextFunction) => {
   const { slug } = req.params;
 
-  if (collections.includes((slug as string))) {
+  if (collections.includes((slug))) {
     next();
     return;
   }
@@ -75,7 +75,7 @@ router.get('/:slug', (req: Request, res: Response, next: NextFunction) => {
     return;
   }
 
-  const page = loadPage((slug as string));
+  const page = loadPage((slug));
   if (!page) {
     next();
     return;
@@ -118,18 +118,17 @@ router.get('/:slug', (req: Request, res: Response, next: NextFunction) => {
   }
 });
 
-router.get('/:collection/:slug', (req: Request, res: Response, next: NextFunction) => {
+router.get('/:collection/:slug', (req: Request<CollectionEntryRequest>, res: Response, next: NextFunction) => {
   const { collection, slug } = req.params;
 
-  if (collections.includes((collection as string))) {
-    const entry = loadEntry((collection as string), (slug as string));
+  if (collections.includes((collection))) {
+    const entry = loadEntry((collection), (slug));
     if (!entry) {
       res.status(404).send('Not found');
       return;
     }
 
-    const viewsDir = req.app.get('views');
-    const viewsPath = Array.isArray(viewsDir) ? viewsDir[0] : viewsDir;
+    const viewsPath: string = resolveViewsPath(req.app.get('views') as string | string[]);
 
     const collectionViewFile = path.join(viewsPath, `${collection}.twig`);
     let viewToRender: string | string[] = 'standard';
@@ -167,4 +166,15 @@ router.get('/:parent/:slug', (req: Request, res: Response, next: NextFunction) =
   res.render('views/pages', page);
 });
 
+function resolveViewsPath(viewsDir: string|string[]): string {
+  const viewsPath = Array.isArray(viewsDir)
+      ? viewsDir[0]
+      : viewsDir;
+
+  if (!viewsPath) {
+    throw new Error('Express views directory is not configured');
+  }
+
+  return viewsPath;
+}
 export default router;

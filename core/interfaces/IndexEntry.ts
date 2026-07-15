@@ -1,6 +1,7 @@
-export interface IndexEntry {
+import {BaseEntity} from "@core/interfaces/BaseEntity";
+
+export interface IndexEntry extends BaseEntity {
     slug: string;
-    title: string;
     content: string;
     type: string;
     path: string;

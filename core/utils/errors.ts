@@ -1,3 +1,5 @@
+import {ErrorCode} from "@core/interfaces/types/ErrorCodes";
+
 export const ERROR_CODES = {
     // ===============================
     // 1xx — Authentication & Registration
@@ -63,8 +65,6 @@ export const ERROR_CODES = {
     TEP473: 'Failed to delete block',
 } as const;
 
-export type ErrorCode = keyof typeof ERROR_CODES;
-
-export function getErrorMessage(code: ErrorCode | string): string {
-    return ERROR_CODES[code as ErrorCode] || ERROR_CODES.TEP400;
+export function getErrorMessage(code: string): string {
+    return ERROR_CODES[code as ErrorCode] ?? ERROR_CODES.TEP400;
 }
