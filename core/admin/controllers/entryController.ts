@@ -50,10 +50,10 @@ class EntryController extends Controller {
     };
 
     edit = async (
-        req: Request<object, object, EditEntryRequest>,
+        req: Request<{ collection: string }, object, EditEntryRequest>,
         res: Response
     ): Promise<void> => {
-        const entry = await entryService.edit(req.body.collection, {
+        const entry = await entryService.edit(req.params.collection, {
             id: req.body.id,
             name: req.body.name,
             slug: req.body.slug,
