@@ -1,3 +1,1 @@
-import {ERROR_CODES} from "@core/utils/errors";
-
-export type ErrorCode = keyof typeof ERROR_CODES;
+export type ErrorCode = keyof typeof import("@core/utils/errors").ERROR_CODES;

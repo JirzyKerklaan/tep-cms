@@ -7,7 +7,7 @@ import {contentRegistry} from "@core/content/contentRegistry";
 const PORT = config.server.PORT ?? 3000;
 const HOSTNAME = config.server.HOST ?? 'http://tep.test';
 
-await (async () => {
+void (async () => {
   await buildContentIndex();
   console.log('🔍 Content index built');
 

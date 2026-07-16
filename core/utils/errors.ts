@@ -1,4 +1,4 @@
-import {ErrorCode} from "@core/interfaces/types/ErrorCodes";
+import type {ErrorCode} from "@core/interfaces/types/ErrorCodes";
 
 export const ERROR_CODES = {
     // ===============================

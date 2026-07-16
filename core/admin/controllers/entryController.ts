@@ -26,10 +26,10 @@ class EntryController extends Controller {
     };
 
     create = async (
-        req: Request<object, object, CreateEntryRequest>,
+        req: Request<{ collection: string }, object, CreateEntryRequest>,
         res: Response
     ): Promise<void> => {
-        const entry = await entryService.create(req.body.collection, {
+        const entry = await entryService.create(req.params.collection, {
             id: uuidv4(),
             name: req.body.name,
             slug: req.body.slug,
