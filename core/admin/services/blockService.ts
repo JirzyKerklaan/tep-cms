@@ -20,7 +20,7 @@ export class BlockService extends Service {
         );
     }
 
-    async getById(blockSlug: Block|string, type: BlockType): Promise<Block> {
+    async getById(blockSlug: string, type: BlockType): Promise<Block> {
         return this.readJson<Block>(this.resolve(type, `${blockSlug}.json`));
     };
 

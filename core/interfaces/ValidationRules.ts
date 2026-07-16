@@ -1,3 +1,1 @@
-export interface ValidationRules {
-    [field: string]: string | string[];
-}
+export type ValidationRules = Record<string, string | string[]>;

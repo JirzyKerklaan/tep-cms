@@ -33,7 +33,8 @@ export class Service {
             throw new Error(`Could not load ${file}`);
         }
 
-        return JSON.parse(contents);
+        const parsed: unknown = JSON.parse(contents);
+        return parsed as T;
     }
 
     protected async writeJson(file: string, data: unknown): Promise<void> {

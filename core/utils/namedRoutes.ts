@@ -83,7 +83,7 @@ export function route(
     name: keyof typeof routes,
     ...params: string[]
 ): string {
-    const r = routes[name] as KeyValue
+    const r = routes[name]
 
     if (typeof r.value === 'function') {
         return r.value(...params);

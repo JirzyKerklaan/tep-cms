@@ -1,3 +1,5 @@
+import {NavigationGroup} from "@core/interfaces/NavGroup";
+
 declare global {
     namespace Express {
         interface Request {
@@ -6,5 +8,11 @@ declare global {
                 validated?: (field?: string) => unknown;
             };
         }
+
+        interface Locals {
+            navigation: Record<string, NavigationGroup>;
+        }
     }
 }
+
+export {}

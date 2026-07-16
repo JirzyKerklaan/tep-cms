@@ -4,6 +4,8 @@ import collectionService from "@core/admin/services/collectionService";
 import blockService from "@core/admin/services/blockService";
 import {v4 as uuidv4} from "uuid";
 import slugify from "slugify";
+import {CreateCollectionRequest} from "@core/requests/collections/createCollectionRequest";
+import {EditCollectionRequest} from "@core/requests/collections/editCollectionRequest";
 
 class CollectionController extends Controller {
     constructor() {
@@ -22,7 +24,10 @@ class CollectionController extends Controller {
         this.render(res, 'create', {blocks})
     };
 
-    create = async (req: Request, res: Response): Promise<void> => {
+    create = async (
+        req: Request<object, object, CreateCollectionRequest>,
+        res: Response
+    ): Promise<void> => {
         const collection = await collectionService.create({
             id: uuidv4(),
             slug: slugify(req.body.name),
@@ -41,7 +46,10 @@ class CollectionController extends Controller {
         this.render(res, 'edit', {collection: collectionToEdit, blocks})
     };
 
-    edit = async (req: Request, res: Response): Promise<void> => {
+    edit = async (
+        req: Request<object, object, EditCollectionRequest>,
+        res: Response
+    ): Promise<void> => {
         await collectionService.edit({
             id: req.body.id,
             slug: req.body.slug,

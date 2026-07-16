@@ -1,21 +1,26 @@
 import express, { Request, Response } from 'express';
 import { blockController, collectionController, entryController } from '@core/admin/controllers';
 import {createPassword, findEmail, findUsername, loadUsers, verifyPassword} from '@core/services/userService';
-import { ERROR_CODES, ErrorCode } from '@core/utils/errors';
+import {ERROR_CODES, getErrorMessage} from '@core/utils/errors';
 import fs from 'fs-extra';
 import path from "path";
+import {LoginRequest} from "@core/requests/routes/loginRequest";
+import {RegisterRequest} from "@core/requests/routes/registerRequest";
 // import {isAuthenticated} from '@core/admin/middlewares/isAuthenticated';
 
 const router = express.Router();
 
 router.get('/login', (req: Request, res: Response) => {
   res.render('admin/pages/login', {
-    error: ERROR_CODES["TEP200"],
+    error: ERROR_CODES.TEP200,
     username: ''
   });
 });
 
-  router.post('/login', async (req: Request, res: Response) => {
+  router.post('/login', async (
+      req: Request<object, object, LoginRequest>,
+      res: Response
+  ): Promise<void> => {
     const { username, password } = req.body;
 
     await loadUsers();
@@ -23,7 +28,7 @@ router.get('/login', (req: Request, res: Response) => {
     const user = findUsername(username);
     if (!user) {
       res.status(401).render('admin/pages/login', {
-        error: ERROR_CODES["TEP111"],
+        error: ERROR_CODES.TEP111,
         username,
       });
       return;
@@ -32,7 +37,7 @@ router.get('/login', (req: Request, res: Response) => {
     const passwordValid = await verifyPassword(user, password);
     if (!passwordValid) {
       res.status(401).render('admin/pages/login', {
-        error: ERROR_CODES["TEP111"],
+        error: ERROR_CODES.TEP111,
         username,
       });
       return;
@@ -58,13 +63,13 @@ router.get('/logout', (req: Request, res: Response) => {
 
 router.get('/register', (req: Request, res: Response) => {
   res.render('admin/pages/register', {
-    error: ERROR_CODES["TEP200"],
+    error: ERROR_CODES.TEP200,
     email: '',
     username: ''
   });
 });
 
-router.post('/register', async (req: Request, res: Response) => {
+router.post('/register', async (req: Request<object, object, RegisterRequest>, res: Response) => {
   const { email, username, password } = req.body;
 
   await loadUsers();
@@ -72,7 +77,7 @@ router.post('/register', async (req: Request, res: Response) => {
   const usernameIsRecognised = findUsername(username);
   const emailIsRecognised = findEmail(email);
 
-  let errorCode: ErrorCode | null = null;
+  let errorCode: string | null = null;
 
   if (emailIsRecognised) {
     errorCode = 'TEP121';
@@ -81,7 +86,7 @@ router.post('/register', async (req: Request, res: Response) => {
   }
 
   if (errorCode) {
-    res.status(401).render('admin/pages/register', { error: ERROR_CODES[errorCode], username, email });
+    res.status(401).render('admin/pages/register', { error: getErrorMessage(errorCode), username, email });
     return;
   }
 

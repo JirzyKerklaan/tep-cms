@@ -5,7 +5,7 @@ export function isAuthenticated(
     res: Response,
     next: NextFunction
 ) {
-  if (req.session && req.session.user) {
+  if (req.session?.user) {
     next();
     return;
   }
