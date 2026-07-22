@@ -3,6 +3,7 @@ import entryService from "@core/admin/services/entryService";
 import config from "@root/config";
 import collectionService from "@core/admin/services/collectionService";
 import {HasValidToken} from "@core/admin/middlewares/hasValidToken";
+import {StatusCodes} from "http-status-codes";
 
 const router = express.Router();
 
@@ -12,7 +13,7 @@ router.use(HasValidToken);
 
 if (!config.headless_mode) {
     router.get('/*', (req, res) => {
-        res.status(420).send({"error": "headless mode is turned off for this installation, turn it on via your CMS configuration file"});
+        res.status(StatusCodes.METHOD_NOT_ALLOWED).send({"error": "headless mode is turned off for this installation, turn it on via your CMS configuration file"});
     });
 }
 

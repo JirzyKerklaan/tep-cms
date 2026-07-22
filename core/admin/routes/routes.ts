@@ -9,6 +9,7 @@ import {handleRedirects} from "@core/admin/middlewares/handleRedirects";
 import {contentRegistry} from "@core/content/contentRegistry";
 import {CollectionEntryRequest} from "@core/requests/routes/collectionEntryRequest";
 import {EntryRequest} from "@core/requests/routes/entryRequest";
+import {ReasonPhrases, StatusCodes} from "http-status-codes";
 
 const router = express.Router();
 router.use(handleRedirects);
@@ -40,7 +41,9 @@ function loadPage(slug: string): Page | null {
 router.get('/', (req, res) => {
   const homepage = loadPage('home');
   if (!homepage) {
-    res.status(404).render('views/404');
+    res.status(StatusCodes.NOT_FOUND).render('views/404', {
+      error: ReasonPhrases.NOT_FOUND,
+    });
     return;
   }
 
@@ -124,7 +127,7 @@ router.get('/:collection/:slug', (req: Request<CollectionEntryRequest>, res: Res
   if (collections.includes((collection))) {
     const entry = loadEntry((collection), (slug));
     if (!entry) {
-      res.status(404).send('Not found');
+      res.status(StatusCodes.NOT_FOUND).send(ReasonPhrases.NOT_FOUND);
       return;
     }
 
