@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import config from "@root/config";
-import {ERROR_CODES} from "@core/utils/errors";
+import {ReasonPhrases, StatusCodes} from "http-status-codes";
 
 /**
  * Middleware to validate the API key.
@@ -10,21 +10,21 @@ export function HasValidToken(req: Request, res: Response, next: NextFunction) {
     const authHeader = req.headers.authorization;
 
     if (!authHeader) {
-        res.status(401).json({ error: ERROR_CODES.TEP115 });
+        res.status(StatusCodes.UNAUTHORIZED).json({ error: ReasonPhrases.UNAUTHORIZED });
         return;
     }
 
     const parts = authHeader.split(' ');
 
     if (parts.length !== 2 || parts[0] !== 'Bearer') {
-        res.status(401).json({ error: ERROR_CODES.TEP116 });
+        res.status(StatusCodes.UNAUTHORIZED).json({ error: ReasonPhrases.UNAUTHORIZED });
         return;
     }
 
     const token = parts[1];
 
     if (token !== config.api.key) {
-        res.status(403).json({ error: ERROR_CODES.TEP117 });
+        res.status(StatusCodes.FORBIDDEN).json({ error: ReasonPhrases.FORBIDDEN });
         return;
     }
 

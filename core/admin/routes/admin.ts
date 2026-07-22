@@ -1,18 +1,17 @@
 import express, { Request, Response } from 'express';
 import { blockController, collectionController, entryController } from '@core/admin/controllers';
-import {createPassword, findEmail, findUsername, loadUsers, verifyPassword} from '@core/services/userService';
-import {ERROR_CODES, getErrorMessage} from '@core/utils/errors';
+import {createPassword, findUsername, loadUsers, verifyPassword} from '@core/services/userService';
 import fs from 'fs-extra';
 import path from "path";
 import {LoginRequest} from "@core/requests/routes/loginRequest";
 import {RegisterRequest} from "@core/requests/routes/registerRequest";
+import {ReasonPhrases, StatusCodes} from "http-status-codes";
 // import {isAuthenticated} from '@core/admin/middlewares/isAuthenticated';
 
 const router = express.Router();
 
 router.get('/login', (req: Request, res: Response) => {
   res.render('admin/pages/login', {
-    error: ERROR_CODES.TEP200,
     username: ''
   });
 });
@@ -27,8 +26,8 @@ router.get('/login', (req: Request, res: Response) => {
 
     const user = findUsername(username);
     if (!user) {
-      res.status(401).render('admin/pages/login', {
-        error: ERROR_CODES.TEP111,
+      res.status(StatusCodes.BAD_REQUEST).render('admin/pages/login', {
+        error: ReasonPhrases.BAD_REQUEST,
         username,
       });
       return;
@@ -36,8 +35,8 @@ router.get('/login', (req: Request, res: Response) => {
 
     const passwordValid = await verifyPassword(user, password);
     if (!passwordValid) {
-      res.status(401).render('admin/pages/login', {
-        error: ERROR_CODES.TEP111,
+      res.status(StatusCodes.BAD_REQUEST).render('admin/pages/login', {
+        error: ReasonPhrases.BAD_REQUEST,
         username,
       });
       return;
@@ -63,7 +62,6 @@ router.get('/logout', (req: Request, res: Response) => {
 
 router.get('/register', (req: Request, res: Response) => {
   res.render('admin/pages/register', {
-    error: ERROR_CODES.TEP200,
     email: '',
     username: ''
   });
@@ -74,21 +72,23 @@ router.post('/register', async (req: Request<object, object, RegisterRequest>, r
 
   await loadUsers();
 
-  const usernameIsRecognised = findUsername(username);
-  const emailIsRecognised = findEmail(email);
 
-  let errorCode: string | null = null;
+  // TODO: Fix account already exists
+  // const usernameIsRecognised = findUsername(username);
+  // const emailIsRecognised = findEmail(email);
+  //
+  // let errorCode: string | null = null;
 
-  if (emailIsRecognised) {
-    errorCode = 'TEP121';
-  } else if (usernameIsRecognised) {
-    errorCode = 'TEP122';
-  }
-
-  if (errorCode) {
-    res.status(401).render('admin/pages/register', { error: getErrorMessage(errorCode), username, email });
-    return;
-  }
+  // if (emailIsRecognised) {
+  //   errorCode = StatusCodes.NOT_FOUND;
+  // } else if (usernameIsRecognised) {
+  //   errorCode = 'TEP122';
+  // }
+  //
+  // if (errorCode) {
+  //   res.status(401).render('admin/pages/register', { error: getErrorMessage(errorCode), username, email });
+  //   return;
+  // }
 
   try {
     const userPath = path.join(process.cwd(), 'src', 'content', 'users');
@@ -113,11 +113,13 @@ router.post('/register', async (req: Request<object, object, RegisterRequest>, r
 
     fs.writeFileSync(filePath, JSON.stringify(userData, null, 2), 'utf8');
   } catch {
-    res.status(401).render('admin/pages/register');
+    res.status(StatusCodes.UNAUTHORIZED).render('admin/pages/register', {
+      error: ReasonPhrases.UNAUTHORIZED
+    });
     return;
   }
 
-  res.status(401).redirect('/admin/login');
+  res.status(StatusCodes.OK).redirect('/admin/login');
   return;
 });
 
@@ -167,7 +169,10 @@ router.post('/blocks/:block/edit', blockController.edit)
 // --------- CatchAll ----------- //
 
 router.use('*', (req, res) => {
-  res.status(404).render('views/404', { user: req.session.user });
+  res.status(StatusCodes.NOT_FOUND).render('views/404', {
+    user: req.session.user, errors:
+    ReasonPhrases.NOT_FOUND
+  });
 });
 
 // -------------------- //

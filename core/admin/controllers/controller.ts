@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import {IController} from "@core/interfaces/IController";
 import {route} from "@core/utils/namedRoutes";
+import {StatusCodes} from "http-status-codes";
 
 export abstract class Controller implements IController {
     protected viewFolder: string;
@@ -30,6 +31,6 @@ export abstract class Controller implements IController {
     }
 
     protected notFound(res: Response) {
-        res.status(404).render("views/404");
+        res.status(StatusCodes.NOT_FOUND).render("views/404");
     }
 }

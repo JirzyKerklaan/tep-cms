@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { BaseRequest } from '@core/requests/request';
+import {ReasonPhrases, StatusCodes} from "http-status-codes";
 
 export function useRequest<
     TData extends Record<string, unknown>,
@@ -26,11 +27,11 @@ export function useRequest<
             const error = err as { validation?: unknown };
 
             if (error.validation) {
-                res.status(422).json({ errors: error.validation });
+                res.status(StatusCodes.UNPROCESSABLE_ENTITY).json({ errors: error.validation });
                 return;
             }
 
-            res.status(500).json({ errors: 'Validation failed' });
+            res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ errors: ReasonPhrases.INTERNAL_SERVER_ERROR });
         }
     };
 }
